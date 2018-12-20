@@ -1,20 +1,23 @@
-package pl.coderstrust.inovices.model;
+package pl.coderstrust.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
 
-    private String id;
+    private int id;
     private int number;
     private LocalDate issueDate;
     private LocalDate dueDate;
     private Company seller;
     private Company buyer;
     private List<InvoiceEntry> entires;
+    private BigDecimal totalNetValue;
+    private BigDecimal totalGrossValue;
 
-    public Invoice(String id, int number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entires) {
+    public Invoice(int id, int number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entires, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
         this.id = id;
         this.number = number;
         this.issueDate = issueDate;
@@ -22,13 +25,15 @@ public class Invoice {
         this.seller = seller;
         this.buyer = buyer;
         this.entires = entires;
+        this.totalNetValue = totalNetValue;
+        this.totalGrossValue = totalGrossValue;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -80,35 +85,59 @@ public class Invoice {
         this.entires = entires;
     }
 
+    public BigDecimal getTotalNetValue() {
+        return totalNetValue;
+    }
+
+    public void setTotalNetValue(BigDecimal totalNetValue) {
+        this.totalNetValue = totalNetValue;
+    }
+
+    public BigDecimal getTotalGrossValue() {
+        return totalGrossValue;
+    }
+
+    public void setTotalGrossValue(BigDecimal totalGrossValue) {
+        this.totalGrossValue = totalGrossValue;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Invoice invoice = (Invoice) o;
-        return number == invoice.number &&
-                Objects.equals(id, invoice.id) &&
+        return id == invoice.id &&
+                number == invoice.number &&
                 Objects.equals(issueDate, invoice.issueDate) &&
                 Objects.equals(dueDate, invoice.dueDate) &&
                 Objects.equals(seller, invoice.seller) &&
                 Objects.equals(buyer, invoice.buyer) &&
-                Objects.equals(entires, invoice.entires);
+                Objects.equals(entires, invoice.entires) &&
+                Objects.equals(totalNetValue, invoice.totalNetValue) &&
+                Objects.equals(totalGrossValue, invoice.totalGrossValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, issueDate, dueDate, seller, buyer, entires);
+        return Objects.hash(id, number, issueDate, dueDate, seller, buyer, entires, totalNetValue, totalGrossValue);
     }
 
     @Override
     public String toString() {
         return "Invoice{"
-                + "id='" + id + '\''
+                + "id=" + id
                 + ", number=" + number
                 + ", issueDate=" + issueDate
                 + ", dueDate=" + dueDate
                 + ", seller=" + seller
                 + ", buyer=" + buyer
                 + ", entires=" + entires
+                + ", totalNetValue=" + totalNetValue
+                + ", totalGrossValue=" + totalGrossValue
                 + '}';
     }
 }
