@@ -35,9 +35,9 @@ public class AccountNumber {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        AccountNumber that = (AccountNumber) o;
-        return ibanNumber == that.ibanNumber &&
-                localNumber == that.localNumber;
+        AccountNumber accountNumber = (AccountNumber) o;
+        return ibanNumber == accountNumber.ibanNumber &&
+                localNumber == accountNumber.localNumber;
     }
 
     @Override
@@ -47,9 +47,6 @@ public class AccountNumber {
 
     @Override
     public String toString() {
-        return "AccountNumber{"
-                + "ibanNumber=" + ibanNumber
-                + ", localNumber=" + localNumber
-                + '}';
+        return String.format("ibanNumber: %d, localNumber: %d", ibanNumber, localNumber);
     }
 }

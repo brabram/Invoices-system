@@ -80,12 +80,7 @@ public class Company {
 
     @Override
     public String toString() {
-        return "Company{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + ", taxIdentificationNumber='" + taxIdentificationNumber + '\''
-                + ", accountNumber=" + accountNumber
-                + ", contactDetails=" + contactDetails
-                + '}';
+        return String.format("id: %s, name: %s, taxIdentificationNumber: %s, accountNumber: %s, contactDetails: %s",
+                id, name, taxIdentificationNumber, accountNumber, contactDetails);
     }
 }

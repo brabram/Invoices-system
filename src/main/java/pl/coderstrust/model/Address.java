@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class Address {
     private String street;
-    private int number;
-    private int postalCode;
+    private String number;
+    private String postalCode;
     private String city;
     private String country;
 
-    public Address(String street, int number, int postalCode, String city, String country) {
+    public Address(String street, String number, String postalCode, String city, String country) {
         this.street = street;
         this.number = number;
         this.postalCode = postalCode;
@@ -25,19 +25,19 @@ public class Address {
         this.street = street;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -66,8 +66,8 @@ public class Address {
             return false;
         }
         Address address = (Address) o;
-        return number == address.number &&
-                postalCode == address.postalCode &&
+        return number.equals(address.number) &&
+                postalCode.equals(address.postalCode) &&
                 Objects.equals(street, address.street) &&
                 Objects.equals(city, address.city) &&
                 Objects.equals(country, address.country);
@@ -80,12 +80,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{"
-                + "street='" + street + '\''
-                + ", number=" + number
-                + ", postalCode=" + postalCode
-                + ", city='" + city + '\''
-                + ", country='" + country + '\''
-                + '}';
+        return String.format("street: %s, number: %s, postalCode: %s, city: %s, country: %s",
+                street, number, postalCode, city, country);
     }
 }

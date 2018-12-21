@@ -4,11 +4,11 @@ import java.util.Objects;
 
 public class ContactDetails {
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private String website;
     private Address address;
 
-    public ContactDetails(String email, int phoneNumber, String website, Address address) {
+    public ContactDetails(String email, String phoneNumber, String website, Address address) {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.website = website;
@@ -23,11 +23,11 @@ public class ContactDetails {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -55,11 +55,11 @@ public class ContactDetails {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ContactDetails that = (ContactDetails) o;
-        return phoneNumber == that.phoneNumber &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(website, that.website) &&
-                Objects.equals(address, that.address);
+        ContactDetails contactDetails = (ContactDetails) o;
+        return phoneNumber.equals(contactDetails.phoneNumber) &&
+                Objects.equals(email, contactDetails.email) &&
+                Objects.equals(website, contactDetails.website) &&
+                Objects.equals(address, contactDetails.address);
     }
 
     @Override
@@ -69,11 +69,7 @@ public class ContactDetails {
 
     @Override
     public String toString() {
-        return "ContactDetails{"
-                + "email='" + email + '\''
-                + ", phoneNumber=" + phoneNumber
-                + ", website='" + website + '\''
-                + ", address=" + address
-                + '}';
+        return String.format("email: %s, phoneNumber: %s, website: %s, address: %s",
+                email, phoneNumber, website, address);
     }
 }

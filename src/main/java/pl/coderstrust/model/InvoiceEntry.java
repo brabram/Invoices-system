@@ -10,9 +10,9 @@ public class InvoiceEntry {
     private BigDecimal price;
     private BigDecimal vatValue;
     private BigDecimal grossValue;
-    private VAT vatRate;
+    private Vat vatRate;
 
-    public InvoiceEntry(int id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, VAT vatRate) {
+    public InvoiceEntry(int id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, Vat vatRate) {
         this.id = id;
         this.item = item;
         this.quantity = quantity;
@@ -70,11 +70,11 @@ public class InvoiceEntry {
         this.grossValue = grossValue;
     }
 
-    public VAT getVatRate() {
+    public Vat getVatRate() {
         return vatRate;
     }
 
-    public void setVatRate(VAT vatRate) {
+    public void setVatRate(Vat vatRate) {
         this.vatRate = vatRate;
     }
 
@@ -86,14 +86,14 @@ public class InvoiceEntry {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        InvoiceEntry that = (InvoiceEntry) o;
-        return id == that.id &&
-                Objects.equals(item, that.item) &&
-                Objects.equals(quantity, that.quantity) &&
-                Objects.equals(price, that.price) &&
-                Objects.equals(vatValue, that.vatValue) &&
-                Objects.equals(grossValue, that.grossValue) &&
-                vatRate == that.vatRate;
+        InvoiceEntry invoiceEntry = (InvoiceEntry) o;
+        return id == invoiceEntry.id &&
+                Objects.equals(item, invoiceEntry.item) &&
+                Objects.equals(quantity, invoiceEntry.quantity) &&
+                Objects.equals(price, invoiceEntry.price) &&
+                Objects.equals(vatValue, invoiceEntry.vatValue) &&
+                Objects.equals(grossValue, invoiceEntry.grossValue) &&
+                vatRate == invoiceEntry.vatRate;
     }
 
     @Override
@@ -103,14 +103,7 @@ public class InvoiceEntry {
 
     @Override
     public String toString() {
-        return "InvoiceEntry{"
-                + "id=" + id
-                + ", item='" + item + '\''
-                + ", quantity=" + quantity
-                + ", price=" + price
-                + ", vatValue=" + vatValue
-                + ", grossValue=" + grossValue
-                + ", vatRate=" + vatRate
-                + '}';
+        return String.format("id: %d, item: %s, quantity: %s, price: %s, vatValue: %s, grossValue: %s, vatRate: %s",
+                id, item, quantity, price, vatValue, grossValue, vatRate);
     }
 }
