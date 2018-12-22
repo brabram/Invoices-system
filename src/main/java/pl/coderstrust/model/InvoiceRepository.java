@@ -6,17 +6,17 @@ import java.io.Serializable;
 
 public interface InvoiceRepository<Invoice, ID extends Serializable> extends Repository<Invoice, ID> {
 
-    Invoice save(Invoice invoice);
+    Invoice save(Invoice invoice) throws InvoiceRepositoryOperationException;
 
-    Invoice findById(ID id);
+    Invoice findById(ID id) throws InvoiceRepositoryOperationException;
 
-    boolean existsById(ID id);
+    boolean existsById(ID id) throws InvoiceRepositoryOperationException;
 
     Iterable<Invoice> findAll();
 
     long count();
 
-    void deleteById(ID id);
+    void deleteById(ID id) throws InvoiceRepositoryOperationException;
 
     void deleteAll();
 }
