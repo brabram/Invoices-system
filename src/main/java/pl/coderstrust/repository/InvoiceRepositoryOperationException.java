@@ -1,4 +1,4 @@
-package pl.coderstrust.model;
+package pl.coderstrust.repository;
 
 public class InvoiceRepositoryOperationException extends Exception {
 
