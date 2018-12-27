@@ -8,62 +8,55 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Repository
-public class InMemoryInvoiceRepository implements InvoiceRepository {
+public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Integer> {
 
-    private Map<Long, Invoice> invoicesMap = new HashMap<>();
+    private Map<Integer, Invoice> invoicesMap = new HashMap<>();
     private AtomicInteger counter = new AtomicInteger();
 
     @Override
-    public Object save(Object o) throws InvoiceRepositoryOperationException {
+    public Invoice save(Invoice o) throws InvoiceRepositoryOperationException {
         return null;
     }
 
     @Override
-    public Object findById(Object id) throws InvoiceRepositoryOperationException {
+    public Invoice findById(Integer id) throws InvoiceRepositoryOperationException {
         if(id == null){
            throw new InvoiceRepositoryOperationException();
         }
-        return invoicesMap.get(id).getId();
+
+        if (existsById(id)){
+            return invoicesMap.get(id);
+        }
+        return null;
     }
 
     @Override
-    public boolean existsById(Object id) throws InvoiceRepositoryOperationException {
-        if(!invoicesMap.containsKey(id)){
+    public boolean existsById(Integer id) throws InvoiceRepositoryOperationException {
+        if(id == null){
             throw new InvoiceRepositoryOperationException();
         }
         return invoicesMap.containsKey(id);
     }
 
     @Override
-    public Iterable findAll() throws InvoiceRepositoryOperationException {
-        if(invoicesMap == null){
-            throw new InvoiceRepositoryOperationException();
-        }
-        return invoicesMap.keySet();
+    public Iterable<Invoice> findAll() throws InvoiceRepositoryOperationException {
+        return invoicesMap.values();
     }
 
     @Override
     public long count() throws InvoiceRepositoryOperationException {
-        if(invoicesMap.size() == 0){
-            throw new InvoiceRepositoryOperationException();
-        }
         return invoicesMap.size();
     }
 
     @Override
-    public void deleteById(Object id) throws InvoiceRepositoryOperationException {
-        if(!invoicesMap.containsKey(id)){
-            throw new InvoiceRepositoryOperationException();
+    public void deleteById(Integer id) throws InvoiceRepositoryOperationException {
+        if (existsById(id)){
+            invoicesMap.remove(id);
         }
-        invoicesMap.remove(id).getId();
     }
 
     @Override
     public void deleteAll() throws InvoiceRepositoryOperationException {
-        if(invoicesMap == null){
-            throw new InvoiceRepositoryOperationException();
-        }
         invoicesMap.clear();
     }
 }

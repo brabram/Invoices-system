@@ -2,13 +2,14 @@ package pl.coderstrust.repository;
 
 import junit.framework.Assert;
 import org.junit.jupiter.api.Test;
+import pl.coderstrust.model.Invoice;
+import pl.coderstrust.repository.generators.InvoiceGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 
 class InMemoryInvoiceRepositoryTest {
-    private Map<Integer, Integer> invoiceMap = new HashMap<>();
-    InMemoryInvoiceRepository inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
+    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
 
     @Test
     void save() {
@@ -16,8 +17,8 @@ class InMemoryInvoiceRepositoryTest {
 
     @Test
     void findById() throws InvoiceRepositoryOperationException {
-        boolean actual = (boolean) inMemoryInvoiceRepository.findById(321);
-        Assert.assertEquals(false, actual);
+       // boolean actual =  inMemoryInvoiceRepository.findById(321);
+       // Assert.assertEquals(false, actual);
     }
 
     @Test
@@ -33,10 +34,12 @@ class InMemoryInvoiceRepositoryTest {
 
     @Test
     void deleteById() throws InvoiceRepositoryOperationException {
-        invoiceMap.put(321, 123);
-        invoiceMap.remove(321);
-        Integer actual = (Integer) inMemoryInvoiceRepository.findById(321);
-        Assert.assertNull(actual);
+        Invoice invoice = inMemoryInvoiceRepository.save(InvoiceGenerator);
+        boolean exists = inMemoryInvoiceRepository.existsById(invoice.getId());
+        Assert.assertTrue(exists);
+        inMemoryInvoiceRepository.deleteById(invoice.getId());
+        exists = inMemoryInvoiceRepository.existsById(invoice.getId());
+        Assert.assertFalse(exists);
 
     }
 
