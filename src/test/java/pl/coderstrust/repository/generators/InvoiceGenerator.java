@@ -23,15 +23,15 @@ public class InvoiceGenerator {
         int max = 10000;
         int id = random.nextInt((max - min) + 1) + min;
         int number = Integer.parseInt(String.format("%d", random.nextInt(5000)));
-        LocalDate issueDate = LocalDate.parse(String.format("%s",dateGenerator()));
-        LocalDate dueDate = LocalDate.parse(String.format("%s",dateGenerator()));
+        LocalDate issueDate = LocalDate.parse(String.format("%s", dateGenerator()));
+        LocalDate dueDate = LocalDate.parse(String.format("%s", dateGenerator()));
         Company seller = CompanyGenerator.randomCompanyGenerator();
         Company buyer = CompanyGenerator.randomCompanyGenerator();
-        List <InvoiceEntry> list = Collections.singletonList(InvoiceEntriesGenerator.invoiceEntriesGenerator());
+        List<InvoiceEntry> list = Collections.singletonList(InvoiceEntriesGenerator.invoiceEntriesGenerator());
         BigDecimal totalNetValue = BigDecimal.valueOf(5333);
         BigDecimal totalGrossValue = BigDecimal.valueOf(5333);
         return new Invoice(id, number, issueDate, dueDate, seller, buyer,
-                list, totalNetValue, totalGrossValue );
+                list, totalNetValue, totalGrossValue);
     }
 
     private static LocalDate dateGenerator() {

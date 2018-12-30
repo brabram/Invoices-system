@@ -20,7 +20,7 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
             if (invoice == null) {
                 throw new IllegalArgumentException("Invoice cannot be empty");
             }
-            if(invoicesMap.containsKey(invoice.getId())){
+            if (invoicesMap.containsKey(invoice.getId())) {
                 invoicesMap.put(invoice.getId(), invoice);
             }
             int id = counter.incrementAndGet();
@@ -33,11 +33,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
     @Override
     public Invoice findById(Integer id) throws InvoiceRepositoryOperationException {
         synchronized (lock) {
-        if (id == null) {
-            throw new IllegalArgumentException("Id cannot be empty");
-        }
-
-        if (existsById(id)) {
+            if (id == null) {
+                throw new IllegalArgumentException("Id cannot be empty");
+            }
+            if (existsById(id)) {
                 return invoicesMap.get(id);
             }
         }

@@ -9,10 +9,6 @@ import static pl.coderstrust.repository.generators.randomWordGenerator.randomWor
 public class ContactDetailsGenerator {
      static Random random = new Random();
 
-    public static void main(String[] args) {
-        System.out.println((getRandomContactDetails()));
-    }
-
     public static ContactDetails getRandomContactDetails() {
         String email = String.format("%s@gmail.com", randomWordGenerator() );
         String phoneNumber = String.format("+48%09d",random.nextInt(999999999));

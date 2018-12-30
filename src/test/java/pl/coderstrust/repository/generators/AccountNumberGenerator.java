@@ -5,10 +5,6 @@ import pl.coderstrust.model.AccountNumber;
 
 public class AccountNumberGenerator {
 
-    public static void main(String[] args) {
-        System.out.println(randomAccountGeneator());
-    }
-
     public static AccountNumber randomAccountGeneator() {
         long min = 0000000000000000L;
         long max = 10000000000000000L;
@@ -18,6 +14,6 @@ public class AccountNumberGenerator {
         long localNumberGenerator = min + localNumberFirst14;
         String ibanNumber = String.format("%016d", ibanNumberGenerator);
         String localNumber = String.format("%016d", localNumberGenerator);
-        return new AccountNumber(ibanNumber,localNumber);
+        return new AccountNumber(ibanNumber, localNumber);
     }
 }

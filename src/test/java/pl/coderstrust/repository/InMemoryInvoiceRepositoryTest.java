@@ -49,6 +49,5 @@ class InMemoryInvoiceRepositoryTest {
         inMemoryInvoiceRepository.deleteById(invoice.getId());
         exists = inMemoryInvoiceRepository.existsById(invoice.getId());
         Assert.assertFalse(exists);
-
     }
 }

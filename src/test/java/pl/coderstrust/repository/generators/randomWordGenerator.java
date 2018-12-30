@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class randomWordGenerator {
 
-    public static String randomWordGenerator(){
+    public static String randomWordGenerator() {
         Random random = new Random();
         String tableOfChars = "abcdefghijklmnopqrstuvxyz";
         StringBuilder characters = new StringBuilder();

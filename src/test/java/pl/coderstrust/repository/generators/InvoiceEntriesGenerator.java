@@ -4,17 +4,11 @@ import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class InvoiceEntriesGenerator {
 
     static Random random = new Random();
-
-    public static void main(String[] args) {
-        System.out.println(invoiceEntriesGenerator());
-    }
 
     public static InvoiceEntry invoiceEntriesGenerator() {
         int min = 0;
