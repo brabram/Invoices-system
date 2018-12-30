@@ -3,41 +3,37 @@ package pl.coderstrust.model;
 import java.util.Objects;
 
 public class AccountNumber {
-    private int ibanNumber;
-    private int localNumber;
+    private String ibanNumber;
+    private String localNumber;
 
-    public AccountNumber(int ibanNumber, int localNumber) {
+    public AccountNumber(String ibanNumber, String localNumber) {
         this.ibanNumber = ibanNumber;
         this.localNumber = localNumber;
     }
 
-    public int getIbanNumber() {
+    public String getIbanNumber() {
         return ibanNumber;
     }
 
-    public void setIbanNumber(int ibanNumber) {
+    public void setIbanNumber(String ibanNumber) {
         this.ibanNumber = ibanNumber;
     }
 
-    public int getLocalNumber() {
+    public String getLocalNumber() {
         return localNumber;
     }
 
-    public void setLocalNumber(int localNumber) {
+    public void setLocalNumber(String localNumber) {
         this.localNumber = localNumber;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        AccountNumber accountNumber = (AccountNumber) o;
-        return ibanNumber == accountNumber.ibanNumber &&
-                localNumber == accountNumber.localNumber;
+        if (this == o) return true;
+        if (!(o instanceof AccountNumber)) return false;
+        AccountNumber that = (AccountNumber) o;
+        return Objects.equals(ibanNumber, that.ibanNumber) &&
+                Objects.equals(localNumber, that.localNumber);
     }
 
     @Override
@@ -47,6 +43,6 @@ public class AccountNumber {
 
     @Override
     public String toString() {
-        return String.format("ibanNumber: %d, localNumber: %d", ibanNumber, localNumber);
+        return String.format("ibanNumber: %s, localNumber: %s", ibanNumber, localNumber);
     }
 }
