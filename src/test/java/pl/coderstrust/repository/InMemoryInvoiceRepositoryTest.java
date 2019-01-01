@@ -35,8 +35,8 @@ class InMemoryInvoiceRepositoryTest {
     void findAll() throws InvoiceRepositoryOperationException {
         Invoice invoice = inMemoryInvoiceRepository.save(InvoiceGenerator.invoice());
         Invoice invoice1 = inMemoryInvoiceRepository.save(InvoiceGenerator.invoice());
-        inMemoryInvoiceRepository.findById(invoice.getNumber());
-        inMemoryInvoiceRepository.findById(invoice1.getNumber());
+        inMemoryInvoiceRepository.findById(invoice.getId());
+        inMemoryInvoiceRepository.findById(invoice1.getId());
         Iterable<Invoice> findAll = inMemoryInvoiceRepository.findAll();
         Assert.assertNotNull(findAll);
     }

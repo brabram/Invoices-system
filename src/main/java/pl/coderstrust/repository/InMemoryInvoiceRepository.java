@@ -34,7 +34,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
     public Invoice findById(Integer id) throws InvoiceRepositoryOperationException {
         synchronized (lock) {
             if (id == null) {
-                throw new IllegalArgumentException("Id cannot be empty");
+                throw new IllegalArgumentException("Id cannot be null");
+            }
+            if (id <= 0) {
+                throw new IllegalArgumentException("Id must be greater than 0");
             }
             if (existsById(id)) {
                 return invoicesMap.get(id);
@@ -47,7 +50,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
     public boolean existsById(Integer id) throws InvoiceRepositoryOperationException {
         synchronized (lock) {
             if (id == null) {
-                throw new IllegalArgumentException("Id cannot be empty");
+                throw new IllegalArgumentException("Id cannot be null");
+            }
+            if (id <= 0) {
+                throw new IllegalArgumentException("Id must be greater than 0");
             }
             return invoicesMap.containsKey(id);
         }
@@ -70,6 +76,12 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
     @Override
     public void deleteById(Integer id) throws InvoiceRepositoryOperationException {
         synchronized (lock) {
+            if (id == null) {
+                throw new IllegalArgumentException("Id cannot be null");
+            }
+            if (id <= 0) {
+                throw new IllegalArgumentException("Id must be greater than 0");
+            }
             if (existsById(id)) {
                 invoicesMap.remove(id);
             }

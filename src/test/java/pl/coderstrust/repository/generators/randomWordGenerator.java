@@ -12,7 +12,7 @@ public class randomWordGenerator {
             int index = (int) (random.nextFloat() * tableOfChars.length());
             characters.append(tableOfChars.charAt(index));
         }
-        String saltStr = characters.toString();
-        return saltStr;
+        String word = characters.toString();
+        return word;
     }
 }

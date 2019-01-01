@@ -29,8 +29,12 @@ public class AccountNumber {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccountNumber)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AccountNumber)) {
+            return false;
+        }
         AccountNumber that = (AccountNumber) o;
         return Objects.equals(ibanNumber, that.ibanNumber) &&
                 Objects.equals(localNumber, that.localNumber);

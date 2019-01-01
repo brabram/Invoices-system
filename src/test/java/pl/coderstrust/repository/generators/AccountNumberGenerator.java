@@ -3,17 +3,15 @@ package pl.coderstrust.repository.generators;
 
 import pl.coderstrust.model.AccountNumber;
 
+import java.util.Random;
+
 public class AccountNumberGenerator {
 
     public static AccountNumber randomAccountGeneator() {
-        long min = 0000000000000000L;
-        long max = 10000000000000000L;
-        long ibanNumberfirst14 = (long) (Math.random() * max);
-        long ibanNumberGenerator = min + ibanNumberfirst14;
-        long localNumberFirst14 = (long) (Math.random() * max);
-        long localNumberGenerator = min + localNumberFirst14;
-        String ibanNumber = String.format("%016d", ibanNumberGenerator);
-        String localNumber = String.format("%016d", localNumberGenerator);
-        return new AccountNumber(ibanNumber, localNumber);
+        Random random = new Random();
+        String ibanNumber = String.format("%02d %04d %04d %04d %04d %04d %04d", random.nextInt(99), random.nextInt(9999), random.nextInt(9999),
+                random.nextInt(9999), random.nextInt(9999), random.nextInt(9999), random.nextInt(9999));
+        String localNumber = ibanNumber;
+        return new AccountNumber("PL" + ibanNumber, localNumber);
     }
 }
