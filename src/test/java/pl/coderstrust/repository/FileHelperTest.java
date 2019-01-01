@@ -1,13 +1,17 @@
 package pl.coderstrust.repository;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import junit.framework.Assert;
+import org.junit.Rule;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
 
 class FileHelperTest {
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   private FileHelper fileHelper = new FileHelper();
 
@@ -21,7 +25,7 @@ class FileHelperTest {
     boolean isCreated = fileHelper.exists();
 
     //Then
-    Assert.assertTrue(isCreated);
+    Assertions.assertTrue(isCreated);
   }
 
   @Test
@@ -34,7 +38,7 @@ class FileHelperTest {
     boolean isCreated = fileHelper.exists();
 
     //Then
-    Assert.assertFalse(isCreated);
+    Assertions.assertFalse(isCreated);
   }
 
   @Test
@@ -47,7 +51,7 @@ class FileHelperTest {
     boolean isCreated = fileHelper.exists();
 
     //Then
-    Assert.assertTrue(isCreated);
+    Assertions.assertTrue(isCreated);
   }
 
   @Test
@@ -60,7 +64,7 @@ class FileHelperTest {
     boolean isEmpty = fileHelper.isEmpty();
 
     //Then
-    Assert.assertTrue(isEmpty);
+    Assertions.assertTrue(isEmpty);
   }
 
   @Test
@@ -75,7 +79,7 @@ class FileHelperTest {
     boolean isEmpty = fileHelper.isEmpty();
 
     //Then
-    Assert.assertTrue(isEmpty);
+    Assertions.assertTrue(isEmpty);
   }
 
   @Test
@@ -89,7 +93,7 @@ class FileHelperTest {
     String line = fileHelper.readLastLine(filePath);
 
     //Then
-    Assert.assertEquals("file is not empty", line);
+    Assertions.assertEquals("file is not empty", line);
 
   }
 
@@ -103,23 +107,31 @@ class FileHelperTest {
     expected.add("third line");
 
     //When
+    fileHelper.create(filePath);
+    fileHelper.writeLine(filePath, "first line");
+    fileHelper.writeLine(filePath, "second line");
+    fileHelper.writeLine(filePath, "third line");
     List<String> actual = fileHelper.readLines(filePath);
 
     //Then
-    Assert.assertEquals(expected.toString(), actual.toString());
+    Assertions.assertEquals(expected.toString(), actual.toString());
   }
 
   @Test
-  void checkIfReadLastLineFromFile() throws FileNotFoundException {
+  void checkIfReadLastLineFromFile() throws IOException {
     //Given
     String filePath = "src/test/test resources/file8.txt";
     String expected = "third line";
 
     //When
+    fileHelper.create(filePath);
+    fileHelper.writeLine(filePath, "first line");
+    fileHelper.writeLine(filePath, "second line");
+    fileHelper.writeLine(filePath, "third line");
     String actual = fileHelper.readLastLine(filePath);
 
     //Then
-    Assert.assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
 
   @Test
@@ -138,6 +150,12 @@ class FileHelperTest {
     String actual = fileHelper.readLastLine(filePath);
 
     //Then
-    Assert.assertEquals(expected, actual);
+    Assertions.assertEquals(expected, actual);
   }
+
+//  @Test
+//  void shouldThrowExceptionForNullAsFilePath() throws IOException {
+//    thrown.expect(IllegalArgumentException.class);
+//    fileHelper.delete(null);
+//  }
 }
