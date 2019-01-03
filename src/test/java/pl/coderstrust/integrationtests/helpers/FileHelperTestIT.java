@@ -1,17 +1,13 @@
-package pl.coderstrust.repository;
+package pl.coderstrust.integrationtests.helpers;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Rule;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
+import pl.coderstrust.helpers.FileHelper;
 
-class FileHelperTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
+class FileHelperTestIT {
 
   private FileHelper fileHelper = new FileHelper();
 
@@ -22,23 +18,24 @@ class FileHelperTest {
 
     //When
     fileHelper.create(filePath);
-    boolean isCreated = fileHelper.exists();
+    boolean fileExists = fileHelper.exists(filePath);
 
     //Then
-    Assertions.assertTrue(isCreated);
+    Assertions.assertTrue(fileExists);
   }
 
   @Test
   void checkIfDeleteFile() throws IOException {
     //Given
     String filePath = "src/test/test resources/file2.txt";
+    fileHelper.create(filePath);
 
     //When
     fileHelper.delete(filePath);
-    boolean isCreated = fileHelper.exists();
+    boolean fileExists = fileHelper.exists(filePath);
 
     //Then
-    Assertions.assertFalse(isCreated);
+    Assertions.assertFalse(fileExists);
   }
 
   @Test
@@ -47,11 +44,10 @@ class FileHelperTest {
     String filePath = "src/test/test resources/file3.txt";
 
     //When
-    fileHelper.create(filePath);
-    boolean isCreated = fileHelper.exists();
+    boolean fileExists = fileHelper.exists(filePath);
 
     //Then
-    Assertions.assertTrue(isCreated);
+    Assertions.assertFalse(fileExists);
   }
 
   @Test
@@ -61,32 +57,30 @@ class FileHelperTest {
     fileHelper.create(filePath);
 
     //When
-    boolean isEmpty = fileHelper.isEmpty();
+    boolean emptyFile = fileHelper.isEmpty(filePath);
 
     //Then
-    Assertions.assertTrue(isEmpty);
+    Assertions.assertTrue(emptyFile);
   }
 
   @Test
   void checkIfClearFile() throws IOException {
     //Given
     String filePath = "src/test/test resources/file5.txt";
-    fileHelper.create(filePath);
     fileHelper.writeLine(filePath, "file is not empty");
 
     //When
     fileHelper.clear(filePath);
-    boolean isEmpty = fileHelper.isEmpty();
+    boolean emptyFile = fileHelper.isEmpty(filePath);
 
     //Then
-    Assertions.assertTrue(isEmpty);
+    Assertions.assertTrue(emptyFile);
   }
 
   @Test
   void checkIfWriteLineToFile() throws IOException {
     //Given
     String filePath = "src/test/test resources/file6.txt";
-    fileHelper.create(filePath);
 
     //When
     fileHelper.writeLine(filePath, "file is not empty");
@@ -105,12 +99,12 @@ class FileHelperTest {
     expected.add("first line");
     expected.add("second line");
     expected.add("third line");
-
-    //When
-    fileHelper.create(filePath);
+    fileHelper.clear(filePath);
     fileHelper.writeLine(filePath, "first line");
     fileHelper.writeLine(filePath, "second line");
     fileHelper.writeLine(filePath, "third line");
+
+    //When
     List<String> actual = fileHelper.readLines(filePath);
 
     //Then
@@ -122,12 +116,11 @@ class FileHelperTest {
     //Given
     String filePath = "src/test/test resources/file8.txt";
     String expected = "third line";
-
-    //When
-    fileHelper.create(filePath);
     fileHelper.writeLine(filePath, "first line");
     fileHelper.writeLine(filePath, "second line");
     fileHelper.writeLine(filePath, "third line");
+
+    //When
     String actual = fileHelper.readLastLine(filePath);
 
     //Then
@@ -145,17 +138,10 @@ class FileHelperTest {
     String expected = "second line";
 
     //When
-    fileHelper.create(filePath);
-    fileHelper.removeLine(3);
+    fileHelper.removeLine(filePath, 3);
     String actual = fileHelper.readLastLine(filePath);
 
     //Then
     Assertions.assertEquals(expected, actual);
   }
-
-//  @Test
-//  void shouldThrowExceptionForNullAsFilePath() throws IOException {
-//    thrown.expect(IllegalArgumentException.class);
-//    fileHelper.delete(null);
-//  }
 }
