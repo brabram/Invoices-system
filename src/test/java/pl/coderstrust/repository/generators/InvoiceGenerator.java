@@ -14,10 +14,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class InvoiceGenerator {
     static Random random = new Random();
 
-    public static void main(String[] args) {
-        System.out.println(invoice());
-    }
-
     public static Invoice invoice() {
         int min = 0;
         int max = 10000;
