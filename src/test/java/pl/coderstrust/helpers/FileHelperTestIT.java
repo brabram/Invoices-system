@@ -1,0 +1,198 @@
+package pl.coderstrust.helpers;
+
+import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class FileHelperTestIT {
+
+  private static final String INPUT_FILE = "src/test/resource/helpers/input_file";
+  private static final String EXPECTED_FILE = "src/test/resource/helpers/expected_file";
+
+  @BeforeEach
+  void deleteInputAndOutputFile() throws IOException {
+    FileHelper fileHelper = new FileHelper();
+    fileHelper.delete(INPUT_FILE);
+    fileHelper.delete(EXPECTED_FILE);
+  }
+
+  @Test
+  void shouldCreateFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+
+    //When
+    fileHelper.create(INPUT_FILE);
+
+    //Then
+    assertTrue(new File(INPUT_FILE).exists());
+  }
+
+  @Test
+  void shouldDeleteFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+
+    //When
+    fileHelper.delete(INPUT_FILE);
+
+    //Then
+    assertFalse(new File(INPUT_FILE).exists());
+  }
+
+  @Test
+  void shouldTrueIfFileExists() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    File file = new File(INPUT_FILE);
+    file.createNewFile();
+
+    //When
+    boolean result = fileHelper.exists(INPUT_FILE);
+
+    //Then
+    assertTrue(result);
+  }
+
+  @Test
+  void shouldTrueIfFileIsEmpty() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    fileHelper.create(INPUT_FILE);
+
+    //When
+    boolean result = fileHelper.isEmpty(INPUT_FILE);
+
+    //Then
+    Assertions.assertTrue(result);
+  }
+
+  @Test
+  void shouldClearFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    File expectedFile = new File(EXPECTED_FILE);
+    File inputFile = new File(INPUT_FILE);
+    expectedFile.createNewFile();
+    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
+
+    //When
+    fileHelper.clear(INPUT_FILE);
+
+    //Then
+    assertTrue(FileUtils.contentEquals(expectedFile, inputFile));
+  }
+
+  @Test
+  void shouldWriteLineToFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    File expectedFile = new File(EXPECTED_FILE);
+    File inputFile = new File(INPUT_FILE);
+    expectedFile.createNewFile();
+    FileUtils.writeLines(expectedFile, Collections.singleton("bla bla bla"), true);
+
+    //When
+    fileHelper.writeLine(INPUT_FILE, "bla bla bla");
+
+    //Then
+    assertTrue(FileUtils.contentEquals(expectedFile, inputFile));
+  }
+
+  @Test
+  void checkIfReadLinesFromFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    File inputFile = new File(INPUT_FILE);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla1 bla1 bla1"), true);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla2 bla2 bla2"), true);
+    List<String> expected = new ArrayList<>();
+    expected.add("bla bla bla");
+    expected.add("bla1 bla1 bla1");
+    expected.add("bla2 bla2 bla2");
+
+    //When
+    List<String> result = fileHelper.readLines(INPUT_FILE);
+
+    //Then
+    assertEquals(expected.toString(), result.toString());
+  }
+
+  @Test
+  void shouldReadLastLineFromFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    File inputFile = new File(INPUT_FILE);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla1 bla1 bla1"), true);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla2 bla2 bla2"), true);
+    String expected = "bla2 bla2 bla2";
+
+    //When
+    String result = fileHelper.readLastLine(INPUT_FILE);
+
+    //Then
+    assertEquals(expected, result);
+  }
+
+  @Test
+  void shouldRemoveLineFromFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    File expectedFile = new File(EXPECTED_FILE);
+    File inputFile = new File(INPUT_FILE);
+    expectedFile.createNewFile();
+    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla1 bla1 bla1"), true);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla2 bla2 bla2"), true);
+    FileUtils.writeLines(expectedFile, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(expectedFile, Collections.singleton("bla2 bla2 bla2"), true);
+
+    //When
+    fileHelper.removeLine(INPUT_FILE, 2);
+
+    //Then
+    assertTrue(FileUtils.contentEquals(expectedFile, inputFile));
+
+  }
+
+  @Test
+  void shouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          FileHelper fileHelper = new FileHelper();
+          fileHelper.create(null);
+        });
+  }
+
+  @Test
+  void shouldThrowExceptionForNullAsLine() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          FileHelper fileHelper = new FileHelper();
+          fileHelper.writeLine(INPUT_FILE, null);
+        });
+  }
+
+  @Test
+  void shouldThrowExceptionForNumberLowerThanZeroAsLineNumber() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          FileHelper fileHelper = new FileHelper();
+          fileHelper.removeLine(INPUT_FILE, -1);
+        });
+  }
+}
+

@@ -20,7 +20,7 @@ public class FileHelper {
     }
   }
 
-  public void delete(String filePath) throws IOException {
+  public void delete(String filePath) {
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
@@ -96,6 +96,7 @@ public class FileHelper {
     File file = new File(filePath);
     List<String> lines = readLines(file.getPath());
     lines.remove(lineNumber - 1);
+    clear(filePath);
     writeLines(filePath, lines);
   }
 }
