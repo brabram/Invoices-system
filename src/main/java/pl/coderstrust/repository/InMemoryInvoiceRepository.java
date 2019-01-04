@@ -82,12 +82,13 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
             if (id <= 0) {
                 throw new IllegalArgumentException("Id must be greater than 0");
             }
-            if (existsById(id)) {
-                invoices.remove(id);
-            }
             if (!existsById(id)) {
                 throw new InvoiceRepositoryOperationException("Not exist by id");
             }
+            if (existsById(id)) {
+                invoices.remove(id);
+            }
+
         }
     }
 
