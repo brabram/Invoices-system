@@ -31,53 +31,53 @@ public class InvoiceEntry {
     this.id = id;
   }
 
-  public String getItem() {
-    return item;
-  }
+    public String getItem() {
+        return item;
+    }
 
-  public void setItem(String item) {
-    this.item = item;
-  }
+    public void setItem(String item) {
+        this.item = item;
+    }
 
-  public Long getQuantity() {
-    return quantity;
-  }
+    public Long getQuantity() {
+        return quantity;
+    }
 
-  public void setQuantity(Long quantity) {
-    this.quantity = quantity;
-  }
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
 
-  public BigDecimal getPrice() {
-    return price;
-  }
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
-  public BigDecimal getVatValue() {
-    return vatValue;
-  }
+    public BigDecimal getVatValue() {
+        return vatValue;
+    }
 
-  public void setVatValue(BigDecimal vatValue) {
-    this.vatValue = vatValue;
-  }
+    public void setVatValue(BigDecimal vatValue) {
+        this.vatValue = vatValue;
+    }
 
-  public BigDecimal getGrossValue() {
-    return grossValue;
-  }
+    public BigDecimal getGrossValue() {
+        return grossValue;
+    }
 
-  public void setGrossValue(BigDecimal grossValue) {
-    this.grossValue = grossValue;
-  }
+    public void setGrossValue(BigDecimal grossValue) {
+        this.grossValue = grossValue;
+    }
 
-  public Vat getVatRate() {
-    return vatRate;
-  }
+    public Vat getVatRate() {
+        return vatRate;
+    }
 
-  public void setVatRate(Vat vatRate) {
-    this.vatRate = vatRate;
-  }
+    public void setVatRate(Vat vatRate) {
+        this.vatRate = vatRate;
+    }
 
   @Override
   public boolean equals(Object o) {
@@ -97,10 +97,10 @@ public class InvoiceEntry {
         vatRate == invoiceEntry.vatRate;
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, item, quantity, price, vatValue, grossValue, vatRate);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, item, quantity, price, vatValue, grossValue, vatRate);
+    }
 
   @Override
   public String toString() {

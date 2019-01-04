@@ -37,69 +37,69 @@ public class Invoice {
         this.id = id;
     }
 
-    public int getNumber() {
-        return number;
-    }
+  public int getNumber() {
+    return number;
+  }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
+  public void setNumber(int number) {
+    this.number = number;
+  }
 
-    public LocalDate getIssueDate() {
-        return issueDate;
-    }
+  public LocalDate getIssueDate() {
+    return issueDate;
+  }
 
-    public void setIssueDate(LocalDate issueDate) {
-        this.issueDate = issueDate;
-    }
+  public void setIssueDate(LocalDate issueDate) {
+    this.issueDate = issueDate;
+  }
 
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
+  public LocalDate getDueDate() {
+    return dueDate;
+  }
 
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
+  public void setDueDate(LocalDate dueDate) {
+    this.dueDate = dueDate;
+  }
 
-    public Company getSeller() {
-        return seller;
-    }
+  public Company getSeller() {
+    return seller;
+  }
 
-    public void setSeller(Company seller) {
-        this.seller = seller;
-    }
+  public void setSeller(Company seller) {
+    this.seller = seller;
+  }
 
-    public Company getBuyer() {
-        return buyer;
-    }
+  public Company getBuyer() {
+    return buyer;
+  }
 
-    public void setBuyer(Company buyer) {
-        this.buyer = buyer;
-    }
+  public void setBuyer(Company buyer) {
+    this.buyer = buyer;
+  }
 
-    public List<InvoiceEntry> getEntries() {
-        return entries;
-    }
+  public List<InvoiceEntry> getEntries() {
+    return entries;
+  }
 
-    public void setEntries(List<InvoiceEntry> entries) {
-        this.entries = entries;
-    }
+  public void setEntries(List<InvoiceEntry> entries) {
+    this.entries = entries;
+  }
 
-    public BigDecimal getTotalNetValue() {
-        return totalNetValue;
-    }
+  public BigDecimal getTotalNetValue() {
+    return totalNetValue;
+  }
 
-    public void setTotalNetValue(BigDecimal totalNetValue) {
-        this.totalNetValue = totalNetValue;
-    }
+  public void setTotalNetValue(BigDecimal totalNetValue) {
+    this.totalNetValue = totalNetValue;
+  }
 
-    public BigDecimal getTotalGrossValue() {
-        return totalGrossValue;
-    }
+  public BigDecimal getTotalGrossValue() {
+    return totalGrossValue;
+  }
 
-    public void setTotalGrossValue(BigDecimal totalGrossValue) {
-        this.totalGrossValue = totalGrossValue;
-    }
+  public void setTotalGrossValue(BigDecimal totalGrossValue) {
+    this.totalGrossValue = totalGrossValue;
+  }
 
     @Override
     public boolean equals(Object o) {
@@ -121,10 +121,10 @@ public class Invoice {
                 Objects.equals(totalGrossValue, invoice.totalGrossValue);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
+  }
 
     @Override
     public String toString() {
