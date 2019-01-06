@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Invoice {
 
-    private int id;
+    private String id;
     private int number;
     private LocalDate issueDate;
     private LocalDate dueDate;
@@ -17,7 +17,7 @@ public class Invoice {
     private BigDecimal totalNetValue;
     private BigDecimal totalGrossValue;
 
-    public Invoice(int id, int number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
+    public Invoice(String id, int number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
         this.id = id;
         this.number = number;
         this.issueDate = issueDate;
@@ -29,11 +29,11 @@ public class Invoice {
         this.totalGrossValue = totalGrossValue;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -110,7 +110,7 @@ public class Invoice {
             return false;
         }
         Invoice invoice = (Invoice) o;
-        return id == invoice.id &&
+        return Objects.equals(id, invoice.id) &&
                 number == invoice.number &&
                 Objects.equals(issueDate, invoice.issueDate) &&
                 Objects.equals(dueDate, invoice.dueDate) &&
@@ -128,7 +128,7 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return String.format("id: %d, number: %d, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
+        return String.format("id: %s, number: %d, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
                 id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
     }
 }

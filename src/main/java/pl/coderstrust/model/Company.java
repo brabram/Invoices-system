@@ -3,13 +3,13 @@ package pl.coderstrust.model;
 import java.util.Objects;
 
 public class Company {
-    private int id;
+    private String id;
     private String name;
     private String taxIdentificationNumber;
     private AccountNumber accountNumber;
     private ContactDetails contactDetails;
 
-    public Company(int id, String name, String taxIdentificationNumber, AccountNumber accountNumber, ContactDetails contactDetails) {
+    public Company(String id, String name, String taxIdentificationNumber, AccountNumber accountNumber, ContactDetails contactDetails) {
         this.id = id;
         this.name = name;
         this.taxIdentificationNumber = taxIdentificationNumber;
@@ -17,11 +17,11 @@ public class Company {
         this.contactDetails = contactDetails;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -66,7 +66,7 @@ public class Company {
             return false;
         }
         Company company = (Company) o;
-        return id == company.id &&
+        return Objects.equals(id, company.id) &&
                 Objects.equals(name, company.name) &&
                 Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber) &&
                 Objects.equals(accountNumber, company.accountNumber) &&
