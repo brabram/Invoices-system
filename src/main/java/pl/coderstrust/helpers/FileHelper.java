@@ -31,10 +31,16 @@ public class FileHelper {
   }
 
   public boolean exists(String filePath) {
+    if (filePath == null) {
+      throw new IllegalArgumentException("filePath cannot be null.");
+    }
     return new File(filePath).exists();
   }
 
   public boolean isEmpty(String filePath) throws FileNotFoundException {
+    if (filePath == null) {
+      throw new IllegalArgumentException("filePath cannot be null.");
+    }
     File file = new File(filePath);
     if (!file.exists()) {
       throw new FileNotFoundException("Cannot find file");

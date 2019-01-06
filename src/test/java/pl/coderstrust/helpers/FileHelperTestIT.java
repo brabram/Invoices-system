@@ -22,9 +22,14 @@ class FileHelperTestIT {
 
   @BeforeEach
   void deleteInputAndOutputFile() throws IOException {
-    FileHelper fileHelper = new FileHelper();
-    fileHelper.delete(INPUT_FILE);
-    fileHelper.delete(EXPECTED_FILE);
+    File inputFile = new File(INPUT_FILE);
+    if (inputFile.exists()) {
+      inputFile.delete();
+    }
+    File expectedFile = new File(EXPECTED_FILE);
+    if (expectedFile.exists()) {
+      expectedFile.delete();
+    }
   }
 
   @Test
@@ -40,9 +45,22 @@ class FileHelperTestIT {
   }
 
   @Test
-  void shouldDeleteFile() throws IOException {
+  void shouldDeleteNotExistingFile() throws IOException {
     //Given
     FileHelper fileHelper = new FileHelper();
+
+    //When
+    fileHelper.delete(INPUT_FILE);
+
+    //Then
+    assertFalse(new File(INPUT_FILE).exists());
+  }
+
+  @Test
+  void shouldDeleteExistingFile() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    fileHelper.create(INPUT_FILE);
 
     //When
     fileHelper.delete(INPUT_FILE);
@@ -66,7 +84,20 @@ class FileHelperTestIT {
   }
 
   @Test
-  void shouldTrueIfFileIsEmpty() throws IOException {
+  void shouldFalseIfFileDoesNotExists() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    File file = new File(INPUT_FILE);
+
+    //When
+    boolean result = fileHelper.exists(INPUT_FILE);
+
+    //Then
+    assertFalse(result);
+  }
+
+  @Test
+  void shouldReturnTrueIfFileIsEmpty() throws IOException {
     //Given
     FileHelper fileHelper = new FileHelper();
     fileHelper.create(INPUT_FILE);
@@ -76,6 +107,20 @@ class FileHelperTestIT {
 
     //Then
     Assertions.assertTrue(result);
+  }
+
+  @Test
+  void shouldReturnFalseIfFileIsNotEmpty() throws IOException {
+    //Given
+    FileHelper fileHelper = new FileHelper();
+    fileHelper.create(INPUT_FILE);
+    fileHelper.writeLine(INPUT_FILE, "test");
+
+    //When
+    boolean result = fileHelper.isEmpty(INPUT_FILE);
+
+    //Then
+    Assertions.assertFalse(result);
   }
 
   @Test
@@ -127,7 +172,7 @@ class FileHelperTestIT {
     List<String> result = fileHelper.readLines(INPUT_FILE);
 
     //Then
-    assertEquals(expected.toString(), result.toString());
+    assertEquals(expected, result);
   }
 
   @Test
