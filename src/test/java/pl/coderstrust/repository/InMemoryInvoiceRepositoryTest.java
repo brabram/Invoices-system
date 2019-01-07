@@ -1,11 +1,7 @@
 package pl.coderstrust.repository;
 
 import junit.framework.Assert;
-import junitparams.JUnitParamsRunner;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.repository.generators.InvoiceGenerator;
 
@@ -14,11 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(JUnitParamsRunner.class)
 class InMemoryInvoiceRepositoryTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   void shouldSaveInvoice() throws InvoiceRepositoryOperationException {
