@@ -106,7 +106,7 @@ class InMemoryInvoiceRepositoryTest {
     list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
     list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
     inMemoryInvoiceRepository.deleteAll();
-    Assert.assertNotNull(inMemoryInvoiceRepository);
+    Assert.assertNull(inMemoryInvoiceRepository);
   }
 
   @Test
