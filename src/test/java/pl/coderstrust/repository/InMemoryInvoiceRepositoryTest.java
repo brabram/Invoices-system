@@ -100,13 +100,15 @@ class InMemoryInvoiceRepositoryTest {
 
   @Test
   void shouldDeleteAllInvoices() throws InvoiceRepositoryOperationException {
+    List<Invoice> expected = new ArrayList<>();
     List<Invoice> list = new ArrayList<>();
     InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
     list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
     list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
     list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
     inMemoryInvoiceRepository.deleteAll();
-    Assert.assertNull(inMemoryInvoiceRepository);
+    List<Invoice> result = inMemoryInvoiceRepository.findAll();
+    Assert.assertEquals(expected, result);
   }
 
   @Test

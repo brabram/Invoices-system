@@ -2,6 +2,8 @@ package pl.coderstrust.repository;
 
 import org.springframework.data.repository.Repository;
 
+import java.util.List;
+
 public interface InvoiceRepository<Invoice, Integer> extends Repository<Invoice, Integer> {
 
     Invoice save(Invoice invoice) throws InvoiceRepositoryOperationException;
@@ -10,7 +12,7 @@ public interface InvoiceRepository<Invoice, Integer> extends Repository<Invoice,
 
     boolean existsById(Integer id) throws InvoiceRepositoryOperationException;
 
-    Iterable<Invoice> findAll() throws InvoiceRepositoryOperationException;
+    List<Invoice> findAll() throws InvoiceRepositoryOperationException;
 
     long count() throws InvoiceRepositoryOperationException;
 

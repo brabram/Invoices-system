@@ -3,9 +3,7 @@ package pl.coderstrust.repository;
 import pl.coderstrust.model.Invoice;
 
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Integer> {
@@ -61,9 +59,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
  }
 
   @Override
-  public Iterable<Invoice> findAll() throws InvoiceRepositoryOperationException {
+  public List<Invoice> findAll() throws InvoiceRepositoryOperationException {
     synchronized (lock) {
-      return invoices.values();
+      List<Invoice> list = new ArrayList(invoices.values());
+      return list;
     }
   }
 
