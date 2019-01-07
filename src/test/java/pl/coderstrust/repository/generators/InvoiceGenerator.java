@@ -9,32 +9,34 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class InvoiceGenerator {
-    static Random random = new Random();
+  private static Random random = new Random();
 
-    public static Invoice invoice() {
-        int min = 0;
-        int max = 10000;
-        int id = random.nextInt((max - min) + 1) + min;
-        int number = Integer.parseInt(String.format("%d", random.nextInt(5000)));
-        LocalDate issueDate = LocalDate.parse(String.format("%s", dateGenerator()));
-        LocalDate dueDate = LocalDate.parse(String.format("%s", dateGenerator()));
-        Company seller = CompanyGenerator.randomCompanyGenerator();
-        Company buyer = CompanyGenerator.randomCompanyGenerator();
-        List<InvoiceEntry> list = Collections.singletonList(InvoiceEntriesGenerator.invoiceEntriesGenerator());
-        BigDecimal totalNetValue = BigDecimal.valueOf(5333);
-        BigDecimal totalGrossValue = BigDecimal.valueOf(5333);
-        return new Invoice(id, number, issueDate, dueDate, seller, buyer,
-                list, totalNetValue, totalGrossValue);
-    }
+  public static Invoice getRandomInvoice() {
+    AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(9999));
+    int id = atomicInteger.incrementAndGet();
+    int number = random.nextInt(5000);
+    LocalDate issueDate = createRandomDate();
+    LocalDate dueDate = issueDate.plusDays(7);
+    Company seller = CompanyGenerator.getRandomCompany();
+    Company buyer = CompanyGenerator.getRandomCompany();
+    List<InvoiceEntry> list = Collections.singletonList(InvoiceEntriesGenerator.getRandomInvoiceEntry());
+    BigDecimal totalNetValue =InvoiceEntriesGenerator.getRandomInvoiceEntry().getPrice();
+    BigDecimal totalGrossValue = InvoiceEntriesGenerator.getRandomInvoiceEntry().getGrossValue();
+    return new Invoice(id, number, issueDate, dueDate, seller, buyer,
+        list, totalNetValue, totalGrossValue);
+  }
 
-    private static LocalDate dateGenerator() {
-        long minDay = LocalDate.of(2000, 1, 1).toEpochDay();
-        long maxDay = LocalDate.of(2019, 1, 31).toEpochDay();
-        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
-        LocalDate randomDate = LocalDate.ofEpochDay(randomDay++);
-        return randomDate;
-    }
+  private static LocalDate createRandomDate() {
+    int day = createRandomIntBetween(1, 28);
+    int month = createRandomIntBetween(1, 12);
+    int year = createRandomIntBetween(1990, 2019);
+    return LocalDate.of(year, month, day);
+  }
+
+  private static int createRandomIntBetween(int start, int end) {
+    return start + (int) Math.round(Math.random() * (end - start));
+  }
 }
