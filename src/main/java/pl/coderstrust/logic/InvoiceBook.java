@@ -8,10 +8,10 @@ import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 
 public class InvoiceBook {
 
-  private InvoiceRepository invoiceRepository;
+  private InvoiceRepository<Invoice, Integer> invoiceRepository;
   private Invoice invoice;
 
-  public InvoiceBook(InvoiceRepository invoiceRepository) {
+  public InvoiceBook(InvoiceRepository<Invoice, Integer> invoiceRepository) {
     this.invoiceRepository = invoiceRepository;
   }
 
@@ -27,11 +27,11 @@ public class InvoiceBook {
   }
 
   public Invoice getInvoiceById(Integer id) throws InvoiceRepositoryOperationException {
-    return (Invoice) invoiceRepository.findById(id);
+    return invoiceRepository.findById(id);
   }
 
   public Invoice addInvoice(Invoice invoice) throws InvoiceRepositoryOperationException {
-    return (Invoice) invoiceRepository.save(invoice);
+    return invoiceRepository.save(invoice);
   }
 
   public void updateInvoice(Invoice invoice) throws InvoiceRepositoryOperationException {
