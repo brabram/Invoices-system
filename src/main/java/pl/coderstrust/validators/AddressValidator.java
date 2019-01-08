@@ -1,4 +1,4 @@
-package pl.coderstrust.validator;
+package pl.coderstrust.validators;
 
 public class AddressValidator {
 }
