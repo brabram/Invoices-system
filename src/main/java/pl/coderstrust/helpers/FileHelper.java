@@ -3,12 +3,15 @@ package pl.coderstrust.helpers;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 
 public class FileHelper {
+
+  private static final String ENCODING = "UTF-8";
 
   public void create(String filePath) throws IOException {
     if (filePath == null) {
@@ -52,7 +55,7 @@ public class FileHelper {
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
-    FileUtils.write(new File(filePath), "");
+    FileUtils.write(new File(filePath), "", ENCODING);
   }
 
   public void writeLine(String filePath, String line) throws IOException {
@@ -62,14 +65,14 @@ public class FileHelper {
     if (line == null) {
       throw new IllegalArgumentException("line cannot be null.");
     }
-    FileUtils.writeLines(new File(filePath), Collections.singleton(line), true);
+    FileUtils.writeLines(new File(filePath), ENCODING, Collections.singleton(line), true);
   }
 
   public List<String> readLines(String filePath) throws IOException {
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
-    return FileUtils.readLines(new File(filePath));
+    return FileUtils.readLines(new File(filePath), ENCODING);
   }
 
   public String readLastLine(String filePath) throws IOException {
@@ -77,7 +80,7 @@ public class FileHelper {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
     try (ReversedLinesFileReader reversedLinesReader = new ReversedLinesFileReader(
-        new File(filePath))) {
+        new File(filePath), Charset.defaultCharset())) {
       return reversedLinesReader.readLine();
     }
   }
@@ -89,7 +92,7 @@ public class FileHelper {
     if (lines == null) {
       throw new IllegalArgumentException("lines cannot be null.");
     }
-    FileUtils.writeLines(new File(filePath), lines, true);
+    FileUtils.writeLines(new File(filePath), ENCODING, lines, true);
   }
 
   public void removeLine(String filePath, int lineNumber) throws IOException {

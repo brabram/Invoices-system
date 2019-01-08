@@ -19,9 +19,11 @@ class FileHelperTestIT {
 
   private static final String INPUT_FILE = "src/test/resource/helpers/input_file";
   private static final String EXPECTED_FILE = "src/test/resource/helpers/expected_file";
+  private static final String ENCODING = "UTF-8";
+
 
   @BeforeEach
-  void deleteInputAndOutputFile() throws IOException {
+  void setup() throws IOException {
     File inputFile = new File(INPUT_FILE);
     if (inputFile.exists()) {
       inputFile.delete();
@@ -32,11 +34,10 @@ class FileHelperTestIT {
     }
   }
 
+  private FileHelper fileHelper = new FileHelper();
+
   @Test
   void shouldCreateFile() throws IOException {
-    //Given
-    FileHelper fileHelper = new FileHelper();
-
     //When
     fileHelper.create(INPUT_FILE);
 
@@ -46,9 +47,6 @@ class FileHelperTestIT {
 
   @Test
   void shouldDeleteNotExistingFile() throws IOException {
-    //Given
-    FileHelper fileHelper = new FileHelper();
-
     //When
     fileHelper.delete(INPUT_FILE);
 
@@ -59,7 +57,6 @@ class FileHelperTestIT {
   @Test
   void shouldDeleteExistingFile() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     fileHelper.create(INPUT_FILE);
 
     //When
@@ -72,7 +69,6 @@ class FileHelperTestIT {
   @Test
   void shouldTrueIfFileExists() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     File file = new File(INPUT_FILE);
     file.createNewFile();
 
@@ -86,7 +82,6 @@ class FileHelperTestIT {
   @Test
   void shouldFalseIfFileDoesNotExists() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     File file = new File(INPUT_FILE);
 
     //When
@@ -99,7 +94,6 @@ class FileHelperTestIT {
   @Test
   void shouldReturnTrueIfFileIsEmpty() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     fileHelper.create(INPUT_FILE);
 
     //When
@@ -112,7 +106,6 @@ class FileHelperTestIT {
   @Test
   void shouldReturnFalseIfFileIsNotEmpty() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     fileHelper.create(INPUT_FILE);
     fileHelper.writeLine(INPUT_FILE, "test");
 
@@ -126,11 +119,10 @@ class FileHelperTestIT {
   @Test
   void shouldClearFile() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     File expectedFile = new File(EXPECTED_FILE);
     File inputFile = new File(INPUT_FILE);
     expectedFile.createNewFile();
-    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), ENCODING, true);
 
     //When
     fileHelper.clear(INPUT_FILE);
@@ -142,11 +134,10 @@ class FileHelperTestIT {
   @Test
   void shouldWriteLineToFile() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     File expectedFile = new File(EXPECTED_FILE);
     File inputFile = new File(INPUT_FILE);
     expectedFile.createNewFile();
-    FileUtils.writeLines(expectedFile, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(expectedFile, ENCODING, Collections.singleton("bla bla bla"), true);
 
     //When
     fileHelper.writeLine(INPUT_FILE, "bla bla bla");
@@ -156,13 +147,12 @@ class FileHelperTestIT {
   }
 
   @Test
-  void checkIfReadLinesFromFile() throws IOException {
+  void shouldReadLinesFromFile() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     File inputFile = new File(INPUT_FILE);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla1 bla1 bla1"), true);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla2 bla2 bla2"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla1 bla1 bla1"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla2 bla2 bla2"), true);
     List<String> expected = new ArrayList<>();
     expected.add("bla bla bla");
     expected.add("bla1 bla1 bla1");
@@ -178,11 +168,10 @@ class FileHelperTestIT {
   @Test
   void shouldReadLastLineFromFile() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     File inputFile = new File(INPUT_FILE);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla1 bla1 bla1"), true);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla2 bla2 bla2"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla1 bla1 bla1"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla1 bla1 bla1"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla2 bla2 bla2"), true);
     String expected = "bla2 bla2 bla2";
 
     //When
@@ -195,15 +184,14 @@ class FileHelperTestIT {
   @Test
   void shouldRemoveLineFromFile() throws IOException {
     //Given
-    FileHelper fileHelper = new FileHelper();
     File expectedFile = new File(EXPECTED_FILE);
     File inputFile = new File(INPUT_FILE);
     expectedFile.createNewFile();
-    FileUtils.writeLines(inputFile, Collections.singleton("bla bla bla"), true);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla1 bla1 bla1"), true);
-    FileUtils.writeLines(inputFile, Collections.singleton("bla2 bla2 bla2"), true);
-    FileUtils.writeLines(expectedFile, Collections.singleton("bla bla bla"), true);
-    FileUtils.writeLines(expectedFile, Collections.singleton("bla2 bla2 bla2"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla1 bla1 bla1"), true);
+    FileUtils.writeLines(inputFile, ENCODING, Collections.singleton("bla2 bla2 bla2"), true);
+    FileUtils.writeLines(expectedFile, ENCODING, Collections.singleton("bla bla bla"), true);
+    FileUtils.writeLines(expectedFile, ENCODING, Collections.singleton("bla2 bla2 bla2"), true);
 
     //When
     fileHelper.removeLine(INPUT_FILE, 2);
@@ -214,28 +202,105 @@ class FileHelperTestIT {
   }
 
   @Test
-  void shouldThrowExceptionForNullAsFilePath() {
+  void createMethodShouldThrowExceptionForNullAsFilePath() {
     assertThrows(IllegalArgumentException.class,
         () -> {
-          FileHelper fileHelper = new FileHelper();
           fileHelper.create(null);
         });
   }
 
   @Test
-  void shouldThrowExceptionForNullAsLine() {
+  void deleteMethodShouldThrowExceptionForNullAsFilePath() {
     assertThrows(IllegalArgumentException.class,
         () -> {
-          FileHelper fileHelper = new FileHelper();
+          fileHelper.delete(null);
+        });
+  }
+
+  @Test
+  void existMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.exists(null);
+        });
+  }
+
+  @Test
+  void isEmptyMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.isEmpty(null);
+        });
+  }
+
+  @Test
+  void clearMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.clear(null);
+        });
+  }
+
+  @Test
+  void writeLineMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.writeLine(null, "test");
+        });
+  }
+
+  @Test
+  void readLinesMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.readLines(null);
+        });
+  }
+
+  @Test
+  void readLastLineMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.readLastLine(null);
+        });
+  }
+
+  @Test
+  void writeLinesMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.writeLines(null, new ArrayList<>());
+        });
+  }
+
+  @Test
+  void removeLineMethodShouldThrowExceptionForNullAsFilePath() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
+          fileHelper.removeLine(null, 1);
+        });
+  }
+
+  @Test
+  void writeLineMethodShouldThrowExceptionForNullAsLine() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
           fileHelper.writeLine(INPUT_FILE, null);
         });
   }
 
   @Test
-  void shouldThrowExceptionForNumberLowerThanZeroAsLineNumber() {
+  void writeLinesMethodShouldThrowExceptionForNullAsLines() {
     assertThrows(IllegalArgumentException.class,
         () -> {
-          FileHelper fileHelper = new FileHelper();
+          fileHelper.writeLines(INPUT_FILE, null);
+        });
+  }
+
+  @Test
+  void removeLineMethodShouldThrowExceptionForNumberLowerThanZeroAsLineNumber() {
+    assertThrows(IllegalArgumentException.class,
+        () -> {
           fileHelper.removeLine(INPUT_FILE, -1);
         });
   }
