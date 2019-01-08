@@ -6,6 +6,7 @@ import pl.coderstrust.model.InvoiceEntry;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -22,9 +23,12 @@ public class InvoiceGenerator {
     LocalDate dueDate = issueDate.plusDays(7);
     Company seller = CompanyGenerator.getRandomCompany();
     Company buyer = CompanyGenerator.getRandomCompany();
-    List<InvoiceEntry> list = Collections.singletonList(InvoiceEntriesGenerator.getRandomInvoiceEntry());
-    BigDecimal totalNetValue = InvoiceEntriesGenerator.getRandomInvoiceEntry().getPrice();
-    BigDecimal totalGrossValue = InvoiceEntriesGenerator.getRandomInvoiceEntry().getGrossValue();
+    List<InvoiceEntry> list = new ArrayList<>();
+    for (int i = 0; i < 5 ; i++) {
+      list.add(InvoiceEntriesGenerator.getRandomInvoiceEntry());
+    }
+    BigDecimal totalNetValue = list.stream().map(item -> item.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    BigDecimal totalGrossValue = list.stream().map(item -> item.getGrossValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
     return new Invoice(id, number, issueDate, dueDate, seller, buyer,
         list, totalNetValue, totalGrossValue);
   }

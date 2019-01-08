@@ -6,26 +6,27 @@ import org.junit.jupiter.api.Test;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.repository.generators.InvoiceGenerator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InMemoryInvoiceRepositoryTest {
+  private InvoiceRepository<Invoice, Integer> invoiceRepository;
 
   @BeforeEach
-  void setup() throws InvoiceRepositoryOperationException {
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
+  void setup() {
+    invoiceRepository = new InMemoryInvoiceRepository();
   }
 
   @Test
   void shouldSaveInvoice() throws InvoiceRepositoryOperationException {
     //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-    Invoice invoice = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
+    Invoice invoice = invoiceRepository.save(InvoiceGenerator.getRandomInvoice());
 
     //when
-    boolean existsById = inMemoryInvoiceRepository.existsById(invoice.getId());
+    boolean existsById = invoiceRepository.existsById(invoice.getId());
 
     //then
     Assert.assertTrue(existsById);
@@ -34,36 +35,31 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldUpdateInvoice() throws InvoiceRepositoryOperationException {
     //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-    int id = 1;
-    Invoice invoice = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
-    invoice.setId(id);
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Invoice invoiceToUpdate = invoiceRepository.save(invoice);
+    Assert.assertEquals(invoiceToUpdate, invoiceRepository.findById(invoiceToUpdate.getId()));
+    invoiceToUpdate.setNumber(11);
+    invoiceToUpdate.setTotalNetValue(BigDecimal.valueOf(5555));
 
     //when
-    boolean exists = inMemoryInvoiceRepository.existsById(invoice.getId());
-    if (exists) {
-      inMemoryInvoiceRepository.deleteById(1);
-      Invoice invoice1 = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
-      inMemoryInvoiceRepository.save(inMemoryInvoiceRepository.save(invoice1));
-      invoice.setId(id);
+    Invoice updatedInvoice = invoiceRepository.save(invoiceToUpdate);
 
-      //then
-      Assert.assertNotNull(inMemoryInvoiceRepository);
-    }
+    //then
+    Assert.assertEquals(invoiceToUpdate, updatedInvoice);
+    Assert.assertEquals(invoiceToUpdate, invoiceRepository.findById(updatedInvoice.getId()));
   }
 
   @Test
   void shouldFindOneInvoice() throws InvoiceRepositoryOperationException {
     //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-    Invoice invoice = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
-    Invoice invoice2 = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
-    Invoice invoice3 = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
+    Invoice invoice = invoiceRepository.save(InvoiceGenerator.getRandomInvoice());
+    Invoice invoice2 = invoiceRepository.save(InvoiceGenerator.getRandomInvoice());
+    Invoice invoice3 = invoiceRepository.save(InvoiceGenerator.getRandomInvoice());
 
     //when
-    Invoice invoiceFromDatabase = inMemoryInvoiceRepository.findById(invoice.getId());
-    Invoice invoiceFromDatabase2 = inMemoryInvoiceRepository.findById(invoice2.getId());
-    Invoice invoiceFromDatabase3 = inMemoryInvoiceRepository.findById(invoice3.getId());
+    Invoice invoiceFromDatabase = invoiceRepository.findById(invoice.getId());
+    Invoice invoiceFromDatabase2 = invoiceRepository.findById(invoice2.getId());
+    Invoice invoiceFromDatabase3 = invoiceRepository.findById(invoice3.getId());
 
     //then
     Assert.assertEquals(invoiceFromDatabase, invoice);
@@ -74,11 +70,10 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldReturnTrueIfInvoiceExistsInDatabase() throws InvoiceRepositoryOperationException {
     //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-    Invoice invoice = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
+    Invoice invoice = invoiceRepository.save(InvoiceGenerator.getRandomInvoice());
 
     //when
-    boolean exists = inMemoryInvoiceRepository.existsById(invoice.getId());
+    boolean exists = invoiceRepository.existsById(invoice.getId());
 
     //then
     Assert.assertTrue(exists);
@@ -86,11 +81,8 @@ class InMemoryInvoiceRepositoryTest {
 
   @Test
   void shouldReturnFalseIfInvoiceNotExistsInDatabase() throws InvoiceRepositoryOperationException {
-    //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-
     //when
-    boolean exists = inMemoryInvoiceRepository.existsById(1);
+    boolean exists = invoiceRepository.existsById(1);
 
     //then
     Assert.assertFalse(exists);
@@ -99,14 +91,13 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldFindAllInvoices() throws InvoiceRepositoryOperationException {
     //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
     List<Invoice> list = new ArrayList<>();
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
 
     //when
-    List<Invoice> actualInvoices = inMemoryInvoiceRepository.findAll();
+    List<Invoice> actualInvoices = invoiceRepository.findAll();
 
     //then
     Assert.assertEquals(actualInvoices.toString(), list.toString());
@@ -115,14 +106,13 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldDeleteInvoice() throws InvoiceRepositoryOperationException {
     //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-    Invoice invoice = inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice());
-    boolean exists = inMemoryInvoiceRepository.existsById(invoice.getId());
+    Invoice invoice = invoiceRepository.save(InvoiceGenerator.getRandomInvoice());
+    boolean exists = invoiceRepository.existsById(invoice.getId());
     Assert.assertTrue(exists);
 
     //when
-    inMemoryInvoiceRepository.deleteById(invoice.getId());
-    exists = inMemoryInvoiceRepository.existsById(invoice.getId());
+    invoiceRepository.deleteById(invoice.getId());
+    exists = invoiceRepository.existsById(invoice.getId());
 
     //then
     Assert.assertFalse(exists);
@@ -131,14 +121,13 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldReturnCount() throws InvoiceRepositoryOperationException {
     //given
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
     List<Invoice> list = new ArrayList<>();
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
 
     //when
-    int count = Math.toIntExact(inMemoryInvoiceRepository.count());
+    int count = Math.toIntExact(invoiceRepository.count());
 
     //then
     Assert.assertEquals(list.size(), count);
@@ -149,14 +138,13 @@ class InMemoryInvoiceRepositoryTest {
     //given
     List<Invoice> expected = new ArrayList<>();
     List<Invoice> list = new ArrayList<>();
-    InvoiceRepository<Invoice, Integer> inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
-    list.add(inMemoryInvoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
+    list.add(invoiceRepository.save(InvoiceGenerator.getRandomInvoice()));
 
     //when
-    inMemoryInvoiceRepository.deleteAll();
-    List<Invoice> result = inMemoryInvoiceRepository.findAll();
+    invoiceRepository.deleteAll();
+    List<Invoice> result = invoiceRepository.findAll();
 
     //then
     Assert.assertEquals(expected, result);
@@ -164,28 +152,19 @@ class InMemoryInvoiceRepositoryTest {
 
   @Test
   void shouldThrowExceptionForNullIdInSaveId() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          InMemoryInvoiceRepository inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-          inMemoryInvoiceRepository.save(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> invoiceRepository.save(null));
   }
 
   @Test
   void shouldThrowExceptionForNullIdInFindById() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          InMemoryInvoiceRepository inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-          inMemoryInvoiceRepository.findById(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> invoiceRepository.findById(null));
   }
 
   @Test
   void shouldThrowExceptionForNullIdInDeleteById() {
     assertThrows(IllegalArgumentException.class,
         () -> {
-          InMemoryInvoiceRepository inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-          inMemoryInvoiceRepository.deleteById(null);
+          invoiceRepository.deleteById(null);
         });
   }
 
@@ -193,8 +172,12 @@ class InMemoryInvoiceRepositoryTest {
   void shouldThrowExceptionForNullIdInExistById() {
     assertThrows(IllegalArgumentException.class,
         () -> {
-          InMemoryInvoiceRepository inMemoryInvoiceRepository = new InMemoryInvoiceRepository();
-          inMemoryInvoiceRepository.existsById(null);
+          invoiceRepository.existsById(null);
         });
+  }
+
+  private static Invoice invoiceClone(Invoice invoice) {
+    return new Invoice(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(), invoice.getDueDate(), invoice.getSeller(), invoice.getBuyer()
+        , invoice.getEntries(), invoice.getTotalNetValue(), invoice.getTotalGrossValue());
   }
 }
