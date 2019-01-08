@@ -157,27 +157,17 @@ class InMemoryInvoiceRepositoryTest {
 
   @Test
   void shouldThrowExceptionForNullIdInFindById() {
+
     assertThrows(IllegalArgumentException.class, () -> invoiceRepository.findById(null));
   }
 
   @Test
   void shouldThrowExceptionForNullIdInDeleteById() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          invoiceRepository.deleteById(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> invoiceRepository.deleteById(null));
   }
 
   @Test
   void shouldThrowExceptionForNullIdInExistById() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          invoiceRepository.existsById(null);
-        });
-  }
-
-  private static Invoice invoiceClone(Invoice invoice) {
-    return new Invoice(invoice.getId(), invoice.getNumber(), invoice.getIssueDate(), invoice.getDueDate(), invoice.getSeller(), invoice.getBuyer()
-        , invoice.getEntries(), invoice.getTotalNetValue(), invoice.getTotalGrossValue());
+    assertThrows(IllegalArgumentException.class, () -> invoiceRepository.existsById(null));
   }
 }
