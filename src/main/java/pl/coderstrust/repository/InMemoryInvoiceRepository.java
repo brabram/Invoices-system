@@ -12,13 +12,6 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   private AtomicInteger counter = new AtomicInteger();
   final Object lock = new Object();
 
-  private boolean isInvoiceExist(Integer id) {
-    if (id <= 0) {
-      throw new IllegalArgumentException("Id must be greater than 0");
-    }
-    return invoices.containsKey(id);
-  }
-
   @Override
   public Invoice save(Invoice invoice) throws InvoiceRepositoryOperationException {
     synchronized (lock) {
@@ -27,6 +20,7 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
       }
       if (isInvoiceExist(invoice.getId())) {
         invoices.put(invoice.getId(), invoice);
+        return invoice;
       }
       int id = counter.incrementAndGet();
       invoice.setId(id);
@@ -44,8 +38,8 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
       if (isInvoiceExist(id)) {
         return invoices.get(id);
       }
+      return null;
     }
-    return null;
   }
 
   @Override
@@ -56,13 +50,12 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
       }
       return isInvoiceExist(id);
     }
- }
+  }
 
   @Override
   public List<Invoice> findAll() throws InvoiceRepositoryOperationException {
     synchronized (lock) {
-      List<Invoice> list = new ArrayList(invoices.values());
-      return list;
+      return new ArrayList(invoices.values());
     }
   }
 
@@ -82,7 +75,6 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
       if (!isInvoiceExist(id)) {
         throw new InvoiceRepositoryOperationException("Not exist by id");
       }
-      isInvoiceExist(id);
       invoices.remove(id);
     }
   }
@@ -92,5 +84,9 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
     synchronized (lock) {
       invoices.clear();
     }
+  }
+
+  private boolean isInvoiceExist(Integer id) {
+    return invoices.containsKey(id);
   }
 }

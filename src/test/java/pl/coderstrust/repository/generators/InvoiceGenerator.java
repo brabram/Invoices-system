@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class InvoiceGenerator {
   private static Random random = new Random();
+  private static AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(9999));
 
   public static Invoice getRandomInvoice() {
-    AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(9999));
     int id = atomicInteger.incrementAndGet();
     int number = random.nextInt(5000);
     LocalDate issueDate = createRandomDate();
@@ -23,7 +23,7 @@ public class InvoiceGenerator {
     Company seller = CompanyGenerator.getRandomCompany();
     Company buyer = CompanyGenerator.getRandomCompany();
     List<InvoiceEntry> list = Collections.singletonList(InvoiceEntriesGenerator.getRandomInvoiceEntry());
-    BigDecimal totalNetValue =InvoiceEntriesGenerator.getRandomInvoiceEntry().getPrice();
+    BigDecimal totalNetValue = InvoiceEntriesGenerator.getRandomInvoiceEntry().getPrice();
     BigDecimal totalGrossValue = InvoiceEntriesGenerator.getRandomInvoiceEntry().getGrossValue();
     return new Invoice(id, number, issueDate, dueDate, seller, buyer,
         list, totalNetValue, totalGrossValue);

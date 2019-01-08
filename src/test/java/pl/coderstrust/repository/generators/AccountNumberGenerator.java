@@ -1,12 +1,10 @@
 package pl.coderstrust.repository.generators;
 
-
 import pl.coderstrust.model.AccountNumber;
 
 import java.util.Random;
 
 public class AccountNumberGenerator {
-
   private static Random random = new Random();
 
   public static AccountNumber getRandomAccount() {

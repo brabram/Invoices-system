@@ -9,9 +9,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CompanyGenerator {
   private static Random random = new Random();
+  private static AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(999));
 
   public static Company getRandomCompany() {
-    AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(999));
     int id = atomicInteger.incrementAndGet();
     String name = WordGenerator.getRandomWord();
     String taxIdentificationNumber = String.format("9%02d-%02d-%04d", random.nextInt(99), random.nextInt(99), random.nextInt(9999));

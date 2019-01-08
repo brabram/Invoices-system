@@ -8,11 +8,10 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InvoiceEntriesGenerator {
-
   private static Random random = new Random();
+  private static AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(999));
 
   public static InvoiceEntry getRandomInvoiceEntry() {
-    AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(999));
     int id = atomicInteger.incrementAndGet();
     String item = WordGenerator.getRandomWord();
     Long quantity = (long) random.nextInt(10000);
