@@ -20,10 +20,11 @@ class FileHelperTestIT {
   private static final String INPUT_FILE = "src/test/resource/helpers/input_file";
   private static final String EXPECTED_FILE = "src/test/resource/helpers/expected_file";
   private static final String ENCODING = "UTF-8";
-
+  private FileHelper fileHelper;
 
   @BeforeEach
   void setup() throws IOException {
+    fileHelper = new FileHelper();
     File inputFile = new File(INPUT_FILE);
     if (inputFile.exists()) {
       inputFile.delete();
@@ -33,8 +34,6 @@ class FileHelperTestIT {
       expectedFile.delete();
     }
   }
-
-  private FileHelper fileHelper = new FileHelper();
 
   @Test
   void shouldCreateFile() throws IOException {
@@ -67,7 +66,7 @@ class FileHelperTestIT {
   }
 
   @Test
-  void shouldTrueIfFileExists() throws IOException {
+  void shouldReturnTrueIfFileExists() throws IOException {
     //Given
     File file = new File(INPUT_FILE);
     file.createNewFile();
@@ -80,7 +79,7 @@ class FileHelperTestIT {
   }
 
   @Test
-  void shouldFalseIfFileDoesNotExists() throws IOException {
+  void shouldReturnFalseIfFileDoesNotExists() throws IOException {
     //Given
     File file = new File(INPUT_FILE);
 
@@ -203,105 +202,66 @@ class FileHelperTestIT {
 
   @Test
   void createMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.create(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.create(null));
   }
 
   @Test
   void deleteMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.delete(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.delete(null));
   }
 
   @Test
   void existMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.exists(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.exists(null));
   }
 
   @Test
   void isEmptyMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.isEmpty(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.isEmpty(null));
   }
 
   @Test
   void clearMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.clear(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.clear(null));
   }
 
   @Test
   void writeLineMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.writeLine(null, "test");
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.writeLine(null, "test"));
   }
 
   @Test
   void readLinesMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.readLines(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.readLines(null));
   }
 
   @Test
   void readLastLineMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.readLastLine(null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.readLastLine(null));
   }
 
   @Test
   void writeLinesMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.writeLines(null, new ArrayList<>());
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.writeLines(null, new ArrayList<>()));
   }
 
   @Test
   void removeLineMethodShouldThrowExceptionForNullAsFilePath() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.removeLine(null, 1);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.removeLine(null, 1));
   }
 
   @Test
   void writeLineMethodShouldThrowExceptionForNullAsLine() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.writeLine(INPUT_FILE, null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.writeLine(INPUT_FILE, null));
   }
 
   @Test
   void writeLinesMethodShouldThrowExceptionForNullAsLines() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.writeLines(INPUT_FILE, null);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.writeLines(INPUT_FILE, null));
   }
 
   @Test
   void removeLineMethodShouldThrowExceptionForNumberLowerThanZeroAsLineNumber() {
-    assertThrows(IllegalArgumentException.class,
-        () -> {
-          fileHelper.removeLine(INPUT_FILE, -1);
-        });
+    assertThrows(IllegalArgumentException.class, () -> fileHelper.removeLine(INPUT_FILE, -1));
   }
 }
