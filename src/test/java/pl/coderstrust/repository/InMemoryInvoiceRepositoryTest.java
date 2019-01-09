@@ -182,7 +182,7 @@ class InMemoryInvoiceRepositoryTest {
   }
 
   @Test
-  void existsByIdmethodSouldThrowExceptionForNullAsId() {
+  void existsByIdMethodShouldThrowExceptionForNullAsId() {
     assertThrows(IllegalArgumentException.class, () -> invoiceRepository.existsById(null));
   }
 }
