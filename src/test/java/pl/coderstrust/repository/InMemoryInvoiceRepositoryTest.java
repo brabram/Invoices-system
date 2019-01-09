@@ -3,9 +3,6 @@ package pl.coderstrust.repository;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.coderstrust.repositories.InMemoryInvoiceRepository;
-import pl.coderstrust.repositories.InvoiceRepository;
-import pl.coderstrust.repositories.InvoiceRepositoryOperationException;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.generators.InvoiceGenerator;
 
@@ -40,8 +37,8 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldUpdateInvoice() throws InvoiceRepositoryOperationException {
     //given
-    Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToUpdate = invoiceRepository.save(invoice);
+    Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
+    Invoice invoiceToUpdate = invoiceRepository.save(invoiceToSave);
     Assert.assertEquals(invoiceToUpdate, invoiceRepository.findById(invoiceToUpdate.getId()));
     invoiceToUpdate.setNumber(11);
     invoiceToUpdate.setTotalNetValue(BigDecimal.valueOf(5555));
@@ -65,6 +62,7 @@ class InMemoryInvoiceRepositoryTest {
     Invoice invoiceFromRepository = invoiceRepository.findById(savedInvoice.getId());
 
     //then
+    Assert.assertNotNull(invoiceFromRepository);
     Assert.assertEquals(invoiceFromRepository, savedInvoice);
   }
 
@@ -93,16 +91,16 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldFindAllInvoices() throws InvoiceRepositoryOperationException {
     //given
-    Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice = invoiceRepository.save(invoiceToSave);
+    Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
     Invoice savedInvoice1 = invoiceRepository.save(invoiceToSave1);
     Invoice savedInvoice2 = invoiceRepository.save(invoiceToSave2);
+    Invoice savedInvoice3 = invoiceRepository.save(invoiceToSave3);
     List<Invoice> expectedInvoices = new ArrayList<>();
-    expectedInvoices.add(savedInvoice);
     expectedInvoices.add(savedInvoice1);
     expectedInvoices.add(savedInvoice2);
+    expectedInvoices.add(savedInvoice3);
 
     //when
     List<Invoice> invoicesFromRepository = invoiceRepository.findAll();
@@ -131,15 +129,15 @@ class InMemoryInvoiceRepositoryTest {
   void shouldReturnNumberOfInvoices() throws InvoiceRepositoryOperationException {
     //given
     List<Invoice> invoices = new ArrayList<>();
-    Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice = invoiceRepository.save(invoiceToSave);
+    Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
     Invoice savedInvoice1 = invoiceRepository.save(invoiceToSave1);
     Invoice savedInvoice2 = invoiceRepository.save(invoiceToSave2);
-    invoices.add(savedInvoice);
+    Invoice savedInvoice3 = invoiceRepository.save(invoiceToSave3);
     invoices.add(savedInvoice1);
     invoices.add(savedInvoice2);
+    invoices.add(savedInvoice3);
 
     //when
     long numberOfInvoices = invoiceRepository.count();
