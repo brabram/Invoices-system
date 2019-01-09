@@ -23,7 +23,7 @@ class FileHelperTestIT {
   private FileHelper fileHelper;
 
   @BeforeEach
-  void setup() throws IOException {
+  void setup() {
     fileHelper = new FileHelper();
     File inputFile = new File(INPUT_FILE);
     if (inputFile.exists()) {
@@ -45,7 +45,7 @@ class FileHelperTestIT {
   }
 
   @Test
-  void shouldDeleteNotExistingFile() throws IOException {
+  void shouldDeleteNotExistingFile() {
     //When
     fileHelper.delete(INPUT_FILE);
 
@@ -79,10 +79,7 @@ class FileHelperTestIT {
   }
 
   @Test
-  void shouldReturnFalseIfFileDoesNotExists() throws IOException {
-    //Given
-    File file = new File(INPUT_FILE);
-
+  void shouldReturnFalseIfFileDoesNotExists() {
     //When
     boolean result = fileHelper.exists(INPUT_FILE);
 
