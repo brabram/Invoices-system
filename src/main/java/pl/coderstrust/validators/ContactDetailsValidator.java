@@ -1,6 +1,5 @@
 package pl.coderstrust.validators;
 
-import pl.coderstrust.model.Address;
 import pl.coderstrust.model.ContactDetails;
 
 import java.util.ArrayList;
