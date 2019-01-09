@@ -1,5 +1,6 @@
 package pl.coderstrust.validators;
 
+import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 
@@ -19,13 +20,17 @@ public class InvoiceValidator {
     String numberValidator = validateNumber(String.valueOf(invoice.getNumber()));
     String issueDateValidator = validateDate(String.valueOf(invoice.getIssueDate()));
     String dueDateValidator = validateDate(String.valueOf(invoice.getDueDate()));
+    String companySeller = String.valueOf(CompanyValidator.validate(invoice.getSeller()));
+    String companyBuyer = String.valueOf(CompanyValidator.validate(invoice.getBuyer()));
     List<String> invoiceEntriesValidator = InvoiceEntryValidator.validate((InvoiceEntry) invoice.getEntries());
     String totalNetValueValidator = validateTotalNetValue(String.valueOf(invoice.getTotalNetValue()));
-    String totalGrossValueValidator = validateTotalNetValue(String.valueOf(invoice.getTotalGrossValue()));
+    String totalGrossValueValidator = validateTotalGrossValue(String.valueOf(invoice.getTotalGrossValue()));
     addResultOfValidation(result, idValidator);
     addResultOfValidation(result, numberValidator);
     addResultOfValidation(result, issueDateValidator);
     addResultOfValidation(result, dueDateValidator);
+    addResultOfValidation(result, companySeller);
+    addResultOfValidation(result, companyBuyer);
     addResultOfValidation(result, String.valueOf(invoiceEntriesValidator));
     addResultOfValidation(result, totalNetValueValidator);
     addResultOfValidation(result, totalGrossValueValidator);
