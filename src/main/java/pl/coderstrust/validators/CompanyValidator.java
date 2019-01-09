@@ -25,6 +25,7 @@ public class CompanyValidator {
     addResultOfValidation(result, contactDetailsOperator);
     return result;
   }
+
   private static String validateId(String id) {
     if (id == null) {
       return "Id cannot be null";

@@ -1,18 +1,15 @@
 package pl.coderstrust.validators;
 
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.model.InvoiceEntry;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class InvoiceValidator {
 
-  public static void main(String[] args) {
-    String regrex = "^(3[01]|[12][0-9]|0[1-9]).(1[0-2]|0[1-9]).[0-9]{4}$";
-    String data = "31.12.2011";
-    System.out.println(data.matches(regrex));
-  }
   public static List<String> validate(Invoice invoice) {
     if (invoice == null) {
       return Collections.singletonList("Invoice cannot be null");
@@ -22,11 +19,16 @@ public class InvoiceValidator {
     String numberValidator = validateNumber(String.valueOf(invoice.getNumber()));
     String issueDateValidator = validateDate(String.valueOf(invoice.getIssueDate()));
     String dueDateValidator = validateDate(String.valueOf(invoice.getDueDate()));
-    List invoceEntriesValidator = InvoiceEntryValidator.validate(invoice.getEntries()))
+    List<String> invoiceEntriesValidator = InvoiceEntryValidator.validate((InvoiceEntry) invoice.getEntries());
+    String totalNetValueValidator = validateTotalNetValue(String.valueOf(invoice.getTotalNetValue()));
+    String totalGrossValueValidator = validateTotalNetValue(String.valueOf(invoice.getTotalGrossValue()));
     addResultOfValidation(result, idValidator);
     addResultOfValidation(result, numberValidator);
     addResultOfValidation(result, issueDateValidator);
     addResultOfValidation(result, dueDateValidator);
+    addResultOfValidation(result, String.valueOf(invoiceEntriesValidator));
+    addResultOfValidation(result, totalNetValueValidator);
+    addResultOfValidation(result, totalGrossValueValidator);
     return result;
   }
 
@@ -65,6 +67,32 @@ public class InvoiceValidator {
     }
     if (!date.matches("^(3[01]|[12][0-9]|0[1-9]).(1[0-2]|0[1-9]).[0-9]{4}$")) {
       return "Incorrect number";
+    }
+    return "";
+  }
+
+  private static String validateTotalNetValue(String totalNetValue) {
+    if (totalNetValue == null) {
+      return "Total net value cannot be null";
+    }
+    if (totalNetValue.trim().isEmpty()) {
+      return "Total net value cannot be empty";
+    }
+    if (!totalNetValue.matches("[0-9]+([,.][0-9]{1,2})?")) {
+      return "Incorrect total net value";
+    }
+    return "";
+  }
+
+  private static String validateTotalGrossValue(String totalGrossValue) {
+    if (totalGrossValue == null) {
+      return "Total gross value cannot be null";
+    }
+    if (totalGrossValue.trim().isEmpty()) {
+      return "Total gross value cannot be empty";
+    }
+    if (!totalGrossValue.matches("[0-9]+([,.][0-9]{1,2})?")) {
+      return "Incorrect total gross value";
     }
     return "";
   }
