@@ -23,7 +23,7 @@ public class InvoiceGenerator {
     Company seller = CompanyGenerator.getRandomCompany();
     Company buyer = CompanyGenerator.getRandomCompany();
     List<InvoiceEntry> list = new ArrayList<>();
-    for (int i = 0; i < 5 ; i++) {
+    for (int i = 0; i < 5; i++) {
       list.add(InvoiceEntriesGenerator.getRandomInvoiceEntry());
     }
     BigDecimal totalNetValue = list.stream().map(item -> item.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
