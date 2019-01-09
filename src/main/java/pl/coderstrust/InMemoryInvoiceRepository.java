@@ -1,7 +1,6 @@
-package pl.coderstrust.repository;
+package pl.coderstrust;
 
 import pl.coderstrust.model.Invoice;
-
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;

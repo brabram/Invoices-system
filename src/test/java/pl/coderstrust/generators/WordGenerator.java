@@ -1,4 +1,4 @@
-package pl.coderstrust.repository.generators;
+package pl.coderstrust.generators;
 
 import java.util.Random;
 
