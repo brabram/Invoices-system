@@ -1,4 +1,4 @@
-package pl.coderstrust;
+package pl.coderstrust.repositories;
 
 import org.springframework.data.repository.Repository;
 

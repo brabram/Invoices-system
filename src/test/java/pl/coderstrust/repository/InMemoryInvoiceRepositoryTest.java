@@ -3,9 +3,9 @@ package pl.coderstrust.repository;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.coderstrust.InMemoryInvoiceRepository;
-import pl.coderstrust.InvoiceRepository;
-import pl.coderstrust.InvoiceRepositoryOperationException;
+import pl.coderstrust.repositories.InMemoryInvoiceRepository;
+import pl.coderstrust.repositories.InvoiceRepository;
+import pl.coderstrust.repositories.InvoiceRepositoryOperationException;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.generators.InvoiceGenerator;
 
