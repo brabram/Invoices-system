@@ -12,10 +12,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   final Object lock = new Object();
 
   @Override
-  public Invoice save(Invoice invoice) throws InvoiceRepositoryOperationException {
+  public Invoice save(Invoice invoice) {
     synchronized (lock) {
       if (invoice == null) {
-        throw new IllegalArgumentException("Invoice cannot be empty");
+        throw new IllegalArgumentException("Invoice cannot be null");
       }
       if (isInvoiceExist(invoice.getId())) {
         invoices.put(invoice.getId(), invoice);
@@ -29,10 +29,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   }
 
   @Override
-  public Invoice findById(Integer id) throws InvoiceRepositoryOperationException {
+  public Invoice findById(Integer id) {
     synchronized (lock) {
       if (id == null) {
-        throw new IllegalArgumentException("Id cannot be empty");
+        throw new IllegalArgumentException("Id cannot be null");
       }
       if (isInvoiceExist(id)) {
         return invoices.get(id);
@@ -42,7 +42,7 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   }
 
   @Override
-  public boolean existsById(Integer id) throws InvoiceRepositoryOperationException {
+  public boolean existsById(Integer id) {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
@@ -52,14 +52,14 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   }
 
   @Override
-  public List<Invoice> findAll() throws InvoiceRepositoryOperationException {
+  public List<Invoice> findAll() {
     synchronized (lock) {
       return new ArrayList(invoices.values());
     }
   }
 
   @Override
-  public synchronized long count() throws InvoiceRepositoryOperationException {
+  public synchronized long count() {
     synchronized (lock) {
       return invoices.size();
     }
@@ -72,14 +72,14 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
         throw new IllegalArgumentException("Id cannot be null");
       }
       if (!isInvoiceExist(id)) {
-        throw new InvoiceRepositoryOperationException("Not exist by id");
+        throw new InvoiceRepositoryOperationException("Invoice does not exist");
       }
       invoices.remove(id);
     }
   }
 
   @Override
-  public void deleteAll() throws InvoiceRepositoryOperationException {
+  public void deleteAll() {
     synchronized (lock) {
       invoices.clear();
     }
