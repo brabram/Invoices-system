@@ -9,7 +9,7 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
 
   private Map<Integer, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
   private AtomicInteger counter = new AtomicInteger();
-  final Object lock = new Object();
+  private final Object lock = new Object();
 
   @Override
   public Invoice save(Invoice invoice) {

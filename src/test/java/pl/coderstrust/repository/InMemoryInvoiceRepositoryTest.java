@@ -149,17 +149,18 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldDeleteAllInvoices() throws InvoiceRepositoryOperationException {
     //given
-    Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice = invoiceRepository.save(invoiceToSave);
+    //given
+    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
+    Invoice savedInvoice1 = invoiceRepository.save(invoiceToSave1);
+    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
+    Invoice savedInvoice2 = invoiceRepository.save(invoiceToSave2);
     List<Invoice> invoicesInRepository = new ArrayList<>();
-    invoicesInRepository.add(savedInvoice);
-    invoicesInRepository.add(savedInvoice);
-    invoicesInRepository.add(savedInvoice);
-
+    invoicesInRepository.add(savedInvoice1);
+    invoicesInRepository.add(savedInvoice2);
+    Assert.assertEquals(invoicesInRepository.size(), invoiceRepository.count());
     //when
     invoiceRepository.deleteAll();
     long numberOfInvoices = invoiceRepository.count();
-
     //then
     Assert.assertEquals(0, numberOfInvoices);
   }
