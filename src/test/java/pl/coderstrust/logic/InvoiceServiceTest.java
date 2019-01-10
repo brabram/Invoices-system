@@ -8,17 +8,18 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.repository.InvoiceRepository;
 import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InvoiceBookTest {
+public class InvoiceServiceTest {
 
   @Mock
   private InvoiceRepository<Invoice, Integer> invoiceRepository;
@@ -27,18 +28,25 @@ public class InvoiceBookTest {
   private Invoice invoice;
 
   @InjectMocks
-  private InvoiceBook invoiceBook;
+  private InvoiceService invoiceService;
+
+//  @BeforeEach
+//  public void setup() {
+//    invoiceService = new InvoiceService(invoiceRepository);
+//  }
 
   @Test
   public void shouldGetAllInvoices() throws InvoiceRepositoryOperationException {
     //Given
-    List<Invoice> invoices = new ArrayList<>();
-    when(invoiceRepository.findAll()).thenReturn(invoices);
+    List<Invoice> expectedInvoices = new ArrayList<>();
+    //add some invoice
+    when(invoiceRepository.findAll()).thenReturn(expectedInvoices);
 
     //When
-    invoiceBook.getAllInvoices();
+    List<Invoice> actualInvoices = invoiceService.getAllInvoices();
 
     //Then
+    Assert.assertEquals(expectedInvoices, actualInvoices);
     verify(invoiceRepository).findAll();
   }
 
@@ -51,7 +59,7 @@ public class InvoiceBookTest {
     when(invoiceRepository.findAll()).thenReturn(invoices);
 
     //When
-    invoiceBook.getAllInvoicesInGivenDateRange(fromDate, toDate);
+    invoiceService.getAllInvoicesInGivenDateRange(fromDate, toDate);
 
     //Then
     verify(invoiceRepository).findAll();
@@ -64,7 +72,7 @@ public class InvoiceBookTest {
     when(invoiceRepository.findById(id)).thenReturn(invoice);
 
     //When
-    invoiceBook.getInvoiceById(id);
+    invoiceService.getInvoiceById(id);
 
     //Then
     verify(invoiceRepository).findById(id);
@@ -76,7 +84,7 @@ public class InvoiceBookTest {
     when(invoiceRepository.save(invoice)).thenReturn(invoice);
 
     //When
-    invoiceBook.addInvoice(invoice);
+    invoiceService.addInvoice(invoice);
 
     //Then
     verify(invoiceRepository).save(invoice);
@@ -88,7 +96,7 @@ public class InvoiceBookTest {
     when(invoiceRepository.save(invoice)).thenReturn(invoice);
 
     //When
-    invoiceBook.updateInvoice(invoice);
+    invoiceService.updateInvoice(invoice);
 
     //Then
     verify(invoiceRepository).save(invoice);
@@ -101,7 +109,7 @@ public class InvoiceBookTest {
     doNothing().when(invoiceRepository).deleteById(id);
 
     //When
-    invoiceBook.deleteInvoiceById(id);
+    invoiceService.deleteInvoiceById(id);
 
     //Then
     verify(invoiceRepository).deleteById(id);
@@ -115,7 +123,7 @@ public class InvoiceBookTest {
     doNothing().when(invoiceRepository).deleteById(id);
 
     //When
-    invoiceBook.deleteInvoice(invoice);
+    invoiceService.deleteInvoice(invoice);
 
     //Then
     verify(invoiceRepository).deleteById(id);
@@ -127,46 +135,46 @@ public class InvoiceBookTest {
     doNothing().when(invoiceRepository).deleteAll();
 
     //When
-    invoiceBook.deleteAll();
+    invoiceService.deleteAll();
 
     //Then
     verify(invoiceRepository).deleteAll();
   }
 
-  InvoiceBook invoiceBookThrowException = new InvoiceBook(invoiceRepository);
+  InvoiceService invoiceServiceThrowException = new InvoiceService(invoiceRepository);
 
   @Test
   public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsFromDate() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.getAllInvoicesInGivenDateRange(null, LocalDate.now()));
+    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.getAllInvoicesInGivenDateRange(null, LocalDate.now()));
   }
 
   @Test
   public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsToDate() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.getAllInvoicesInGivenDateRange(LocalDate.now(), null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.getAllInvoicesInGivenDateRange(LocalDate.now(), null));
   }
 
   @Test
   public void getInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.getInvoiceById(-1));
+    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.getInvoiceById(-1));
   }
 
   @Test
   public void addInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.addInvoice(null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.addInvoice(null));
   }
 
   @Test
   public void updateInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.updateInvoice(null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.updateInvoice(null));
   }
 
   @Test
   public void deleteInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.deleteInvoiceById(-1));
+    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.deleteInvoiceById(-1));
   }
 
   @Test
   public void deleteInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.deleteInvoice(null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.deleteInvoice(null));
   }
 }

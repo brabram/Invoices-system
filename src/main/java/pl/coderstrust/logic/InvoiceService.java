@@ -1,17 +1,17 @@
 package pl.coderstrust.logic;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.repository.InvoiceRepository;
 import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 
-public class InvoiceBook {
+public class InvoiceService {
 
   private InvoiceRepository<Invoice, Integer> invoiceRepository;
 
-  public InvoiceBook(InvoiceRepository<Invoice, Integer> invoiceRepository) {
+  public InvoiceService(InvoiceRepository<Invoice, Integer> invoiceRepository) {
     this.invoiceRepository = invoiceRepository;
   }
 
@@ -26,15 +26,7 @@ public class InvoiceBook {
     if (toDate == null) {
       throw new IllegalArgumentException("ToDate cannot be null");
     }
-    List<Invoice> invoices = getAllInvoices();
-    List<Invoice> invoicesInGivenDateRange = new ArrayList<>(invoices);
-    for (Invoice invoice :
-        invoicesInGivenDateRange) {
-      if (!invoice.getIssueDate().isAfter(fromDate) && !invoice.getIssueDate().isBefore(toDate)) {
-        invoicesInGivenDateRange.remove(invoice);
-      }
-    }
-    return invoicesInGivenDateRange;
+    return getAllInvoices().stream().filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0).collect(Collectors.toList());
   }
 
   public Invoice getInvoiceById(Integer id) throws InvoiceRepositoryOperationException {
