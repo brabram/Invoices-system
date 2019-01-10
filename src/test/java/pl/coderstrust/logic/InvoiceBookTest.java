@@ -1,5 +1,6 @@
 package pl.coderstrust.logic;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -130,5 +131,42 @@ public class InvoiceBookTest {
 
     //Then
     verify(invoiceRepository).deleteAll();
+  }
+
+  InvoiceBook invoiceBookThrowException = new InvoiceBook(invoiceRepository);
+
+  @Test
+  public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsFromDate() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.getAllInvoicesInGivenDateRange(null, LocalDate.now()));
+  }
+
+  @Test
+  public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsToDate() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.getAllInvoicesInGivenDateRange(LocalDate.now(), null));
+  }
+
+  @Test
+  public void getInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.getInvoiceById(-1));
+  }
+
+  @Test
+  public void addInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.addInvoice(null));
+  }
+
+  @Test
+  public void updateInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.updateInvoice(null));
+  }
+
+  @Test
+  public void deleteInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.deleteInvoiceById(-1));
+  }
+
+  @Test
+  public void deleteInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceBookThrowException.deleteInvoice(null));
   }
 }
