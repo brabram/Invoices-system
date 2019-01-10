@@ -1,6 +1,7 @@
 package pl.coderstrust.logic;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.repository.InvoiceRepository;
@@ -9,7 +10,6 @@ import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 public class InvoiceBook {
 
   private InvoiceRepository<Invoice, Integer> invoiceRepository;
-  private Invoice invoice;
 
   public InvoiceBook(InvoiceRepository<Invoice, Integer> invoiceRepository) {
     this.invoiceRepository = invoiceRepository;
@@ -20,10 +20,15 @@ public class InvoiceBook {
   }
 
   public List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceRepositoryOperationException {
-    if (invoice.getIssueDate().isAfter(fromDate) && invoice.getIssueDate().isBefore(toDate)) {
-      return invoiceRepository.findAll();
+    List<Invoice> invoices = getAllInvoices();
+    List<Invoice> invoicesInGivenDateRange = new ArrayList<>(invoices);
+    for (Invoice invoice:
+    invoicesInGivenDateRange) {
+      if (!invoice.getIssueDate().isAfter(fromDate) && !invoice.getIssueDate().isBefore(toDate)) {
+        invoicesInGivenDateRange.remove(invoice);
+      }
     }
-    return null;
+    return invoicesInGivenDateRange;
   }
 
   public Invoice getInvoiceById(Integer id) throws InvoiceRepositoryOperationException {

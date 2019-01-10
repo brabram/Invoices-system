@@ -47,8 +47,6 @@ public class InvoiceBookTest {
     LocalDate fromDate = LocalDate.parse("2019-01-01");
     LocalDate toDate = LocalDate.parse("2019-01-10");
     List<Invoice> invoices = new ArrayList<>();
-//    when(invoice.getIssueDate()).thenReturn(fromDate);
-//    when(invoice.getIssueDate()).thenReturn(toDate);
     when(invoiceRepository.findAll()).thenReturn(invoices);
 
     //When
