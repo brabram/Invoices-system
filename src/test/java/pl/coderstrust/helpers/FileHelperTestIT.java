@@ -1,8 +1,8 @@
 package pl.coderstrust.helpers;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -131,9 +132,9 @@ class FileHelperTestIT {
   void shouldWriteLineToFile() throws IOException {
     //Given
     File expectedFile = new File(EXPECTED_FILE);
-    File inputFile = new File(INPUT_FILE);
     expectedFile.createNewFile();
     FileUtils.writeLines(expectedFile, ENCODING, Collections.singleton("bla bla bla"), true);
+    File inputFile = new File(INPUT_FILE);
 
     //When
     fileHelper.writeLine(INPUT_FILE, "bla bla bla");

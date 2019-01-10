@@ -56,10 +56,10 @@ public class ContactDetails {
       return false;
     }
     ContactDetails contactDetails = (ContactDetails) o;
-    return phoneNumber.equals(contactDetails.phoneNumber) &&
-        Objects.equals(email, contactDetails.email) &&
-        Objects.equals(website, contactDetails.website) &&
-        Objects.equals(address, contactDetails.address);
+    return phoneNumber.equals(contactDetails.phoneNumber)
+        && Objects.equals(email, contactDetails.email)
+        && Objects.equals(website, contactDetails.website)
+        && Objects.equals(address, contactDetails.address);
   }
 
   @Override

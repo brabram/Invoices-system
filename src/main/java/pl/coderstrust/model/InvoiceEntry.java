@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceEntry {
-
   private String id;
   private String item;
   private Long quantity;

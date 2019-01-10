@@ -66,11 +66,11 @@ public class Address {
       return false;
     }
     Address address = (Address) o;
-    return number.equals(address.number) &&
-        postalCode.equals(address.postalCode) &&
-        Objects.equals(street, address.street) &&
-        Objects.equals(city, address.city) &&
-        Objects.equals(country, address.country);
+    return number.equals(address.number)
+        && postalCode.equals(address.postalCode)
+        && Objects.equals(street, address.street)
+        && Objects.equals(city, address.city)
+        && Objects.equals(country, address.country);
   }
 
   @Override
