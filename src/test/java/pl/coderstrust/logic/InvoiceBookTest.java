@@ -110,6 +110,7 @@ public class InvoiceBookTest {
   public void shouldDeleteInvoice() throws InvoiceRepositoryOperationException {
     //Given
     Integer id = 0;
+    when(invoiceRepository.existsById(id)).thenReturn(true);
     doNothing().when(invoiceRepository).deleteById(id);
 
     //When

@@ -22,8 +22,8 @@ public class InvoiceBook {
   public List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceRepositoryOperationException {
     List<Invoice> invoices = getAllInvoices();
     List<Invoice> invoicesInGivenDateRange = new ArrayList<>(invoices);
-    for (Invoice invoice:
-    invoicesInGivenDateRange) {
+    for (Invoice invoice :
+        invoicesInGivenDateRange) {
       if (!invoice.getIssueDate().isAfter(fromDate) && !invoice.getIssueDate().isBefore(toDate)) {
         invoicesInGivenDateRange.remove(invoice);
       }
