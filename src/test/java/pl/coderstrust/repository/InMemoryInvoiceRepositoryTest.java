@@ -195,4 +195,3 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void existsByIdMethodShouldThrowExceptionForNegativeNumberAsId() { assertThrows(IllegalArgumentException.class, () -> invoiceRepository.existsById(-1)); }
 }
-
