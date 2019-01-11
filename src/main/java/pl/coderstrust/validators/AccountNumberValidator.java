@@ -15,10 +15,12 @@ public class AccountNumberValidator {
     List<String> result = new ArrayList();
     String ibanNumberValidator = validateIbanNumber(accountNumber.getIbanNumber());
     String localNumberValidator = validateLocalNumber(accountNumber.getLocalNumber());
-    String compare = compareNumbers(accountNumber.getLocalNumber(), accountNumber.getIbanNumber());
     addResultOfValidation(result, ibanNumberValidator);
     addResultOfValidation(result, localNumberValidator);
-    addResultOfValidation(result, compare);
+    if(ibanNumberValidator == "" && localNumberValidator == "") {
+      String compare = compareNumbers(accountNumber.getLocalNumber(), accountNumber.getIbanNumber());
+      addResultOfValidation(result, compare);
+    }
     return result;
   }
 
