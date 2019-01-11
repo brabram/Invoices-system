@@ -15,15 +15,15 @@ public class InvoiceService {
     this.invoiceRepository = invoiceRepository;
   }
 
-  public List<Invoice> getAllInvoices() throws InvoiceBookOperationException {
+  public List<Invoice> getAllInvoices() throws InvoiceServiceOperationException {
     try {
       return invoiceRepository.findAll();
     } catch (InvoiceRepositoryOperationException e) {
-      throw new InvoiceBookOperationException("An error while getting invoices.");
+      throw new InvoiceServiceOperationException("An error while getting invoices.");
     }
   }
 
-  public List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceBookOperationException {
+  public List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceServiceOperationException {
     if (fromDate == null) {
       throw new IllegalArgumentException("FromDate cannot be null");
     }
@@ -36,7 +36,7 @@ public class InvoiceService {
         .collect(Collectors.toList());
   }
 
-  public Invoice getInvoiceById(Integer id) throws InvoiceBookOperationException {
+  public Invoice getInvoiceById(Integer id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
@@ -46,33 +46,33 @@ public class InvoiceService {
     try {
       return invoiceRepository.findById(id);
     } catch (InvoiceRepositoryOperationException e) {
-      throw new InvoiceBookOperationException("An error while getting invoices.");
+      throw new InvoiceServiceOperationException("An error while getting invoice.");
     }
   }
 
-  public Invoice addInvoice(Invoice invoice) throws InvoiceBookOperationException {
+  public Invoice addInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
       return invoiceRepository.save(invoice);
     } catch (InvoiceRepositoryOperationException e) {
-      throw new InvoiceBookOperationException("An error while getting invoices.");
+      throw new InvoiceServiceOperationException("An error while adding invoice.");
     }
   }
 
-  public void updateInvoice(Invoice invoice) throws InvoiceBookOperationException {
+  public void updateInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
       invoiceRepository.save(invoice);
     } catch (InvoiceRepositoryOperationException e) {
-      throw new InvoiceBookOperationException("An error while getting invoices.");
+      throw new InvoiceServiceOperationException("An error while updating invoice.");
     }
   }
 
-  public void deleteInvoiceById(Integer id) throws InvoiceBookOperationException {
+  public void deleteInvoiceById(Integer id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
@@ -84,22 +84,22 @@ public class InvoiceService {
         invoiceRepository.deleteById(id);
       }
     } catch (InvoiceRepositoryOperationException e) {
-      throw new InvoiceBookOperationException("An error while getting invoices.");
+      throw new InvoiceServiceOperationException("An error while deleting invoice.");
     }
   }
 
-  public void deleteInvoice(Invoice invoice) throws InvoiceBookOperationException {
+  public void deleteInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     deleteInvoiceById(invoice.getId());
   }
 
-  public void deleteAll() throws InvoiceBookOperationException {
+  public void deleteAll() throws InvoiceServiceOperationException {
     try {
       invoiceRepository.deleteAll();
     } catch (InvoiceRepositoryOperationException e) {
-      throw new InvoiceBookOperationException("An error while getting invoices.");
+      throw new InvoiceServiceOperationException("An error while deleting invoices.");
     }
   }
 }

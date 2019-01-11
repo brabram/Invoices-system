@@ -165,7 +165,6 @@
                     </limit>
                   </limits>
                   <excludes>
-                    <exclude>pl.coderstrust.repository.InvoiceRepositoryOperationException</exclude>
                   </excludes>
                 </rule>
               </rules>

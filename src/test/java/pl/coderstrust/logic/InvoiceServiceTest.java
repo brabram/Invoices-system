@@ -34,7 +34,7 @@ public class InvoiceServiceTest {
 //  }
 
   @Test
-  public void shouldGetAllInvoices() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldGetAllInvoices() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     List<Invoice> expectedInvoices = new ArrayList<>();
     Invoice randomInvoice = InvoiceGenerator.getRandomInvoice();
@@ -50,7 +50,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldGetAllInvoicesInGivenDateRange() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldGetAllInvoicesInGivenDateRange() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     LocalDate toDate = LocalDate.parse("2019-01-10");
     List<Invoice> expectedInvoices = new ArrayList<>();
@@ -68,7 +68,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldGetInvoiceById() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldGetInvoiceById() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     Integer id = expectedInvoice.getId();
@@ -83,7 +83,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldAddInvoice() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldAddInvoice() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     when(invoiceRepository.save(expectedInvoice)).thenReturn(expectedInvoice);
@@ -99,7 +99,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldUpdateInvoice() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldUpdateInvoice() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     expectedInvoice.setNumber(1234);
@@ -116,7 +116,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldDeleteInvoiceById() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldDeleteInvoiceById() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     Integer id = expectedInvoice.getId();
@@ -135,7 +135,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldDeleteInvoice() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldDeleteInvoice() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     Integer id = expectedInvoice.getId();
@@ -155,7 +155,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldDeleteAll() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
+  public void shouldDeleteAll() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     List<Invoice> expectedInvoices = new ArrayList<>();
