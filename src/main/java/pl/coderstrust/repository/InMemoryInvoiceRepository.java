@@ -34,6 +34,9 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
       }
+      if (id < 0) {
+        throw new IllegalArgumentException("Id cannot be less than 0");
+      }
       if (isInvoiceExist(id)) {
         return invoices.get(id);
       }
@@ -47,6 +50,9 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
       }
+      if (id < 0) {
+        throw new IllegalArgumentException("Id cannot be less than 0");
+      }
       return isInvoiceExist(id);
     }
   }
@@ -54,7 +60,7 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   @Override
   public List<Invoice> findAll() {
     synchronized (lock) {
-      return new ArrayList(invoices.values());
+      return new ArrayList<>(invoices.values());
     }
   }
 
@@ -70,6 +76,9 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
+      }
+      if (id < 0) {
+        throw new IllegalArgumentException("Id cannot be less than 0");
       }
       if (!isInvoiceExist(id)) {
         throw new InvoiceRepositoryOperationException("Invoice does not exist");
