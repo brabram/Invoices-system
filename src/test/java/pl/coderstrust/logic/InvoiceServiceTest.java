@@ -34,7 +34,7 @@ public class InvoiceServiceTest {
 //  }
 
   @Test
-  public void shouldGetAllInvoices() throws InvoiceRepositoryOperationException {
+  public void shouldGetAllInvoices() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     List<Invoice> expectedInvoices = new ArrayList<>();
     Invoice randomInvoice = InvoiceGenerator.getRandomInvoice();
@@ -50,7 +50,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldGetAllInvoicesInGivenDateRange() throws InvoiceRepositoryOperationException {
+  public void shouldGetAllInvoicesInGivenDateRange() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     LocalDate toDate = LocalDate.parse("2019-01-10");
     List<Invoice> expectedInvoices = new ArrayList<>();
@@ -68,7 +68,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldGetInvoiceById() throws InvoiceRepositoryOperationException {
+  public void shouldGetInvoiceById() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     Integer id = expectedInvoice.getId();
@@ -83,7 +83,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldAddInvoice() throws InvoiceRepositoryOperationException {
+  public void shouldAddInvoice() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     when(invoiceRepository.save(expectedInvoice)).thenReturn(expectedInvoice);
@@ -99,7 +99,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldUpdateInvoice() throws InvoiceRepositoryOperationException {
+  public void shouldUpdateInvoice() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     expectedInvoice.setNumber(1234);
@@ -116,11 +116,12 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldDeleteInvoiceById() throws InvoiceRepositoryOperationException {
+  public void shouldDeleteInvoiceById() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     Integer id = expectedInvoice.getId();
     List<Invoice> expectedInvoices = new ArrayList<>();
+    when(invoiceRepository.save(expectedInvoice)).thenReturn(expectedInvoice);
     doNothing().when(invoiceRepository).deleteById(id);
 
     //When
@@ -134,7 +135,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldDeleteInvoice() throws InvoiceRepositoryOperationException {
+  public void shouldDeleteInvoice() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     Integer id = expectedInvoice.getId();
@@ -154,7 +155,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldDeleteAll() throws InvoiceRepositoryOperationException {
+  public void shouldDeleteAll() throws InvoiceRepositoryOperationException, InvoiceBookOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     List<Invoice> expectedInvoices = new ArrayList<>();
@@ -170,40 +171,48 @@ public class InvoiceServiceTest {
     verify(invoiceRepository).deleteAll();
   }
 
-  InvoiceService invoiceServiceThrowException = new InvoiceService(invoiceRepository);
-
   @Test
   public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsFromDate() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.getAllInvoicesInGivenDateRange(null, LocalDate.now()));
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.getAllInvoicesInGivenDateRange(null, LocalDate.now()));
   }
 
   @Test
   public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsToDate() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.getAllInvoicesInGivenDateRange(LocalDate.now(), null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.getAllInvoicesInGivenDateRange(LocalDate.now(), null));
   }
 
   @Test
   public void getInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.getInvoiceById(-1));
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.getInvoiceById(-1));
+  }
+
+  @Test
+  public void getInvoiceByIdMethodShouldThrowExceptionForNullAsId() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.getInvoiceById(null));
   }
 
   @Test
   public void addInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.addInvoice(null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.addInvoice(null));
   }
 
   @Test
   public void updateInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.updateInvoice(null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.updateInvoice(null));
   }
 
   @Test
   public void deleteInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.deleteInvoiceById(-1));
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoiceById(-1));
+  }
+
+  @Test
+  public void deleteInvoiceByIdMethodShouldThrowExceptionForNullAsId() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoiceById(null));
   }
 
   @Test
   public void deleteInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceServiceThrowException.deleteInvoice(null));
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoice(null));
   }
 }

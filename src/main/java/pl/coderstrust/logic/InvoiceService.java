@@ -15,58 +15,91 @@ public class InvoiceService {
     this.invoiceRepository = invoiceRepository;
   }
 
-  public List<Invoice> getAllInvoices() throws InvoiceRepositoryOperationException {
-    return invoiceRepository.findAll();
+  public List<Invoice> getAllInvoices() throws InvoiceBookOperationException {
+    try {
+      return invoiceRepository.findAll();
+    } catch (InvoiceRepositoryOperationException e) {
+      throw new InvoiceBookOperationException("An error while getting invoices.");
+    }
   }
 
-  public List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceRepositoryOperationException {
+  public List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceBookOperationException {
     if (fromDate == null) {
       throw new IllegalArgumentException("FromDate cannot be null");
     }
     if (toDate == null) {
       throw new IllegalArgumentException("ToDate cannot be null");
     }
-    return getAllInvoices().stream().filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0).collect(Collectors.toList());
+    return getAllInvoices()
+        .stream()
+        .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)
+        .collect(Collectors.toList());
   }
 
-  public Invoice getInvoiceById(Integer id) throws InvoiceRepositoryOperationException {
+  public Invoice getInvoiceById(Integer id) throws InvoiceBookOperationException {
+    if (id == null) {
+      throw new IllegalArgumentException("Id cannot be null.");
+    }
     if (id < 0) {
       throw new IllegalArgumentException("Id cannot be less then zero.");
     }
-    return invoiceRepository.findById(id);
+    try {
+      return invoiceRepository.findById(id);
+    } catch (InvoiceRepositoryOperationException e) {
+      throw new InvoiceBookOperationException("An error while getting invoices.");
+    }
   }
 
-  public Invoice addInvoice(Invoice invoice) throws InvoiceRepositoryOperationException {
+  public Invoice addInvoice(Invoice invoice) throws InvoiceBookOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
-    return invoiceRepository.save(invoice);
+    try {
+      return invoiceRepository.save(invoice);
+    } catch (InvoiceRepositoryOperationException e) {
+      throw new InvoiceBookOperationException("An error while getting invoices.");
+    }
   }
 
-  public void updateInvoice(Invoice invoice) throws InvoiceRepositoryOperationException {
+  public void updateInvoice(Invoice invoice) throws InvoiceBookOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
-    invoiceRepository.save(invoice);
+    try {
+      invoiceRepository.save(invoice);
+    } catch (InvoiceRepositoryOperationException e) {
+      throw new InvoiceBookOperationException("An error while getting invoices.");
+    }
   }
 
-  public void deleteInvoiceById(Integer id) throws InvoiceRepositoryOperationException {
+  public void deleteInvoiceById(Integer id) throws InvoiceBookOperationException {
+    if (id == null) {
+      throw new IllegalArgumentException("Id cannot be null.");
+    }
     if (id < 0) {
       throw new IllegalArgumentException("Id cannot be less then zero.");
     }
-    invoiceRepository.deleteById(id);
+    try {
+      if (invoiceRepository.existsById(id)) {
+        invoiceRepository.deleteById(id);
+      }
+    } catch (InvoiceRepositoryOperationException e) {
+      throw new InvoiceBookOperationException("An error while getting invoices.");
+    }
   }
 
-  public void deleteInvoice(Invoice invoice) throws InvoiceRepositoryOperationException {
+  public void deleteInvoice(Invoice invoice) throws InvoiceBookOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
-    if (invoiceRepository.existsById(invoice.getId())) {
-      deleteInvoiceById(invoice.getId());
-    }
+    deleteInvoiceById(invoice.getId());
   }
 
-  public void deleteAll() throws InvoiceRepositoryOperationException {
-    invoiceRepository.deleteAll();
+  public void deleteAll() throws InvoiceBookOperationException {
+    try {
+      invoiceRepository.deleteAll();
+    } catch (InvoiceRepositoryOperationException e) {
+      throw new InvoiceBookOperationException("An error while getting invoices.");
+    }
   }
 }
