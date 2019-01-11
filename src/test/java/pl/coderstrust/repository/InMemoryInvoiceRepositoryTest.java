@@ -153,10 +153,10 @@ class InMemoryInvoiceRepositoryTest {
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
     Invoice savedInvoice1 = invoiceRepository.save(invoiceToSave1);
     Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice3 = invoiceRepository.save(invoiceToSave2);
+    Invoice savedInvoice2 = invoiceRepository.save(invoiceToSave2);
     List<Invoice> invoicesInRepository = new ArrayList<>();
     invoicesInRepository.add(savedInvoice1);
-    invoicesInRepository.add(savedInvoice3);
+    invoicesInRepository.add(savedInvoice2);
     Assert.assertEquals(invoicesInRepository.size(), invoiceRepository.count());
     //when
     invoiceRepository.deleteAll();
