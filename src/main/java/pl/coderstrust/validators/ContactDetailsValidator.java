@@ -6,21 +6,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
+
 public class ContactDetailsValidator {
 
   public static List<String> validate(ContactDetails contactDetails) {
+    AddressValidator.validate(contactDetails.getAddress());
     if (contactDetails == null) {
       return Collections.singletonList("Contact details cannot be null");
     }
-    List<String> result = new ArrayList();
+    List<String> result = new ArrayList<>();
     String emailAddressValidator = validateEmail(contactDetails.getEmail());
     String phoneNumberValidator = validatePhoneNumber(contactDetails.getPhoneNumber());
     String webSiteValidator = validateWebSite(contactDetails.getWebsite());
-    String addressValidator = String.valueOf(AddressValidator.validate(contactDetails.getAddress()));
     addResultOfValidation(result, emailAddressValidator);
     addResultOfValidation(result, phoneNumberValidator);
     addResultOfValidation(result, webSiteValidator);
-    addResultOfValidation(result, addressValidator);
     return result;
   }
 
@@ -57,15 +58,9 @@ public class ContactDetailsValidator {
     if (webSite.trim().isEmpty()) {
       return "Web site cannot be empty";
     }
-    if (!webSite.matches("(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
+    if (!webSite.matches("(www.)([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
       return "Incorrect web site type";
     }
     return "";
-  }
-
-  private static void addResultOfValidation(List<String> resultList, String resultOfValidation) {
-    if (resultOfValidation != null && !resultOfValidation.trim().isEmpty()) {
-      resultList.add(resultOfValidation);
-    }
   }
 }

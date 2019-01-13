@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
+
 public class AddressValidator {
 
   public static List<String> validate(Address address) {
     if (address == null) {
       return Collections.singletonList("Address cannot be null");
     }
-    List<String> result = new ArrayList();
+    List<String> result = new ArrayList<>();
     String streetNameValidator = validateStreet(address.getStreet());
     String addressNumberValidator = validateNumber(address.getNumber());
     String postalCodeValidator = validatePostalCode(address.getPostalCode());
@@ -89,11 +91,5 @@ public class AddressValidator {
       return "Incorrect country name";
     }
     return "";
-  }
-
-  private static void addResultOfValidation(List<String> resultList, String resultOfValidation) {
-    if (resultOfValidation != null && !resultOfValidation.trim().isEmpty()) {
-      resultList.add(resultOfValidation);
-    }
   }
 }

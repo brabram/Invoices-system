@@ -6,23 +6,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
+
 public class CompanyValidator {
 
   public static List<String> validate(Company company) {
+    AccountNumberValidator.validate(company.getAccountNumber());
+    ContactDetailsValidator.validate(company.getContactDetails());
     if (company == null) {
       return Collections.singletonList("Company cannot be null");
     }
-    List<String> result = new ArrayList();
-    String idValidator = validateId(String.valueOf(company.getId()));
+    List<String> result = new ArrayList<>();
+    String idValidator = validateId(company.getId());
     String nameValidator = validateName(company.getName());
     String taxIdentificationNumberValidator = validateTaxIdentificationNumber(company.getTaxIdentificationNumber());
-    String accountNumberValidator = String.valueOf(AccountNumberValidator.validate(company.getAccountNumber()));
-    String contactDetailsOperator = String.valueOf(ContactDetailsValidator.validate(company.getContactDetails()));
     addResultOfValidation(result, idValidator);
     addResultOfValidation(result, nameValidator);
     addResultOfValidation(result, taxIdentificationNumberValidator);
-    addResultOfValidation(result, accountNumberValidator);
-    addResultOfValidation(result, contactDetailsOperator);
     return result;
   }
 
@@ -46,7 +46,7 @@ public class CompanyValidator {
     if (name.trim().isEmpty()) {
       return "Name cannot be empty";
     }
-    if (!name.matches("^([A-Z][a-z]*)+(?:[\\s-][A-Z][a-z]*)*$")) {
+    if (!name.matches("^([A-Za-z0-9][a-z0-9]*)+(?:[\\s-][A-Za-z0-9][a-z0-9]*)*$")) {
       return "Incorrect name";
     }
     return "";
@@ -63,11 +63,5 @@ public class CompanyValidator {
       return "Incorrect tax identification number";
     }
     return "";
-  }
-
-  private static void addResultOfValidation(List<String> resultList, String resultOfValidation) {
-    if (resultOfValidation != null && !resultOfValidation.trim().isEmpty()) {
-      resultList.add(resultOfValidation);
-    }
   }
 }

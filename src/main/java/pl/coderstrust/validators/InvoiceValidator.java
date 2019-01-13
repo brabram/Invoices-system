@@ -4,10 +4,13 @@ import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+
+import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
 
 public class InvoiceValidator {
 
@@ -15,11 +18,11 @@ public class InvoiceValidator {
     if (invoice == null) {
       return Collections.singletonList("Invoice cannot be null");
     }
-    List<String> result = new ArrayList();
+    List<String> result = new ArrayList<>();
     String idValidator = validateId(String.valueOf(invoice.getId()));
     String numberValidator = validateNumber(String.valueOf(invoice.getNumber()));
-    String issueDateValidator = validateDate(String.valueOf(invoice.getIssueDate()));
-    String dueDateValidator = validateDate(String.valueOf(invoice.getDueDate()));
+    String issueDateValidator = validateDate(invoice.getIssueDate());
+    String dueDateValidator = validateDate(invoice.getDueDate());
     String companySeller = String.valueOf(CompanyValidator.validate(invoice.getSeller()));
     String companyBuyer = String.valueOf(CompanyValidator.validate(invoice.getBuyer()));
     List<String> invoiceEntriesValidator = InvoiceEntryValidator.validate((InvoiceEntry) invoice.getEntries());
@@ -57,20 +60,20 @@ public class InvoiceValidator {
     if (number.trim().isEmpty()) {
       return "Number cannot be empty";
     }
-    if (!number.matches("[0-9]+")) {
+    if (!number.matches("[A-Z][0-9]+")) {
       return "Incorrect number";
     }
     return "";
   }
 
-  private static String validateDate(String date) {
+  private static String validateDate(LocalDate date) {
     if (date == null) {
       return "Number cannot be null";
     }
-    if (date.trim().isEmpty()) {
+    if (date.toString().trim().isEmpty()) {
       return "Number cannot be empty";
     }
-    if (!date.matches("^(3[01]|[12][0-9]|0[1-9]).(1[0-2]|0[1-9]).[0-9]{4}$")) {
+    if (!date.toString().matches("^(3[01]|[12][0-9]|0[1-9]).(1[0-2]|0[1-9]).[0-9]{4}$")) {
       return "Incorrect number";
     }
     return "";
@@ -100,11 +103,5 @@ public class InvoiceValidator {
       return "Incorrect total gross value";
     }
     return "";
-  }
-
-  private static void addResultOfValidation(List<String> resultList, String resultOfValidation) {
-    if (resultOfValidation != null && !resultOfValidation.trim().isEmpty()) {
-      resultList.add(resultOfValidation);
-    }
   }
 }

@@ -6,18 +6,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
+
 public class AccountNumberValidator {
 
   public static List<String> validate(AccountNumber accountNumber) {
     if (accountNumber == null) {
       return Collections.singletonList("Account number cannot be null");
     }
-    List<String> result = new ArrayList();
+
+    List<String> result = new ArrayList<>();
     String ibanNumberValidator = validateIbanNumber(accountNumber.getIbanNumber());
     String localNumberValidator = validateLocalNumber(accountNumber.getLocalNumber());
     addResultOfValidation(result, ibanNumberValidator);
     addResultOfValidation(result, localNumberValidator);
-    if(ibanNumberValidator == "" && localNumberValidator == "") {
+    if (ibanNumberValidator.equals("") && localNumberValidator.equals("")) {
       String compare = compareNumbers(accountNumber.getLocalNumber(), accountNumber.getIbanNumber());
       addResultOfValidation(result, compare);
     }
@@ -26,13 +29,13 @@ public class AccountNumberValidator {
 
   private static String validateLocalNumber(String localNumber) {
     if (localNumber == null) {
-      return "Local number cannot be null.";
+      return "Local number cannot be null";
     }
     if (localNumber.trim().isEmpty()) {
-      return "Local number cannot be empty.";
+      return "Local number cannot be empty";
     }
     if (!localNumber.matches("[0-9]+")) {
-      return "Local number cannot contain letters or another special chars.";
+      return "Local number cannot contain letters or another special chars";
     }
     return "";
   }
@@ -51,15 +54,9 @@ public class AccountNumberValidator {
   }
 
   private static String compareNumbers(String localNumber, String ibanNumber) {
-    if (localNumber != ibanNumber.substring(3)) {
+    if (!localNumber.equals(ibanNumber.substring(2))) {
       return "Check if iban number and local number are same, iban number must contain 2 letters at the beginning";
     }
     return "";
-  }
-
-  private static void addResultOfValidation(List<String> resultList, String resultOfValidation) {
-    if (resultOfValidation != null && !resultOfValidation.trim().isEmpty()) {
-      resultList.add(resultOfValidation);
-    }
   }
 }
