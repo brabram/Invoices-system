@@ -24,7 +24,7 @@ import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 public class InvoiceServiceTest {
 
   @Mock
-  private InvoiceRepository<Invoice, String> invoiceRepository;
+  private InvoiceRepository invoiceRepository;
 
   @InjectMocks
   private InvoiceService invoiceService;
