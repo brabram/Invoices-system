@@ -6,36 +6,35 @@ import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
+  private String id;
+  private int number;
+  private LocalDate issueDate;
+  private LocalDate dueDate;
+  private Company seller;
+  private Company buyer;
+  private List<InvoiceEntry> entries;
+  private BigDecimal totalNetValue;
+  private BigDecimal totalGrossValue;
 
-    private String id;
-    private int number;
-    private LocalDate issueDate;
-    private LocalDate dueDate;
-    private Company seller;
-    private Company buyer;
-    private List<InvoiceEntry> entries;
-    private BigDecimal totalNetValue;
-    private BigDecimal totalGrossValue;
+  public Invoice(String id, int number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
+    this.id = id;
+    this.number = number;
+    this.issueDate = issueDate;
+    this.dueDate = dueDate;
+    this.seller = seller;
+    this.buyer = buyer;
+    this.entries = entries;
+    this.totalNetValue = totalNetValue;
+    this.totalGrossValue = totalGrossValue;
+  }
 
-    public Invoice(String id, int number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
-        this.id = id;
-        this.number = number;
-        this.issueDate = issueDate;
-        this.dueDate = dueDate;
-        this.seller = seller;
-        this.buyer = buyer;
-        this.entries = entries;
-        this.totalNetValue = totalNetValue;
-        this.totalGrossValue = totalGrossValue;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public int getNumber() {
     return number;
@@ -101,34 +100,34 @@ public class Invoice {
     this.totalGrossValue = totalGrossValue;
   }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Invoice invoice = (Invoice) o;
-        return Objects.equals(id, invoice.id) &&
-                number == invoice.number &&
-                Objects.equals(issueDate, invoice.issueDate) &&
-                Objects.equals(dueDate, invoice.dueDate) &&
-                Objects.equals(seller, invoice.seller) &&
-                Objects.equals(buyer, invoice.buyer) &&
-                Objects.equals(entries, invoice.entries) &&
-                Objects.equals(totalNetValue, invoice.totalNetValue) &&
-                Objects.equals(totalGrossValue, invoice.totalGrossValue);
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Invoice invoice = (Invoice) o;
+    return Objects.equals(id, invoice.id)
+        && number == invoice.number
+        && Objects.equals(issueDate, invoice.issueDate)
+        && Objects.equals(dueDate, invoice.dueDate)
+        && Objects.equals(seller, invoice.seller)
+        && Objects.equals(buyer, invoice.buyer)
+        && Objects.equals(entries, invoice.entries)
+        && Objects.equals(totalNetValue, invoice.totalNetValue)
+        && Objects.equals(totalGrossValue, invoice.totalGrossValue);
+  }
 
   @Override
   public int hashCode() {
     return Objects.hash(id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
   }
 
-    @Override
-    public String toString() {
-        return String.format("id: %s, number: %d, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
-                id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
-    }
+  @Override
+  public String toString() {
+    return String.format("id: %s, number: %d, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
+        id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
+  }
 }

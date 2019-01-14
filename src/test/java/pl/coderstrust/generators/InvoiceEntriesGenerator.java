@@ -1,11 +1,11 @@
 package pl.coderstrust.generators;
 
-import pl.coderstrust.model.InvoiceEntry;
-import pl.coderstrust.model.Vat;
-
 import java.math.BigDecimal;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import pl.coderstrust.model.InvoiceEntry;
+import pl.coderstrust.model.Vat;
 
 public class InvoiceEntriesGenerator {
 

@@ -1,11 +1,11 @@
 package pl.coderstrust.generators;
 
-import pl.coderstrust.model.Address;
-import pl.coderstrust.model.ContactDetails;
+import static pl.coderstrust.generators.WordGenerator.getRandomWord;
 
 import java.util.Random;
 
-import static pl.coderstrust.generators.WordGenerator.getRandomWord;
+import pl.coderstrust.model.Address;
+import pl.coderstrust.model.ContactDetails;
 
 public class ContactDetailsGenerator {
   private static Random random = new Random();

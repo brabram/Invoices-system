@@ -1,8 +1,8 @@
 package pl.coderstrust.generators;
 
-import pl.coderstrust.model.AccountNumber;
-
 import java.util.Random;
+
+import pl.coderstrust.model.AccountNumber;
 
 public class AccountNumberGenerator {
   private static Random random = new Random();

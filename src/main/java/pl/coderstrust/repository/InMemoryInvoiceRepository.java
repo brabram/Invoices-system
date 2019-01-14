@@ -1,11 +1,15 @@
 package pl.coderstrust.repository;
 
-import pl.coderstrust.model.Invoice;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, String> {
+import pl.coderstrust.model.Invoice;
+
+public class InMemoryInvoiceRepository implements InvoiceRepository {
 
   private Map<String, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
   private AtomicInteger counter = new AtomicInteger();

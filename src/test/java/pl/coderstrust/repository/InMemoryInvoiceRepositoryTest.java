@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ import pl.coderstrust.model.Invoice;
 
 class InMemoryInvoiceRepositoryTest {
 
-  private InvoiceRepository<Invoice, String> invoiceRepository;
+  private InvoiceRepository invoiceRepository;
 
   @BeforeEach
   void setup() {

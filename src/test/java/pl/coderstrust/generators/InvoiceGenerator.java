@@ -1,15 +1,15 @@
 package pl.coderstrust.generators;
 
-import pl.coderstrust.model.Company;
-import pl.coderstrust.model.Invoice;
-import pl.coderstrust.model.InvoiceEntry;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import pl.coderstrust.model.Company;
+import pl.coderstrust.model.Invoice;
+import pl.coderstrust.model.InvoiceEntry;
 
 public class InvoiceGenerator {
 

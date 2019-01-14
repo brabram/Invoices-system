@@ -1,8 +1,8 @@
 package pl.coderstrust.generators;
 
-import pl.coderstrust.model.Address;
-
 import java.util.Random;
+
+import pl.coderstrust.model.Address;
 
 public class AddressGenerator {
   private static Random random = new Random();
