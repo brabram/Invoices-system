@@ -9,9 +9,9 @@ import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 
 public class InvoiceService {
 
-  private InvoiceRepository<Invoice, Integer> invoiceRepository;
+  private InvoiceRepository<Invoice, String> invoiceRepository;
 
-  public InvoiceService(InvoiceRepository<Invoice, Integer> invoiceRepository) {
+  public InvoiceService(InvoiceRepository<Invoice, String> invoiceRepository) {
     this.invoiceRepository = invoiceRepository;
   }
 
@@ -36,12 +36,9 @@ public class InvoiceService {
         .collect(Collectors.toList());
   }
 
-  public Invoice getInvoiceById(Integer id) throws InvoiceServiceOperationException {
+  public Invoice getInvoiceById(String id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
-    }
-    if (id < 0) {
-      throw new IllegalArgumentException("Id cannot be less then zero.");
     }
     try {
       return invoiceRepository.findById(id);
@@ -72,12 +69,9 @@ public class InvoiceService {
     }
   }
 
-  public void deleteInvoiceById(Integer id) throws InvoiceServiceOperationException {
+  public void deleteInvoiceById(String id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
-    }
-    if (id < 0) {
-      throw new IllegalArgumentException("Id cannot be less then zero.");
     }
     try {
       if (invoiceRepository.existsById(id)) {

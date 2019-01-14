@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,7 +23,7 @@ import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 public class InvoiceServiceTest {
 
   @Mock
-  private InvoiceRepository<Invoice, Integer> invoiceRepository;
+  private InvoiceRepository<Invoice, String> invoiceRepository;
 
   @InjectMocks
   private InvoiceService invoiceService;
@@ -72,7 +71,7 @@ public class InvoiceServiceTest {
   public void shouldGetInvoiceById() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    Integer id = expectedInvoice.getId();
+    String id = expectedInvoice.getId();
     when(invoiceRepository.findById(id)).thenReturn(expectedInvoice);
 
     //When
@@ -116,12 +115,12 @@ public class InvoiceServiceTest {
     verify(invoiceRepository).save(expectedInvoice);
   }
 
-  @Ignore
+  //@Ignore
   @Test
   public void shouldDeleteInvoiceById() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    Integer id = expectedInvoice.getId();
+    String id = expectedInvoice.getId();
     List<Invoice> expectedInvoices = new ArrayList<>();
     when(invoiceRepository.save(expectedInvoice)).thenReturn(expectedInvoice);
     doNothing().when(invoiceRepository).deleteById(id);
@@ -140,11 +139,10 @@ public class InvoiceServiceTest {
   public void shouldDeleteInvoice() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    Integer id = expectedInvoice.getId();
+    String id = expectedInvoice.getId();
     when(invoiceRepository.existsById(id)).thenReturn(true);
     doNothing().when(invoiceRepository).deleteById(id);
     List<Invoice> expectedInvoices = new ArrayList<>();
-
 
     //When
     invoiceService.addInvoice(expectedInvoice);
@@ -184,11 +182,6 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void getInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceService.getInvoiceById(-1));
-  }
-
-  @Test
   public void getInvoiceByIdMethodShouldThrowExceptionForNullAsId() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.getInvoiceById(null));
   }
@@ -201,11 +194,6 @@ public class InvoiceServiceTest {
   @Test
   public void updateInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.updateInvoice(null));
-  }
-
-  @Test
-  public void deleteInvoiceByIdMethodShouldThrowExceptionForIdLowerThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoiceById(-1));
   }
 
   @Test
