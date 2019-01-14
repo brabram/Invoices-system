@@ -30,6 +30,9 @@ public class InvoiceService {
     if (toDate == null) {
       throw new IllegalArgumentException("ToDate cannot be null");
     }
+    if(toDate.isBefore(fromDate)){
+      throw new IllegalArgumentException("ToDate cannot be before fromDate.");
+    }
     return getAllInvoices()
         .stream()
         .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)

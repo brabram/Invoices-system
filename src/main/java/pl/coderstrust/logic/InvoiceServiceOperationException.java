@@ -1,6 +1,6 @@
 package pl.coderstrust.logic;
 
-public class InvoiceServiceOperationException extends Throwable {
+public class InvoiceServiceOperationException extends Exception {
 
   public InvoiceServiceOperationException() {
   }
