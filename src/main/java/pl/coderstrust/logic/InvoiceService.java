@@ -9,9 +9,9 @@ import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 
 public class InvoiceService {
 
-  private InvoiceRepository<Invoice, String> invoiceRepository;
+  private InvoiceRepository invoiceRepository;
 
-  public InvoiceService(InvoiceRepository<Invoice, String> invoiceRepository) {
+  public InvoiceService(InvoiceRepository invoiceRepository) {
     this.invoiceRepository = invoiceRepository;
   }
 
