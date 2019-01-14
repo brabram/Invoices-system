@@ -12,11 +12,12 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InvoiceGenerator {
+
   private static Random random = new Random();
   private static AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(9999));
 
   public static Invoice getRandomInvoice() {
-    int id = atomicInteger.incrementAndGet();
+    String id = String.valueOf(atomicInteger.incrementAndGet());
     int number = random.nextInt(5000);
     LocalDate issueDate = createRandomDate();
     LocalDate dueDate = issueDate.plusDays(7);

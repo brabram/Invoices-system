@@ -5,9 +5,9 @@ import pl.coderstrust.model.Invoice;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Integer> {
+public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, String> {
 
-  private Map<Integer, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
+  private Map<String, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
   private AtomicInteger counter = new AtomicInteger();
   private final Object lock = new Object();
 
@@ -21,7 +21,7 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
         invoices.put(invoice.getId(), invoice);
         return invoice;
       }
-      int id = counter.incrementAndGet();
+      String id = String.valueOf(counter.incrementAndGet());
       invoice.setId(id);
       invoices.put(id, invoice);
       return invoice;
@@ -29,13 +29,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   }
 
   @Override
-  public Invoice findById(Integer id) {
+  public Invoice findById(String id) {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
-      }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be less than 0");
       }
       if (isInvoiceExist(id)) {
         return invoices.get(id);
@@ -45,13 +42,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   }
 
   @Override
-  public boolean existsById(Integer id) {
+  public boolean existsById(String id) {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
-      }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be less than 0");
       }
       return isInvoiceExist(id);
     }
@@ -72,13 +66,10 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
   }
 
   @Override
-  public void deleteById(Integer id) throws InvoiceRepositoryOperationException {
+  public void deleteById(String id) throws InvoiceRepositoryOperationException {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
-      }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be less than 0");
       }
       if (!isInvoiceExist(id)) {
         throw new InvoiceRepositoryOperationException("Invoice does not exist");
@@ -94,7 +85,7 @@ public class InMemoryInvoiceRepository implements InvoiceRepository<Invoice, Int
     }
   }
 
-  private boolean isInvoiceExist(Integer id) {
+  private boolean isInvoiceExist(String id) {
     return invoices.containsKey(id);
   }
 }

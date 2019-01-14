@@ -1,19 +1,19 @@
 package pl.coderstrust.repository;
 
-import junit.framework.Assert;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import pl.coderstrust.model.Invoice;
-import pl.coderstrust.generators.InvoiceGenerator;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import junit.framework.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import pl.coderstrust.generators.InvoiceGenerator;
+import pl.coderstrust.model.Invoice;
 
 class InMemoryInvoiceRepositoryTest {
-  private InvoiceRepository<Invoice, Integer> invoiceRepository;
+
+  private InvoiceRepository<Invoice, String> invoiceRepository;
 
   @BeforeEach
   void setup() {
@@ -82,7 +82,7 @@ class InMemoryInvoiceRepositoryTest {
   @Test
   void shouldReturnFalseIfInvoiceNotExistsInDatabase() throws InvoiceRepositoryOperationException {
     //when
-    boolean isInvoiceExists = invoiceRepository.existsById(1);
+    boolean isInvoiceExists = invoiceRepository.existsById("1");
 
     //then
     Assert.assertFalse(isInvoiceExists);
@@ -185,13 +185,4 @@ class InMemoryInvoiceRepositoryTest {
   void existsByIdMethodShouldThrowExceptionForNullAsId() {
     assertThrows(IllegalArgumentException.class, () -> invoiceRepository.existsById(null));
   }
-
-  @Test
-  void findByIdMethodShouldThrowExceptionForNegativeNumberAsId() { assertThrows(IllegalArgumentException.class, () -> invoiceRepository.findById(-1)); }
-
-  @Test
-  void deleteByIdMethodShouldThrowExceptionForNegativeNumberAsId() { assertThrows(IllegalArgumentException.class, () -> invoiceRepository.deleteById(-1)); }
-
-  @Test
-  void existsByIdMethodShouldThrowExceptionForNegativeNumberAsId() { assertThrows(IllegalArgumentException.class, () -> invoiceRepository.existsById(-1)); }
 }
