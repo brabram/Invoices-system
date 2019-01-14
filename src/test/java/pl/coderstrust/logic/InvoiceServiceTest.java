@@ -2,6 +2,7 @@ package pl.coderstrust.logic;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -204,5 +205,62 @@ public class InvoiceServiceTest {
   @Test
   public void deleteInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoice(null));
+  }
+
+  @Test
+  public void getAllInvoicesMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceRepositoryOperationException {
+    //Given
+    doThrow(InvoiceRepositoryOperationException.class).when(invoiceRepository).findAll();
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.getAllInvoices());
+  }
+
+  @Test
+  public void getInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceRepositoryOperationException {
+    //Given
+    doThrow(InvoiceRepositoryOperationException.class).when(invoiceRepository).findById("1");
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.getInvoiceById("1"));
+  }
+
+  @Test
+  public void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceRepositoryOperationException {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    doThrow(InvoiceRepositoryOperationException.class).when(invoiceRepository).save(invoice);
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.addInvoice(invoice));
+  }
+
+  @Test
+  public void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceRepositoryOperationException {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    doThrow(InvoiceRepositoryOperationException.class).when(invoiceRepository).save(invoice);
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.updateInvoice(invoice));
+  }
+
+  @Test
+  public void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceRepositoryOperationException {
+    //Given
+    when(invoiceRepository.existsById("1")).thenReturn(true);
+    doThrow(InvoiceRepositoryOperationException.class).when(invoiceRepository).deleteById("1");
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.deleteInvoiceById("1"));
+  }
+
+  @Test
+  public void deleteAllMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceRepositoryOperationException {
+    //Given
+    doThrow(InvoiceRepositoryOperationException.class).when(invoiceRepository).deleteAll();
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.deleteAll());
   }
 }
