@@ -28,11 +28,11 @@ class InMemoryInvoiceDatabaseTest {
     Invoice savedInvoice = invoiceDatabase.save(invoiceToSave);
 
     //when
-    Invoice invoiceFromRepository = invoiceDatabase.findById(savedInvoice.getId());
+    Invoice invoiceFromDatabase = invoiceDatabase.findById(savedInvoice.getId());
 
     //then
-    Assert.assertNotNull(invoiceFromRepository);
-    Assert.assertEquals(invoiceFromRepository, savedInvoice);
+    Assert.assertNotNull(invoiceFromDatabase);
+    Assert.assertEquals(invoiceFromDatabase, savedInvoice);
   }
 
   @Test
@@ -46,10 +46,10 @@ class InMemoryInvoiceDatabaseTest {
 
     //when
     Invoice updatedInvoice = invoiceDatabase.save(invoiceToUpdate);
-    Invoice invoiceFromRepository = invoiceDatabase.findById(updatedInvoice.getId());
+    Invoice invoiceFromDatabase = invoiceDatabase.findById(updatedInvoice.getId());
 
     //then
-    Assert.assertNotNull(invoiceFromRepository);
+    Assert.assertNotNull(invoiceFromDatabase);
     Assert.assertEquals(invoiceToUpdate, updatedInvoice);
   }
 
@@ -60,11 +60,11 @@ class InMemoryInvoiceDatabaseTest {
     Invoice savedInvoice = invoiceDatabase.save(invoiceToSave);
 
     //when
-    Invoice invoiceFromRepository = invoiceDatabase.findById(savedInvoice.getId());
+    Invoice invoiceFromDatabase = invoiceDatabase.findById(savedInvoice.getId());
 
     //then
-    Assert.assertNotNull(invoiceFromRepository);
-    Assert.assertEquals(invoiceFromRepository, savedInvoice);
+    Assert.assertNotNull(invoiceFromDatabase);
+    Assert.assertEquals(invoiceFromDatabase, savedInvoice);
   }
 
   @Test
@@ -104,11 +104,11 @@ class InMemoryInvoiceDatabaseTest {
     expectedInvoices.add(savedInvoice3);
 
     //when
-    List<Invoice> invoicesFromRepository = invoiceDatabase.findAll();
+    List<Invoice> invoicesFromDatabase = invoiceDatabase.findAll();
 
     //then
-    Assert.assertNotNull(invoicesFromRepository);
-    Assert.assertEquals(expectedInvoices, invoicesFromRepository);
+    Assert.assertNotNull(invoicesFromDatabase);
+    Assert.assertEquals(expectedInvoices, invoicesFromDatabase);
   }
 
   @Test
@@ -154,10 +154,10 @@ class InMemoryInvoiceDatabaseTest {
     Invoice savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
     Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
     Invoice savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
-    List<Invoice> invoicesInRepository = new ArrayList<>();
-    invoicesInRepository.add(savedInvoice1);
-    invoicesInRepository.add(savedInvoice2);
-    Assert.assertEquals(invoicesInRepository.size(), invoiceDatabase.count());
+    List<Invoice> invoicesInDatabase = new ArrayList<>();
+    invoicesInDatabase.add(savedInvoice1);
+    invoicesInDatabase.add(savedInvoice2);
+    Assert.assertEquals(invoicesInDatabase.size(), invoiceDatabase.count());
 
     //when
     invoiceDatabase.deleteAll();
