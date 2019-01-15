@@ -172,32 +172,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.0.0</version>
-        <executions>
-          <execution>
-            <id>verify</id>
-            <phase>verify</phase>
-            <configuration>
-              <failsOnError>true</failsOnError>
-            </configuration>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <failsOnError>true</failsOnError>
-          <failOnViolation>true</failOnViolation>
-          <violationSeverity>warning</violationSeverity>
-          <includeTestSourceDirectory>true</includeTestSourceDirectory>
-          <configLocation>checkstyle-config/google_style_settings.xml</configLocation>
-          <encoding>UTF-8</encoding>
-          <consoleOutput>true</consoleOutput>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
