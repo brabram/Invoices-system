@@ -57,7 +57,7 @@ public class InvoiceValidator {
     if (issueDate == null || dueDate == null) {
       return "Date cannot be null";
     }
-    if(issueDate.isAfter(dueDate)) {
+    if (issueDate.isAfter(dueDate)) {
       return "Due date cannot be after local date";
     }
     return "";

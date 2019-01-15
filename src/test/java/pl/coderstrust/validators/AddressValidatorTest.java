@@ -18,7 +18,7 @@ class AddressValidatorTest {
   private Address address;
 
   @BeforeEach
-  void setup(){
+  void setup() {
     address = AddressGenerator.getRandomAddress();
   }
 

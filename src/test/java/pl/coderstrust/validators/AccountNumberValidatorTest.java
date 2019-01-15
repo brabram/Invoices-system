@@ -18,8 +18,8 @@ class AccountNumberValidatorTest {
   private AccountNumber accountNumber;
 
   @BeforeEach
-  void setup(){
-   accountNumber = AccountNumberGenerator.getRandomAccount();
+  void setup() {
+    accountNumber = AccountNumberGenerator.getRandomAccount();
   }
 
   @ParameterizedTest

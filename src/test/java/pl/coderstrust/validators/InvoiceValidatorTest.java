@@ -20,7 +20,7 @@ class InvoiceValidatorTest {
   private Invoice invoice;
 
   @BeforeEach
-  void setup(){
+  void setup() {
     invoice = InvoiceGenerator.getRandomInvoice();
   }
 
