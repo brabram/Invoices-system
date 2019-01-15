@@ -25,14 +25,14 @@ class InvoiceValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("companyIdParameters")
+  @MethodSource("invoiceIdParameters")
   void shouldNotValidateInvoiceId(String id, List<String> expected) {
     invoice.setId(id);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> companyIdParameters() {
+  private static Stream<Arguments> invoiceIdParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Id cannot be null")),
         Arguments.of("", Collections.singletonList("Id cannot be empty")),
