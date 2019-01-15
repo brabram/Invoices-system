@@ -33,9 +33,15 @@ public class InvoiceValidator {
     return result;
   }
 
-  private static String validateId(int id) {
-    if (id < 0) {
-      return "Id cannot be less than 0";
+  private static String validateId(String id) {
+    if (id == null) {
+      return "Id cannot be null";
+    }
+    if (id.trim().isEmpty()) {
+      return "Id cannot be empty";
+    }
+    if (!id.matches("[0-9]+")) {
+      return "Incorrect id";
     }
     return "";
   }

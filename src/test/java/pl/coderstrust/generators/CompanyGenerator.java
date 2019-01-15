@@ -7,6 +7,9 @@ import pl.coderstrust.model.AccountNumber;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.ContactDetails;
 
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class CompanyGenerator {
 
   private static Random random = new Random();
