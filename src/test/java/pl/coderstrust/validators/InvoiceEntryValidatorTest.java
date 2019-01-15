@@ -79,25 +79,23 @@ class InvoiceEntryValidatorTest {
     Assert.assertEquals(resultOfValidation, expected);
   }
 
-  private static Stream<Arguments> priceParameters() {
-    return Stream.of(
-        Arguments.of(null, Collections.singletonList("Price cannot be null")),
-        Arguments.of("", Collections.singletonList("Price cannot be empty")),
-        Arguments.of("-535", Collections.singletonList("Incorrect price")),
-        Arguments.of("0", Collections.singletonList("Incorrect price")),
-        Arguments.of("43frefe", Collections.singletonList("Incorrect price"))
-    );
-  }
-
   @ParameterizedTest
-  @MethodSource("dateParameters")
-  void shouldNotValidateDate(BigDecimal price, List<String> expected) {
-    invoiceEntry.setGrossValue(price);
+  @MethodSource("priceParameters")
+  void shouldNotValidateGrossValue(BigDecimal grossValue, List<String> expected) {
+    invoiceEntry.setGrossValue(grossValue);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     Assert.assertEquals(resultOfValidation, expected);
   }
 
-  private static Stream<Arguments> dateParameters() {
+  @ParameterizedTest
+  @MethodSource("priceParameters")
+  void shouldNotValidateVatValue(BigDecimal vatValue, List<String> expected) {
+    invoiceEntry.setVatValue(vatValue);
+    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
+    Assert.assertEquals(resultOfValidation, expected);
+  }
+
+  private static Stream<Arguments> priceParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Price cannot be null")),
         Arguments.of("", Collections.singletonList("Price cannot be empty")),
