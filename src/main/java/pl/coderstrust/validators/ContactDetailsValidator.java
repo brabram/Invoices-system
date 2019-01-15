@@ -11,7 +11,6 @@ import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation
 public class ContactDetailsValidator {
 
   public static List<String> validate(ContactDetails contactDetails) {
-    AddressValidator.validate(contactDetails.getAddress());
     if (contactDetails == null) {
       return Collections.singletonList("Contact details cannot be null");
     }
@@ -19,6 +18,7 @@ public class ContactDetailsValidator {
     String emailAddressValidator = validateEmail(contactDetails.getEmail());
     String phoneNumberValidator = validatePhoneNumber(contactDetails.getPhoneNumber());
     String webSiteValidator = validateWebSite(contactDetails.getWebsite());
+    AddressValidator.validate(contactDetails.getAddress());
     addResultOfValidation(result, emailAddressValidator);
     addResultOfValidation(result, phoneNumberValidator);
     addResultOfValidation(result, webSiteValidator);

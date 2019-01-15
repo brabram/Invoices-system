@@ -1,6 +1,7 @@
 package pl.coderstrust.validators;
 
 import junit.framework.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -8,20 +9,25 @@ import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.AddressGenerator;
 import pl.coderstrust.model.Address;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
 class AddressValidatorTest {
+  private Address address;
 
-  private Address address = AddressGenerator.getRandomAddress();
+  @BeforeEach
+  void setup(){
+    address = AddressGenerator.getRandomAddress();
+  }
 
   @ParameterizedTest
   @MethodSource("streetParameters")
   void shouldNotValidateStreet(String street, List<String> expected) {
     address.setStreet(street);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> streetParameters() {
@@ -41,7 +47,7 @@ class AddressValidatorTest {
   void shouldNotValidateCity(String city, List<String> expected) {
     address.setCity(city);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> cityParameters() {
@@ -61,7 +67,7 @@ class AddressValidatorTest {
   void shouldNotValidateCountry(String country, List<String> expected) {
     address.setCountry(country);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> countryParameters() {
@@ -80,7 +86,7 @@ class AddressValidatorTest {
   void shouldNotValidateAddressNumber(String addressNumber, List<String> expected) {
     address.setNumber(addressNumber);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> addressNumberParameters() {
@@ -98,7 +104,7 @@ class AddressValidatorTest {
   void shouldNotValidatePostalCode(String postalCode, List<String> expected) {
     address.setPostalCode(postalCode);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> postalCodeParameters() {
@@ -114,7 +120,7 @@ class AddressValidatorTest {
   @Test
   void shouldApproveAddressValidation() {
     List<String> actual = AddressValidator.validate(address);
-    List<String> expected = Collections.singletonList("");
-    Assert.assertEquals(expected.toString(), actual.toString());
+    List<String> expected = new ArrayList<>();
+    Assert.assertEquals(expected, actual);
   }
 }

@@ -11,8 +11,6 @@ import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation
 public class CompanyValidator {
 
   public static List<String> validate(Company company) {
-    AccountNumberValidator.validate(company.getAccountNumber());
-    ContactDetailsValidator.validate(company.getContactDetails());
     if (company == null) {
       return Collections.singletonList("Company cannot be null");
     }
@@ -20,6 +18,8 @@ public class CompanyValidator {
     String idValidator = validateId(company.getId());
     String nameValidator = validateName(company.getName());
     String taxIdentificationNumberValidator = validateTaxIdentificationNumber(company.getTaxIdentificationNumber());
+    AccountNumberValidator.validate(company.getAccountNumber());
+    ContactDetailsValidator.validate(company.getContactDetails());
     addResultOfValidation(result, idValidator);
     addResultOfValidation(result, nameValidator);
     addResultOfValidation(result, taxIdentificationNumberValidator);

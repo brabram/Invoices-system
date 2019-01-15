@@ -1,9 +1,9 @@
 package pl.coderstrust.validators;
 
-import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,88 +18,61 @@ public class InvoiceValidator {
       return Collections.singletonList("Invoice cannot be null");
     }
     List<String> result = new ArrayList<>();
-    String idValidator = validateId(String.valueOf(invoice.getId()));
-    String numberValidator = validateNumber(String.valueOf(invoice.getNumber()));
-    String issueDateValidator = validateDate(invoice.getIssueDate());
-    String dueDateValidator = validateDate(invoice.getDueDate());
-    String companySeller = String.valueOf(CompanyValidator.validate(invoice.getSeller()));
-    String companyBuyer = String.valueOf(CompanyValidator.validate(invoice.getBuyer()));
-    List<String> invoiceEntriesValidator = InvoiceEntryValidator.validate((InvoiceEntry) invoice.getEntries());
-    String totalNetValueValidator = validateTotalNetValue(String.valueOf(invoice.getTotalNetValue()));
-    String totalGrossValueValidator = validateTotalGrossValue(String.valueOf(invoice.getTotalGrossValue()));
+    String idValidator = validateId(invoice.getId());
+    String numberValidator = validateNumber(invoice.getNumber());
+    String issueDateValidator = validateDate(invoice.getIssueDate(), invoice.getDueDate());
+    String totalNetValueValidator = validateTotalNetValue(invoice.getTotalNetValue());
+    String totalGrossValueValidator = validateTotalGrossValue(invoice.getTotalGrossValue());
+    CompanyValidator.validate(invoice.getSeller());
+    CompanyValidator.validate(invoice.getBuyer());
     addResultOfValidation(result, idValidator);
     addResultOfValidation(result, numberValidator);
     addResultOfValidation(result, issueDateValidator);
-    addResultOfValidation(result, dueDateValidator);
-    addResultOfValidation(result, companySeller);
-    addResultOfValidation(result, companyBuyer);
-    addResultOfValidation(result, String.valueOf(invoiceEntriesValidator));
     addResultOfValidation(result, totalNetValueValidator);
     addResultOfValidation(result, totalGrossValueValidator);
     return result;
   }
 
-  private static String validateId(String id) {
-    if (id == null) {
-      return "Id cannot be null";
-    }
-    if (id.trim().isEmpty()) {
-      return "Id cannot be empty";
-    }
-    if (!id.matches("[0-9]+")) {
-      return "Incorrect id";
+  private static String validateId(int id) {
+    if (id < 0) {
+      return "Id cannot be less than 0";
     }
     return "";
   }
 
-  private static String validateNumber(String number) {
-    if (number == null) {
-      return "Number cannot be null";
-    }
-    if (number.trim().isEmpty()) {
-      return "Number cannot be empty";
-    }
-    if (!number.matches("[A-Z][0-9]+")) {
-      return "Incorrect number";
+  private static String validateNumber(int number) {
+    if (number < 0) {
+      return "Number cannot be less than 0";
     }
     return "";
   }
 
-  private static String validateDate(LocalDate date) {
-    if (date == null) {
-      return "Number cannot be null";
+  private static String validateDate(LocalDate issueDate, LocalDate dueDate) {
+    if (issueDate == null || dueDate == null) {
+      return "Date cannot be null";
     }
-    if (date.toString().trim().isEmpty()) {
-      return "Number cannot be empty";
-    }
-    if (!date.toString().matches("^(3[01]|[12][0-9]|0[1-9]).(1[0-2]|0[1-9]).[0-9]{4}$")) {
-      return "Incorrect number";
+    if(issueDate.isAfter(dueDate)) {
+      return "Due date cannot be after local date";
     }
     return "";
   }
 
-  private static String validateTotalNetValue(String totalNetValue) {
+  private static String validateTotalNetValue(BigDecimal totalNetValue) {
     if (totalNetValue == null) {
       return "Total net value cannot be null";
     }
-    if (totalNetValue.trim().isEmpty()) {
-      return "Total net value cannot be empty";
-    }
-    if (!totalNetValue.matches("[0-9]+([,.][0-9]{1,2})?")) {
-      return "Incorrect total net value";
+    if (totalNetValue.intValue() < 0) {
+      return "Total net value cannot be less than 0";
     }
     return "";
   }
 
-  private static String validateTotalGrossValue(String totalGrossValue) {
+  private static String validateTotalGrossValue(BigDecimal totalGrossValue) {
     if (totalGrossValue == null) {
       return "Total gross value cannot be null";
     }
-    if (totalGrossValue.trim().isEmpty()) {
-      return "Total gross value cannot be empty";
-    }
-    if (!totalGrossValue.matches("[0-9]+([,.][0-9]{1,2})?")) {
-      return "Incorrect total gross value";
+    if (totalGrossValue.intValue() < 0) {
+      return "Total gross value cannot be less than 0";
     }
     return "";
   }

@@ -1,30 +1,39 @@
 package pl.coderstrust.validators;
 
 import junit.framework.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.InvoiceEntriesGenerator;
 import pl.coderstrust.model.InvoiceEntry;
+import pl.coderstrust.model.Vat;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InvoiceEntryValidatorTest {
+import javax.management.StringValueExp;
 
-  private InvoiceEntry invoiceEntry = InvoiceEntriesGenerator.getRandomInvoiceEntry();
+class InvoiceEntryValidatorTest {
+  private InvoiceEntry invoiceEntry;
+
+  @BeforeEach
+  void setup() {
+    invoiceEntry = InvoiceEntriesGenerator.getRandomInvoiceEntry();
+  }
 
   @ParameterizedTest
   @MethodSource("InvoiceEntryIdParameters")
   void shouldNotValidateInvoiceEntryId(String id, List<String> expected) {
     invoiceEntry.setId(id);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> InvoiceEntryIdParameters() {
@@ -42,7 +51,7 @@ class InvoiceEntryValidatorTest {
   void shouldNotValidateItemName(String item, List<String> expected) {
     invoiceEntry.setItem(item);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> itemNameParameters() {
@@ -50,7 +59,7 @@ class InvoiceEntryValidatorTest {
         Arguments.of(null, Collections.singletonList("Item cannot be null")),
         Arguments.of("", Collections.singletonList("Item cannot be empty")),
         Arguments.of("sdf35", Collections.singletonList("Incorrect item")),
-        Arguments.of("35fewf", Collections.singletonList("IIncorrect item")),
+        Arguments.of("35fewf", Collections.singletonList("Incorrect item")),
         Arguments.of("-535", Collections.singletonList("Incorrect item"))
     );
   }
@@ -60,14 +69,13 @@ class InvoiceEntryValidatorTest {
   void shouldNotValidateQuantity(Long quantity, List<String> expected) {
     invoiceEntry.setQuantity(quantity);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> quantityParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Quantity cannot be null")),
-        Arguments.of("", Collections.singletonList("Quantity cannot be empty")),
-        Arguments.of(-535, Collections.singletonList("Incorrect quantity"))
+        Arguments.of(Long.valueOf(-535), Collections.singletonList("Quantity cannot be less than zero"))
     );
   }
 
@@ -76,32 +84,64 @@ class InvoiceEntryValidatorTest {
   void shouldNotValidatePrice(BigDecimal price, List<String> expected) {
     invoiceEntry.setPrice(price);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(resultOfValidation, expected);
-  }
-
-  @ParameterizedTest
-  @MethodSource("priceParameters")
-  void shouldNotValidateGrossValue(BigDecimal grossValue, List<String> expected) {
-    invoiceEntry.setGrossValue(grossValue);
-    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(resultOfValidation, expected);
-  }
-
-  @ParameterizedTest
-  @MethodSource("priceParameters")
-  void shouldNotValidateVatValue(BigDecimal vatValue, List<String> expected) {
-    invoiceEntry.setVatValue(vatValue);
-    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> priceParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Price cannot be null")),
-        Arguments.of("", Collections.singletonList("Price cannot be empty")),
-        Arguments.of("-535", Collections.singletonList("Incorrect price")),
-        Arguments.of("0", Collections.singletonList("Incorrect price")),
-        Arguments.of("43frefe", Collections.singletonList("Incorrect price"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Price cannot be less than 0"))
     );
+  }
+
+  @ParameterizedTest
+  @MethodSource("grossValueParameters")
+  void shouldNotValidateGrossValue(BigDecimal grossValue, List<String> expected) {
+    invoiceEntry.setGrossValue(grossValue);
+    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
+    Assert.assertEquals(expected, resultOfValidation);
+  }
+
+  private static Stream<Arguments> grossValueParameters() {
+    return Stream.of(
+        Arguments.of(null, Collections.singletonList("Gross value cannot be null")),
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Gross value cannot be less than 0"))
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("vatValueParameters")
+  void shouldNotValidateVatValue(BigDecimal vatValue, List<String> expected) {
+    invoiceEntry.setVatValue(vatValue);
+    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
+    Assert.assertEquals(expected, resultOfValidation);
+  }
+
+  private static Stream<Arguments> vatValueParameters() {
+    return Stream.of(
+        Arguments.of(null, Collections.singletonList("Vat value cannot be null")),
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Vat value cannot be less than 0"))
+    );
+  }
+
+  @ParameterizedTest
+  @MethodSource("vatRateParameters")
+  void shouldNotValidateVatRate(Vat vatRate, List<String> expected) {
+    invoiceEntry.setVatRate(vatRate);
+    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
+    Assert.assertEquals(expected, resultOfValidation);
+  }
+
+  private static Stream<Arguments> vatRateParameters() {
+    return Stream.of(
+        Arguments.of(null, Collections.singletonList("Vat rate cannot be null"))
+    );
+  }
+
+  @Test
+  void shouldApproveInvoiceEntry() {
+    List<String> actual = InvoiceEntryValidator.validate(invoiceEntry);
+    List<String> expected = new ArrayList<>();
+    Assert.assertEquals(expected, actual);
   }
 }

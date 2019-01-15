@@ -1,6 +1,7 @@
 package pl.coderstrust.validators;
 
 import pl.coderstrust.model.InvoiceEntry;
+import pl.coderstrust.model.Vat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class InvoiceEntryValidator {
     String priceValidator = validatePrice(invoiceEntry.getPrice());
     String vatValueValidator = validateVatValue(invoiceEntry.getVatValue());
     String grossValueValidator = validateGrossValue(invoiceEntry.getGrossValue());
-    String vatRateValidator = validateVatRate(String.valueOf(invoiceEntry.getVatRate()));
+    String vatRateValidator = validateVatRate(invoiceEntry.getVatRate());
     addResultOfValidation(result, idValidator);
     addResultOfValidation(result, itemValidator);
     addResultOfValidation(result, quantityValidator);
@@ -66,9 +67,6 @@ public class InvoiceEntryValidator {
     if (quantity <= 0) {
       return "Quantity cannot be less than zero";
     }
-    if (quantity.toString().matches("[0-9]+")) {
-      return "Incorrect quantity";
-    }
     return "";
   }
 
@@ -76,11 +74,8 @@ public class InvoiceEntryValidator {
     if (price == null) {
       return "Price cannot be null";
     }
-    if (price.equals("")) {
-      return "Price cannot be empty";
-    }
-    if (!price.toString().matches("[0-9]+([,.][0-9]{1,2})?")) {
-      return "Incorrect price";
+    if (price.intValue() < 0) {
+      return "Price cannot be less than 0";
     }
     return "";
   }
@@ -89,11 +84,8 @@ public class InvoiceEntryValidator {
     if (vatValue == null) {
       return "Vat value cannot be null";
     }
-    if (vatValue.toString().trim().isEmpty()) {
-      return "Vat value cannot be empty";
-    }
-    if (!vatValue.toString().matches("[0-9]+([,.][0-9]{1,2})?")) {
-      return "Incorrect Vat value";
+    if (vatValue.intValue() < 0) {
+      return "Vat value cannot be less than 0";
     }
     return "";
   }
@@ -102,24 +94,15 @@ public class InvoiceEntryValidator {
     if (grossValue == null) {
       return "Gross value cannot be null";
     }
-    if (grossValue.toString().trim().isEmpty()) {
-      return "Gross value cannot be empty";
-    }
-    if (!grossValue.toString().matches("[0-9]+([,.][0-9]{1,2})?")) {
-      return "Incorrect Gross value";
+    if (grossValue.intValue() < 0) {
+      return "Gross value cannot be less than 0";
     }
     return "";
   }
 
-  private static String validateVatRate(String vatRate) {
+  private static String validateVatRate(Vat vatRate) {
     if (vatRate == null) {
       return "Vat rate cannot be null";
-    }
-    if (vatRate.trim().isEmpty()) {
-      return "Vat rate cannot be empty";
-    }
-    if (!vatRate.matches("[0-9]+([,.][0-9]+)")) {
-      return "Incorrect vat rate";
     }
     return "";
   }

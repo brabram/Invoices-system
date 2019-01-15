@@ -1,31 +1,33 @@
 package pl.coderstrust.validators;
 
 import junit.framework.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.coderstrust.generators.AccountNumberGenerator;
 import pl.coderstrust.generators.CompanyGenerator;
-import pl.coderstrust.generators.ContactDetailsGenerator;
-import pl.coderstrust.model.AccountNumber;
 import pl.coderstrust.model.Company;
-import pl.coderstrust.model.ContactDetails;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
 class CompanyValidatorTest {
+ private Company company;
 
- private Company company = CompanyGenerator.getRandomCompany();
+ @BeforeEach
+ void setup(){
+   company = CompanyGenerator.getRandomCompany();
+ }
 
   @ParameterizedTest
   @MethodSource("companyIdParameters")
   void shouldNotValidateCompanyId(String id, List<String> expected) {
     company.setId(id);
     List<String> resultOfValidation = CompanyValidator.validate(company);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> companyIdParameters() {
@@ -43,7 +45,7 @@ class CompanyValidatorTest {
   void shouldNotValidateCompanyName(String name, List<String> expected) {
     company.setName(name);
     List<String> resultOfValidation = CompanyValidator.validate(company);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> companyNameParameters() {
@@ -59,7 +61,7 @@ class CompanyValidatorTest {
   void shouldNotValidateTaxIdentificationNumber(String taxIdentificationNumber, List<String> expected) {
     company.setTaxIdentificationNumber(taxIdentificationNumber);
     List<String> resultOfValidation = CompanyValidator.validate(company);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> taxIdentificationNumberParameters() {
@@ -75,14 +77,8 @@ class CompanyValidatorTest {
 
   @Test
   void shouldApproveContactDetails() {
-    company.setContactDetails(ContactDetailsGenerator.getRandomContactDetails());
-    company.setAccountNumber(AccountNumberGenerator.getRandomAccount());
-    ContactDetails contactDetails = company.getContactDetails();
-    AccountNumber accountNumber = company.getAccountNumber();
-    List<String> actual = CompanyValidator.validate(company);
-    List<String> expected = Collections.singletonList("");
-    Assert.assertNotNull(contactDetails);
-    Assert.assertNotNull(accountNumber);
-    Assert.assertEquals(expected.toString(), actual.toString());
+    List<String> resultOfValidation = CompanyValidator.validate(company);
+    List expected = new ArrayList<String>();
+    Assert.assertEquals(expected, resultOfValidation);
   }
 }

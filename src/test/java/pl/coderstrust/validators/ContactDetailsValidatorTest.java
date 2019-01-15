@@ -1,30 +1,34 @@
 package pl.coderstrust.validators;
 
 import junit.framework.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.coderstrust.generators.AddressGenerator;
 import pl.coderstrust.generators.ContactDetailsGenerator;
-import pl.coderstrust.model.Address;
 import pl.coderstrust.model.ContactDetails;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
 
 class ContactDetailsValidatorTest {
+  private ContactDetails contactDetails;
 
-  private ContactDetails contactDetails = ContactDetailsGenerator.getRandomContactDetails();
+  @BeforeEach
+  void setup() {
+    contactDetails = ContactDetailsGenerator.getRandomContactDetails();
+  }
 
   @ParameterizedTest
   @MethodSource("emailParameters")
   void shouldNotValidateEmail(String email, List<String> expected) {
     contactDetails.setEmail(email);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> emailParameters() {
@@ -41,7 +45,7 @@ class ContactDetailsValidatorTest {
   void shouldNotValidateWebSite(String webSite, List<String> expected) {
     contactDetails.setWebsite(webSite);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> webSiteParameters() {
@@ -60,7 +64,7 @@ class ContactDetailsValidatorTest {
   void shouldNotValidatePhoneNumber(String phoneNumber, List<String> expected) {
     contactDetails.setPhoneNumber(phoneNumber);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
-    Assert.assertEquals(resultOfValidation, expected);
+    Assert.assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> phoneNumberParameters() {
@@ -74,11 +78,8 @@ class ContactDetailsValidatorTest {
 
   @Test
   void shouldApproveContactDetails() {
-    contactDetails.setAddress(AddressGenerator.getRandomAddress());
-    Address address =  contactDetails.getAddress();
     List<String> actual = ContactDetailsValidator.validate(contactDetails);
-    List<String> expected = Collections.singletonList("");
-    Assert.assertNotNull(address);
-    Assert.assertEquals(expected.toString(), actual.toString());
+    List<String> expected = new ArrayList<>();
+    Assert.assertEquals(expected, actual);
   }
 }
