@@ -1,4 +1,4 @@
-package pl.coderstrust.repository;
+package pl.coderstrust.database;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import pl.coderstrust.model.Invoice;
 
-public class InMemoryInvoiceRepository implements InvoiceRepository {
+public class InMemoryInvoiceDatabase implements InvoiceDatabase {
 
   private Map<String, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
   private AtomicInteger counter = new AtomicInteger();
@@ -70,13 +70,13 @@ public class InMemoryInvoiceRepository implements InvoiceRepository {
   }
 
   @Override
-  public void deleteById(String id) throws InvoiceRepositoryOperationException {
+  public void deleteById(String id) throws InvoiceDatabaseOperationException {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
       }
       if (!isInvoiceExist(id)) {
-        throw new InvoiceRepositoryOperationException("Invoice does not exist");
+        throw new InvoiceDatabaseOperationException("Invoice does not exist");
       }
       invoices.remove(id);
     }
