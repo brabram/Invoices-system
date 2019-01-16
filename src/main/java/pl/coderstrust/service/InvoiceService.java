@@ -1,8 +1,9 @@
-package pl.coderstrust.logic;
+package pl.coderstrust.service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.repository.InvoiceRepository;
 import pl.coderstrust.repository.InvoiceRepositoryOperationException;
@@ -15,7 +16,7 @@ public class InvoiceService {
     this.invoiceRepository = invoiceRepository;
   }
 
-  public List<Invoice> getAllInvoices() throws InvoiceServiceOperationException {
+  List<Invoice> getAllInvoices() throws InvoiceServiceOperationException {
     try {
       return invoiceRepository.findAll();
     } catch (InvoiceRepositoryOperationException e) {
@@ -23,15 +24,15 @@ public class InvoiceService {
     }
   }
 
-  public List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceServiceOperationException {
+  List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceServiceOperationException {
     if (fromDate == null) {
-      throw new IllegalArgumentException("FromDate cannot be null");
+      throw new IllegalArgumentException("fromDate cannot be null");
     }
     if (toDate == null) {
-      throw new IllegalArgumentException("ToDate cannot be null");
+      throw new IllegalArgumentException("toDate cannot be null");
     }
-    if(toDate.isBefore(fromDate)){
-      throw new IllegalArgumentException("ToDate cannot be before fromDate.");
+    if (toDate.isBefore(fromDate)) {
+      throw new IllegalArgumentException("toDate cannot be before fromDate.");
     }
     return getAllInvoices()
         .stream()
@@ -39,7 +40,7 @@ public class InvoiceService {
         .collect(Collectors.toList());
   }
 
-  public Invoice getInvoiceById(String id) throws InvoiceServiceOperationException {
+  Invoice getInvoiceById(String id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
@@ -50,7 +51,7 @@ public class InvoiceService {
     }
   }
 
-  public Invoice addInvoice(Invoice invoice) throws InvoiceServiceOperationException {
+  Invoice addInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
@@ -61,18 +62,20 @@ public class InvoiceService {
     }
   }
 
-  public void updateInvoice(Invoice invoice) throws InvoiceServiceOperationException {
+  void updateInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
-      invoiceRepository.save(invoice);
+      if (invoiceRepository.existsById(invoice.getId())) {
+        invoiceRepository.save(invoice);
+      }
     } catch (InvoiceRepositoryOperationException e) {
       throw new InvoiceServiceOperationException("An error while updating invoice.");
     }
   }
 
-  public void deleteInvoiceById(String id) throws InvoiceServiceOperationException {
+  void deleteInvoiceById(String id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
@@ -85,14 +88,7 @@ public class InvoiceService {
     }
   }
 
-  public void deleteInvoice(Invoice invoice) throws InvoiceServiceOperationException {
-    if (invoice == null) {
-      throw new IllegalArgumentException("Invoice cannot be null.");
-    }
-    deleteInvoiceById(invoice.getId());
-  }
-
-  public void deleteAll() throws InvoiceServiceOperationException {
+  void deleteAll() throws InvoiceServiceOperationException {
     try {
       invoiceRepository.deleteAll();
     } catch (InvoiceRepositoryOperationException e) {

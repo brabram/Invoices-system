@@ -33,10 +33,35 @@ public class InvoiceGenerator {
         list, totalNetValue, totalGrossValue);
   }
 
+  public static Invoice getRandomInvoiceWithSpecificIssueDate(LocalDate issueDate){
+    Invoice invoice = getRandomInvoice();
+    invoice.setIssueDate(issueDate);
+    return invoice;
+  }
+
+  public static Invoice getRandomInvoiceWithSpecificDueDate(LocalDate dueDate){
+    Invoice invoice = getRandomInvoice();
+    invoice.setDueDate(dueDate);
+    return invoice;
+  }
+
+  public static Invoice getRandomInvoicesIssuedInSpecificDateRange(LocalDate startDate, LocalDate endDate){
+    Invoice invoice = getRandomInvoice();
+    invoice.setIssueDate(createRandomDateInSpecificDateRange(startDate, endDate));
+    return invoice;
+  }
+
   private static LocalDate createRandomDate() {
     int day = createRandomIntBetween(1, 28);
     int month = createRandomIntBetween(1, 12);
     int year = createRandomIntBetween(1990, 2019);
+    return LocalDate.of(year, month, day);
+  }
+
+  private static LocalDate createRandomDateInSpecificDateRange(LocalDate startDate, LocalDate endDate) {
+    int day = createRandomIntBetween(startDate.getDayOfMonth(), endDate.getDayOfMonth());
+    int month = createRandomIntBetween(startDate.getMonth().getValue(), endDate.getMonth().getValue());
+    int year = createRandomIntBetween(startDate.getYear(), endDate.getYear());
     return LocalDate.of(year, month, day);
   }
 

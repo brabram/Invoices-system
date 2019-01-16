@@ -7,7 +7,7 @@ import pl.coderstrust.model.AccountNumber;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.ContactDetails;
 
-public class CompanyGenerator {
+class CompanyGenerator {
 
   private static Random random = new Random();
   private static AtomicLong atomicLong = new AtomicLong(random.nextLong());

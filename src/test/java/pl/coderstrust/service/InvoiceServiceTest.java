@@ -1,14 +1,13 @@
-package pl.coderstrust.logic;
+package pl.coderstrust.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,17 +28,10 @@ public class InvoiceServiceTest {
   @InjectMocks
   private InvoiceService invoiceService;
 
-//  @BeforeEach
-//  public void setup() {
-//    invoiceService = new InvoiceService(invoiceRepository);
-//  }
-
   @Test
   public void shouldGetAllInvoices() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
-    List<Invoice> expectedInvoices = new ArrayList<>();
-    Invoice randomInvoice = InvoiceGenerator.getRandomInvoice();
-    expectedInvoices.add(randomInvoice);
+    List<Invoice> expectedInvoices = Collections.singletonList(InvoiceGenerator.getRandomInvoice());
     when(invoiceRepository.findAll()).thenReturn(expectedInvoices);
 
     //When
@@ -53,14 +45,25 @@ public class InvoiceServiceTest {
   @Test
   public void shouldGetAllInvoicesInGivenDateRange() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
+    LocalDate fromDate = LocalDate.parse("2019-01-01");
     LocalDate toDate = LocalDate.parse("2019-01-10");
     List<Invoice> expectedInvoices = new ArrayList<>();
-    Invoice randomInvoice = InvoiceGenerator.getRandomInvoice();
-    LocalDate fromDate = randomInvoice.getIssueDate();
-    expectedInvoices.add(randomInvoice);
+    Invoice randomInvoice1 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
+    Invoice randomInvoice2 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-10"));
+    Invoice randomInvoice3 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
+    Invoice randomInvoice4 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
+    Invoice randomInvoice5 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-10"));
+    expectedInvoices.add(randomInvoice1);
+    expectedInvoices.add(randomInvoice3);
+    expectedInvoices.add(randomInvoice4);
     when(invoiceRepository.findAll()).thenReturn(expectedInvoices);
 
     //When
+    invoiceService.addInvoice(randomInvoice1);
+    invoiceService.addInvoice(randomInvoice2);
+    invoiceService.addInvoice(randomInvoice3);
+    invoiceService.addInvoice(randomInvoice4);
+    invoiceService.addInvoice(randomInvoice5);
     List<Invoice> actualInvoices = invoiceService.getAllInvoicesInGivenDateRange(fromDate, toDate);
 
     //Then
@@ -88,87 +91,51 @@ public class InvoiceServiceTest {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     when(invoiceRepository.save(expectedInvoice)).thenReturn(expectedInvoice);
-    List<Invoice> expectedInvoices = invoiceRepository.findAll();
 
     //When
-    invoiceService.addInvoice(expectedInvoice);
-    List<Invoice> actualInvoices = invoiceService.getAllInvoices();
+    Invoice actualInvoice = invoiceService.addInvoice(expectedInvoice);
 
     //Then
-    Assert.assertEquals(expectedInvoices, actualInvoices);
+    Assert.assertEquals(expectedInvoice, actualInvoice);
     verify(invoiceRepository).save(expectedInvoice);
   }
 
   @Test
   public void shouldUpdateInvoice() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
-    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    when(invoiceRepository.save(expectedInvoice)).thenReturn(expectedInvoice);
-    expectedInvoice.setNumber(1234);
-    int expectedNumber = expectedInvoice.getNumber();
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    when(invoiceRepository.save(invoice)).thenReturn(invoice);
+    invoiceService.addInvoice(invoice);
 
     //When
-    invoiceService.updateInvoice(expectedInvoice);
-    int actualNumber = expectedInvoice.getNumber();
+    invoiceService.updateInvoice(invoice);
 
     //Then
-    Assert.assertEquals(expectedNumber, actualNumber);
-    verify(invoiceRepository).save(expectedInvoice);
+    verify(invoiceRepository).save(invoice);
   }
 
-  //@Ignore
   @Test
   public void shouldDeleteInvoiceById() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
-    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    String id = expectedInvoice.getId();
-    List<Invoice> expectedInvoices = new ArrayList<>();
-    when(invoiceRepository.save(expectedInvoice)).thenReturn(expectedInvoice);
+    String id = "3448";
     doNothing().when(invoiceRepository).deleteById(id);
 
     //When
-    invoiceService.addInvoice(expectedInvoice);
     invoiceService.deleteInvoiceById(id);
-    List<Invoice> actualInvoices = invoiceService.getAllInvoices();
 
     //Then
-    Assert.assertEquals(expectedInvoices, actualInvoices);
-    verify(invoiceRepository).deleteById(id);
-  }
-
-  @Test
-  public void shouldDeleteInvoice() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
-    //Given
-    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    String id = expectedInvoice.getId();
-    when(invoiceRepository.existsById(id)).thenReturn(true);
-    doNothing().when(invoiceRepository).deleteById(id);
-    List<Invoice> expectedInvoices = new ArrayList<>();
-
-    //When
-    invoiceService.addInvoice(expectedInvoice);
-    invoiceService.deleteInvoice(expectedInvoice);
-    List<Invoice> actualInvoices = invoiceService.getAllInvoices();
-
-    //Then
-    Assert.assertEquals(expectedInvoices, actualInvoices);
     verify(invoiceRepository).deleteById(id);
   }
 
   @Test
   public void shouldDeleteAll() throws InvoiceRepositoryOperationException, InvoiceServiceOperationException {
     //Given
-    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    List<Invoice> expectedInvoices = new ArrayList<>();
     doNothing().when(invoiceRepository).deleteAll();
 
     //When
-    invoiceService.addInvoice(expectedInvoice);
     invoiceService.deleteAll();
-    List<Invoice> actualInvoices = invoiceService.getAllInvoices();
 
     //Then
-    Assert.assertEquals(expectedInvoices, actualInvoices);
     verify(invoiceRepository).deleteAll();
   }
 
@@ -180,6 +147,11 @@ public class InvoiceServiceTest {
   @Test
   public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsToDate() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.getAllInvoicesInGivenDateRange(LocalDate.now(), null));
+  }
+
+  @Test
+  public void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForToDateBeforeFromDate() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.getAllInvoicesInGivenDateRange(LocalDate.now(), LocalDate.of(2018, 10, 10)));
   }
 
   @Test
@@ -200,11 +172,6 @@ public class InvoiceServiceTest {
   @Test
   public void deleteInvoiceByIdMethodShouldThrowExceptionForNullAsId() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoiceById(null));
-  }
-
-  @Test
-  public void deleteInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoice(null));
   }
 
   @Test

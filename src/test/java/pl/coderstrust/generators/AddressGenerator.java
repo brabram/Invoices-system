@@ -4,10 +4,10 @@ import java.util.Random;
 
 import pl.coderstrust.model.Address;
 
-public class AddressGenerator {
+class AddressGenerator {
   private static Random random = new Random();
 
-  public static Address getRandomAddress() {
+  static Address getRandomAddress() {
     String street = "Krakowska";
     String number = String.format("%d/%d", random.nextInt(150), random.nextInt(180));
     String postalCode = String.format("25-%03d", random.nextInt(999));
