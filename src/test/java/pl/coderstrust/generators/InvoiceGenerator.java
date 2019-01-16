@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
@@ -14,11 +14,11 @@ import pl.coderstrust.model.InvoiceEntry;
 public class InvoiceGenerator {
 
   private static Random random = new Random();
-  private static AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(9999));
+  private static AtomicLong atomicInteger = new AtomicLong(random.nextInt(9999));
 
   public static Invoice getRandomInvoice() {
-    String id = String.valueOf(atomicInteger.incrementAndGet());
-    int number = random.nextInt(5000);
+    long id = atomicInteger.incrementAndGet();
+    String number = String.valueOf(random.nextInt(5000));
     LocalDate issueDate = createRandomDate();
     LocalDate dueDate = issueDate.plusDays(7);
     Company seller = CompanyGenerator.getRandomCompany();

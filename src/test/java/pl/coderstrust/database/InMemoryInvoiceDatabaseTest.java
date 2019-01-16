@@ -41,7 +41,7 @@ class InMemoryInvoiceDatabaseTest {
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToUpdate = invoiceDatabase.save(invoiceToSave);
     Assert.assertEquals(invoiceToUpdate, invoiceDatabase.findById(invoiceToUpdate.getId()));
-    invoiceToUpdate.setNumber(11);
+    invoiceToUpdate.setNumber("11");
     invoiceToUpdate.setTotalNetValue(BigDecimal.valueOf(5555));
 
     //when
@@ -83,7 +83,7 @@ class InMemoryInvoiceDatabaseTest {
   @Test
   void shouldReturnFalseIfInvoiceNotExistsInDatabase() throws InvoiceDatabaseOperationException {
     //when
-    boolean isInvoiceExists = invoiceDatabase.existsById("1");
+    boolean isInvoiceExists = invoiceDatabase.existsById(1L);
 
     //then
     Assert.assertFalse(isInvoiceExists);

@@ -2,7 +2,7 @@ package pl.coderstrust.generators;
 
 import java.math.BigDecimal;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
@@ -10,10 +10,10 @@ import pl.coderstrust.model.Vat;
 public class InvoiceEntriesGenerator {
 
   private static Random random = new Random();
-  private static AtomicInteger atomicInteger = new AtomicInteger(random.nextInt(999));
+  private static AtomicLong atomicInteger = new AtomicLong(random.nextInt(999));
 
   public static InvoiceEntry getRandomInvoiceEntry() {
-    String id = String.valueOf(atomicInteger.incrementAndGet());
+    long id = atomicInteger.incrementAndGet();
     String item = WordGenerator.getRandomWord();
     Long quantity = (long) random.nextInt(10000);
     BigDecimal price = BigDecimal.valueOf(random.nextInt(2000) * quantity);

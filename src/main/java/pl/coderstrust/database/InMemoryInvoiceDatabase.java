@@ -5,14 +5,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import pl.coderstrust.model.Invoice;
 
 public class InMemoryInvoiceDatabase implements InvoiceDatabase {
 
-  private Map<String, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
-  private AtomicInteger counter = new AtomicInteger();
+  private Map<Long, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
+  private AtomicLong counter = new AtomicLong();
   private final Object lock = new Object();
 
   @Override
@@ -25,7 +25,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
         invoices.put(invoice.getId(), invoice);
         return invoice;
       }
-      String id = String.valueOf(counter.incrementAndGet());
+      long id = counter.incrementAndGet();
       invoice.setId(id);
       invoices.put(id, invoice);
       return invoice;
@@ -33,10 +33,13 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   }
 
   @Override
-  public Invoice findById(String id) {
+  public Invoice findById(Long id) {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
+      }
+      if (id < 0) {
+        throw new IllegalArgumentException("Id cannot be lower than zero");
       }
       if (isInvoiceExist(id)) {
         return invoices.get(id);
@@ -46,10 +49,13 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   }
 
   @Override
-  public boolean existsById(String id) {
+  public boolean existsById(Long id) {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
+      }
+      if (id < 0) {
+        throw new IllegalArgumentException("Id cannot be lower than zero");
       }
       return isInvoiceExist(id);
     }
@@ -70,10 +76,13 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   }
 
   @Override
-  public void deleteById(String id) throws InvoiceDatabaseOperationException {
+  public void deleteById(Long id) throws InvoiceDatabaseOperationException {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
+      }
+      if (id < 0) {
+        throw new IllegalArgumentException("Id cannot be lower than zero");
       }
       if (!isInvoiceExist(id)) {
         throw new InvoiceDatabaseOperationException("Invoice does not exist");
@@ -89,7 +98,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
     }
   }
 
-  private boolean isInvoiceExist(String id) {
+  private boolean isInvoiceExist(long id) {
     return invoices.containsKey(id);
   }
 }

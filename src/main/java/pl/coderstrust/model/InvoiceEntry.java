@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceEntry {
-  private String id;
+  private long id;
   private String item;
   private Long quantity;
   private BigDecimal price;
@@ -12,7 +12,7 @@ public class InvoiceEntry {
   private BigDecimal grossValue;
   private Vat vatRate;
 
-  public InvoiceEntry(String id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, Vat vatRate) {
+  public InvoiceEntry(long id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, Vat vatRate) {
     this.id = id;
     this.item = item;
     this.quantity = quantity;
@@ -22,11 +22,11 @@ public class InvoiceEntry {
     this.vatRate = vatRate;
   }
 
-  public String getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -87,7 +87,7 @@ public class InvoiceEntry {
       return false;
     }
     InvoiceEntry invoiceEntry = (InvoiceEntry) o;
-    return Objects.equals(id, invoiceEntry.id)
+    return id == invoiceEntry.id
         && Objects.equals(item, invoiceEntry.item)
         && Objects.equals(quantity, invoiceEntry.quantity)
         && Objects.equals(price, invoiceEntry.price)
@@ -103,7 +103,7 @@ public class InvoiceEntry {
 
   @Override
   public String toString() {
-    return String.format("id: %s, item: %s, quantity: %s, price: %s, vatValue: %s, grossValue: %s, vatRate: %s",
+    return String.format("id: %d, item: %s, quantity: %s, price: %s, vatValue: %s, grossValue: %s, vatRate: %s",
         id, item, quantity, price, vatValue, grossValue, vatRate);
   }
 }

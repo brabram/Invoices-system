@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
-  private String id;
-  private int number;
+  private long id;
+  private String number;
   private LocalDate issueDate;
   private LocalDate dueDate;
   private Company seller;
@@ -16,7 +16,7 @@ public class Invoice {
   private BigDecimal totalNetValue;
   private BigDecimal totalGrossValue;
 
-  public Invoice(String id, int number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
+  public Invoice(long id, String number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
     this.id = id;
     this.number = number;
     this.issueDate = issueDate;
@@ -28,19 +28,19 @@ public class Invoice {
     this.totalGrossValue = totalGrossValue;
   }
 
-  public String getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(long id) {
     this.id = id;
   }
 
-  public int getNumber() {
+  public String getNumber() {
     return number;
   }
 
-  public void setNumber(int number) {
+  public void setNumber(String number) {
     this.number = number;
   }
 
@@ -109,8 +109,8 @@ public class Invoice {
       return false;
     }
     Invoice invoice = (Invoice) o;
-    return Objects.equals(id, invoice.id)
-        && number == invoice.number
+    return id == invoice.id
+        && Objects.equals(number, invoice.number)
         && Objects.equals(issueDate, invoice.issueDate)
         && Objects.equals(dueDate, invoice.dueDate)
         && Objects.equals(seller, invoice.seller)
@@ -127,7 +127,7 @@ public class Invoice {
 
   @Override
   public String toString() {
-    return String.format("id: %s, number: %d, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
+    return String.format("id: %d, number: %s, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
         id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
   }
 }
