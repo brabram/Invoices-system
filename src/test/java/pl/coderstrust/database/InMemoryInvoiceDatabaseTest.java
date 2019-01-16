@@ -186,4 +186,18 @@ class InMemoryInvoiceDatabaseTest {
   void existsByIdMethodShouldThrowExceptionForNullAsId() {
     assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.existsById(null));
   }
+
+  @Test
+  void findByIdMethodShouldThrowExceptionForNegativeNumberAsId() { assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.findById(-1L));
+  }
+
+  @Test
+  void deleteByIdMethodShouldThrowExceptionForNegativeNumberAsId() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.deleteById(-1L));
+  }
+
+  @Test
+  void existsByIdMethodShouldThrowExceptionForNegativeNumberAsId() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.existsById(-1L));
+  }
 }
