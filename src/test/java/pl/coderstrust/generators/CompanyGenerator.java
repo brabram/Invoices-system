@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CompanyGenerator {
 
   private static Random random = new Random();
-  private static AtomicLong atomicLong = new AtomicLong(random.nextLong());
+  private static AtomicLong atomicLong = new AtomicLong(random.nextInt(Math.toIntExact(9999L)));
 
   public static Company getRandomCompany() {
     long id = atomicLong.incrementAndGet();

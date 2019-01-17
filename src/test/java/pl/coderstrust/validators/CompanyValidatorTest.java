@@ -24,7 +24,7 @@ class CompanyValidatorTest {
 
   @ParameterizedTest
   @MethodSource("companyIdParameters")
-  void shouldNotValidateCompanyId(String id, List<String> expected) {
+  void shouldNotValidateCompanyId(long id, List<String> expected) {
     company.setId(id);
     List<String> resultOfValidation = CompanyValidator.validate(company);
     Assert.assertEquals(expected, resultOfValidation);
@@ -32,11 +32,7 @@ class CompanyValidatorTest {
 
   private static Stream<Arguments> companyIdParameters() {
     return Stream.of(
-        Arguments.of(null, Collections.singletonList("Id cannot be null")),
-        Arguments.of("", Collections.singletonList("Id cannot be empty")),
-        Arguments.of("sdf35", Collections.singletonList("Incorrect id")),
-        Arguments.of("35fewf", Collections.singletonList("Incorrect id")),
-        Arguments.of("-535", Collections.singletonList("Incorrect id"))
+        Arguments.of(-535, Collections.singletonList("Id cannot be less than zero"))
     );
   }
 

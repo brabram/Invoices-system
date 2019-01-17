@@ -26,7 +26,7 @@ class InvoiceValidatorTest {
 
   @ParameterizedTest
   @MethodSource("invoiceIdParameters")
-  void shouldNotValidateInvoiceId(String id, List<String> expected) {
+  void shouldNotValidateInvoiceId(long id, List<String> expected) {
     invoice.setId(id);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
@@ -34,17 +34,13 @@ class InvoiceValidatorTest {
 
   private static Stream<Arguments> invoiceIdParameters() {
     return Stream.of(
-        Arguments.of(null, Collections.singletonList("Id cannot be null")),
-        Arguments.of("", Collections.singletonList("Id cannot be empty")),
-        Arguments.of("sdf35", Collections.singletonList("Incorrect id")),
-        Arguments.of("35fewf", Collections.singletonList("Incorrect id")),
-        Arguments.of("-535", Collections.singletonList("Incorrect id"))
+        Arguments.of(-535, Collections.singletonList("Id cannot be less than zero"))
     );
   }
 
   @ParameterizedTest
   @MethodSource("invoiceNumberParameters")
-  void shouldNotValidateInvoiceNumber(int number, List<String> expected) {
+  void shouldNotValidateInvoiceNumber(String number, List<String> expected) {
     invoice.setNumber(number);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
@@ -52,7 +48,11 @@ class InvoiceValidatorTest {
 
   private static Stream<Arguments> invoiceNumberParameters() {
     return Stream.of(
-        Arguments.of(Integer.valueOf(-535), Collections.singletonList("Number cannot be less than 0"))
+        Arguments.of(null, Collections.singletonList("Number cannot be null")),
+        Arguments.of("", Collections.singletonList("Number cannot be empty")),
+        Arguments.of("sdf35", Collections.singletonList("Incorrect number")),
+        Arguments.of("35fewf", Collections.singletonList("Incorrect number")),
+        Arguments.of("-535", Collections.singletonList("Incorrect number"))
     );
   }
 

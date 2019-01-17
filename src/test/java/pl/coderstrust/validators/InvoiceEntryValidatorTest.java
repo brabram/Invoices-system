@@ -30,7 +30,7 @@ class InvoiceEntryValidatorTest {
 
   @ParameterizedTest
   @MethodSource("InvoiceEntryIdParameters")
-  void shouldNotValidateInvoiceEntryId(String id, List<String> expected) {
+  void shouldNotValidateInvoiceEntryId(long id, List<String> expected) {
     invoiceEntry.setId(id);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     Assert.assertEquals(expected, resultOfValidation);
@@ -38,11 +38,7 @@ class InvoiceEntryValidatorTest {
 
   private static Stream<Arguments> InvoiceEntryIdParameters() {
     return Stream.of(
-        Arguments.of(null, Collections.singletonList("Id cannot be null")),
-        Arguments.of("", Collections.singletonList("Id cannot be empty")),
-        Arguments.of("sdf35", Collections.singletonList("Incorrect id")),
-        Arguments.of("35fewf", Collections.singletonList("Incorrect id")),
-        Arguments.of("-535", Collections.singletonList("Incorrect id"))
+        Arguments.of(-535, Collections.singletonList("Id cannot be less than zero"))
     );
   }
 
