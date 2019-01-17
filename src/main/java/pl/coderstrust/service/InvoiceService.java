@@ -1,30 +1,32 @@
 package pl.coderstrust.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import pl.coderstrust.database.InvoiceDatabase;
+import pl.coderstrust.database.InvoiceDatabaseOperationException;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.repository.InvoiceRepository;
-import pl.coderstrust.repository.InvoiceRepositoryOperationException;
 
 public class InvoiceService {
 
-  private InvoiceRepository invoiceRepository;
+  private InvoiceDatabase invoiceDatabase;
 
-  public InvoiceService(InvoiceRepository invoiceRepository) {
-    this.invoiceRepository = invoiceRepository;
+  public InvoiceService(InvoiceDatabase invoiceDatabase) {
+    this.invoiceDatabase = invoiceDatabase;
   }
 
-  List<Invoice> getAllInvoices() throws InvoiceServiceOperationException {
+  public Optional<List<Invoice>> getAllInvoices() throws InvoiceServiceOperationException {
     try {
-      return invoiceRepository.findAll();
-    } catch (InvoiceRepositoryOperationException e) {
+      return invoiceDatabase.findAll();
+    } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while getting invoices.");
     }
   }
 
-  List<Invoice> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceServiceOperationException {
+  Optional<List<Invoice>> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceServiceOperationException {
     if (fromDate == null) {
       throw new IllegalArgumentException("fromDate cannot be null");
     }
@@ -34,30 +36,34 @@ public class InvoiceService {
     if (toDate.isBefore(fromDate)) {
       throw new IllegalArgumentException("toDate cannot be before fromDate.");
     }
-    return getAllInvoices()
-        .stream()
-        .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)
-        .collect(Collectors.toList());
+    if (getAllInvoices().isPresent()) {
+      return Optional.of(getAllInvoices()
+          .get()
+          .stream()
+          .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)
+          .collect(Collectors.toList()));
+    }
+    return Optional.of(new ArrayList<>());
   }
 
-  Invoice getInvoiceById(String id) throws InvoiceServiceOperationException {
+  Optional<Invoice> getInvoiceById(Long id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
-      return invoiceRepository.findById(id);
-    } catch (InvoiceRepositoryOperationException e) {
+      return invoiceDatabase.findById(id);
+    } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while getting invoice.");
     }
   }
 
-  Invoice addInvoice(Invoice invoice) throws InvoiceServiceOperationException {
+  Optional<Invoice> addInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
-      return invoiceRepository.save(invoice);
-    } catch (InvoiceRepositoryOperationException e) {
+      return invoiceDatabase.save(invoice);
+    } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while adding invoice.");
     }
   }
@@ -67,31 +73,31 @@ public class InvoiceService {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
-      if (invoiceRepository.existsById(invoice.getId())) {
-        invoiceRepository.save(invoice);
+      if (invoiceDatabase.existsById(invoice.getId())) {
+        invoiceDatabase.save(invoice);
       }
-    } catch (InvoiceRepositoryOperationException e) {
+    } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while updating invoice.");
     }
   }
 
-  void deleteInvoiceById(String id) throws InvoiceServiceOperationException {
+  void deleteInvoiceById(Long id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
-      if (invoiceRepository.existsById(id)) {
-        invoiceRepository.deleteById(id);
+      if (invoiceDatabase.existsById(id)) {
+        invoiceDatabase.deleteById(id);
       }
-    } catch (InvoiceRepositoryOperationException e) {
+    } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while deleting invoice.");
     }
   }
 
   void deleteAll() throws InvoiceServiceOperationException {
     try {
-      invoiceRepository.deleteAll();
-    } catch (InvoiceRepositoryOperationException e) {
+      invoiceDatabase.deleteAll();
+    } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while deleting invoices.");
     }
   }

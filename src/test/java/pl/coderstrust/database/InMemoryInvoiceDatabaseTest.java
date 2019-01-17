@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,10 +26,10 @@ class InMemoryInvoiceDatabaseTest {
   void shouldSaveInvoice() throws InvoiceDatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice = invoiceDatabase.save(invoiceToSave);
+    Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
 
     //when
-    Invoice invoiceFromDatabase = invoiceDatabase.findById(savedInvoice.getId());
+    Optional<Invoice> invoiceFromDatabase = invoiceDatabase.findById(savedInvoice.get().getId());
 
     //then
     Assert.assertNotNull(invoiceFromDatabase);
