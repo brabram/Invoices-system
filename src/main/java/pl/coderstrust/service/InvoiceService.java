@@ -36,8 +36,9 @@ public class InvoiceService {
     if (toDate.isBefore(fromDate)) {
       throw new IllegalArgumentException("toDate cannot be before fromDate.");
     }
-    if (getAllInvoices().isPresent()) {
-      return Optional.of(getAllInvoices()
+    Optional<List<Invoice>> allInvoicesOptional = getAllInvoices();
+    if (allInvoicesOptional.isPresent()) {
+      return Optional.of(allInvoicesOptional
           .get()
           .stream()
           .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)

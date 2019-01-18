@@ -203,7 +203,8 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void findByIdMethodShouldThrowExceptionForNegativeNumberAsId() { assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.findById(-1L));
+  void findByIdMethodShouldThrowExceptionForNegativeNumberAsId() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.findById(-1L));
   }
 
   @Test
