@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
 
-class InvoiceEntriesGenerator {
+public class InvoiceEntriesGenerator {
 
   private static Random random = new Random();
   private static AtomicLong atomicInteger = new AtomicLong(random.nextInt(999));

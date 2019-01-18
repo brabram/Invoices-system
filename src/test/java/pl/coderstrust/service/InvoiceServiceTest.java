@@ -39,7 +39,7 @@ public class InvoiceServiceTest {
     Optional<List<Invoice>> actualInvoices = invoiceService.getAllInvoices();
 
     //Then
-    Assert.assertEquals(expectedInvoices, actualInvoices);
+    Assert.assertEquals(expectedInvoices, actualInvoices.get());
     verify(invoiceDatabase).findAll();
   }
 
@@ -57,7 +57,7 @@ public class InvoiceServiceTest {
     expectedInvoices.add(randomInvoice1);
     expectedInvoices.add(randomInvoice3);
     expectedInvoices.add(randomInvoice4);
-    when(invoiceDatabase.findAll()).thenReturn(expectedInvoices);
+    when(invoiceDatabase.findAll()).thenReturn(Optional.of(expectedInvoices));
 
     //When
     invoiceService.addInvoice(randomInvoice1);
@@ -65,22 +65,22 @@ public class InvoiceServiceTest {
     invoiceService.addInvoice(randomInvoice3);
     invoiceService.addInvoice(randomInvoice4);
     invoiceService.addInvoice(randomInvoice5);
-    List<Invoice> actualInvoices = invoiceService.getAllInvoicesInGivenDateRange(fromDate, toDate);
+    Optional<List<Invoice>> actualInvoices = invoiceService.getAllInvoicesInGivenDateRange(fromDate, toDate);
 
     //Then
-    Assert.assertEquals(expectedInvoices, actualInvoices);
+    Assert.assertEquals(expectedInvoices, actualInvoices.get());
     verify(invoiceDatabase).findAll();
   }
 
   @Test
   public void shouldGetInvoiceById() throws InvoiceDatabaseOperationException, InvoiceServiceOperationException {
     //Given
-    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    Long id = expectedInvoice.getId();
+    Optional<Invoice> expectedInvoice = Optional.of(InvoiceGenerator.getRandomInvoice());
+    Long id = expectedInvoice.get().getId();
     when(invoiceDatabase.findById(id)).thenReturn(expectedInvoice);
 
     //When
-    Invoice actualInvoice = invoiceService.getInvoiceById(id);
+    Optional<Invoice> actualInvoice = invoiceService.getInvoiceById(id);
 
     //Then
     Assert.assertEquals(expectedInvoice, actualInvoice);
@@ -91,13 +91,13 @@ public class InvoiceServiceTest {
   public void shouldAddInvoice() throws InvoiceDatabaseOperationException, InvoiceServiceOperationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    when(invoiceDatabase.save(expectedInvoice)).thenReturn(expectedInvoice);
+    when(invoiceDatabase.save(expectedInvoice)).thenReturn(Optional.of(expectedInvoice));
 
     //When
-    Invoice actualInvoice = invoiceService.addInvoice(expectedInvoice);
+    Optional<Invoice> actualInvoice = invoiceService.addInvoice(expectedInvoice);
 
     //Then
-    Assert.assertEquals(expectedInvoice, actualInvoice);
+    Assert.assertEquals(expectedInvoice, actualInvoice.get());
     verify(invoiceDatabase).save(expectedInvoice);
   }
 
@@ -105,7 +105,7 @@ public class InvoiceServiceTest {
   public void shouldUpdateInvoice() throws InvoiceDatabaseOperationException, InvoiceServiceOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    when(invoiceDatabase.save(invoice)).thenReturn(invoice);
+    when(invoiceDatabase.save(invoice)).thenReturn(Optional.of(invoice));
     invoiceService.addInvoice(invoice);
 
     //When

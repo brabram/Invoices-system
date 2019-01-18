@@ -26,7 +26,7 @@ public class InvoiceService {
     }
   }
 
-  Optional<List<Invoice>> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceServiceOperationException {
+  public Optional<List<Invoice>> getAllInvoicesInGivenDateRange(LocalDate fromDate, LocalDate toDate) throws InvoiceServiceOperationException {
     if (fromDate == null) {
       throw new IllegalArgumentException("fromDate cannot be null");
     }
@@ -46,7 +46,7 @@ public class InvoiceService {
     return Optional.of(new ArrayList<>());
   }
 
-  Optional<Invoice> getInvoiceById(Long id) throws InvoiceServiceOperationException {
+  public Optional<Invoice> getInvoiceById(Long id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
@@ -57,7 +57,7 @@ public class InvoiceService {
     }
   }
 
-  Optional<Invoice> addInvoice(Invoice invoice) throws InvoiceServiceOperationException {
+  public Optional<Invoice> addInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
@@ -68,7 +68,7 @@ public class InvoiceService {
     }
   }
 
-  void updateInvoice(Invoice invoice) throws InvoiceServiceOperationException {
+  public void updateInvoice(Invoice invoice) throws InvoiceServiceOperationException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
@@ -81,7 +81,7 @@ public class InvoiceService {
     }
   }
 
-  void deleteInvoiceById(Long id) throws InvoiceServiceOperationException {
+  public void deleteInvoiceById(Long id) throws InvoiceServiceOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null.");
     }
@@ -94,7 +94,7 @@ public class InvoiceService {
     }
   }
 
-  void deleteAll() throws InvoiceServiceOperationException {
+  public void deleteAll() throws InvoiceServiceOperationException {
     try {
       invoiceDatabase.deleteAll();
     } catch (InvoiceDatabaseOperationException e) {

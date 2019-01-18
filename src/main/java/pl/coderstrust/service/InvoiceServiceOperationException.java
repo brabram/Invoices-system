@@ -2,18 +2,18 @@ package pl.coderstrust.service;
 
 public class InvoiceServiceOperationException extends Exception {
 
-  InvoiceServiceOperationException() {
+  public InvoiceServiceOperationException() {
   }
 
-  InvoiceServiceOperationException(String message) {
+  public InvoiceServiceOperationException(String message) {
     super(message);
   }
 
-  InvoiceServiceOperationException(Throwable cause) {
+  public InvoiceServiceOperationException(Throwable cause) {
     super(cause);
   }
 
-  InvoiceServiceOperationException(String message, Throwable cause) {
+  public InvoiceServiceOperationException(String message, Throwable cause) {
     super(message, cause);
   }
 }

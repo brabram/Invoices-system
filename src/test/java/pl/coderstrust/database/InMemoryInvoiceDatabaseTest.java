@@ -40,14 +40,14 @@ class InMemoryInvoiceDatabaseTest {
   void shouldUpdateInvoice() throws InvoiceDatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToUpdate = invoiceDatabase.save(invoiceToSave);
-    Assert.assertEquals(invoiceToUpdate, invoiceDatabase.findById(invoiceToUpdate.getId()));
-    invoiceToUpdate.setNumber("11");
-    invoiceToUpdate.setTotalNetValue(BigDecimal.valueOf(5555));
+    Optional<Invoice> invoiceToUpdate = invoiceDatabase.save(invoiceToSave);
+    Assert.assertEquals(invoiceToUpdate, invoiceDatabase.findById(invoiceToUpdate.get().getId()));
+    invoiceToUpdate.get().setNumber("11");
+    invoiceToUpdate.get().setTotalNetValue(BigDecimal.valueOf(5555));
 
     //when
-    Invoice updatedInvoice = invoiceDatabase.save(invoiceToUpdate);
-    Invoice invoiceFromDatabase = invoiceDatabase.findById(updatedInvoice.getId());
+    Optional<Invoice> updatedInvoice = invoiceDatabase.save(invoiceToUpdate.get());
+    Optional<Invoice> invoiceFromDatabase = invoiceDatabase.findById(updatedInvoice.get().getId());
 
     //then
     Assert.assertNotNull(invoiceFromDatabase);
@@ -58,10 +58,10 @@ class InMemoryInvoiceDatabaseTest {
   void shouldFindOneInvoice() throws InvoiceDatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice = invoiceDatabase.save(invoiceToSave);
+    Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
 
     //when
-    Invoice invoiceFromDatabase = invoiceDatabase.findById(savedInvoice.getId());
+    Optional<Invoice> invoiceFromDatabase = invoiceDatabase.findById(savedInvoice.get().getId());
 
     //then
     Assert.assertNotNull(invoiceFromDatabase);
@@ -72,10 +72,10 @@ class InMemoryInvoiceDatabaseTest {
   void shouldReturnTrueIfInvoiceExistsInDatabase() throws InvoiceDatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice = invoiceDatabase.save(invoiceToSave);
+    Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
 
     //when
-    boolean isInvoiceExists = invoiceDatabase.existsById(savedInvoice.getId());
+    boolean isInvoiceExists = invoiceDatabase.existsById(savedInvoice.get().getId());
 
     //then
     Assert.assertTrue(isInvoiceExists);
@@ -96,32 +96,32 @@ class InMemoryInvoiceDatabaseTest {
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
-    Invoice savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
-    Invoice savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
+    Optional<Invoice> savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
+    Optional<Invoice> savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
+    Optional<Invoice> savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
     List<Invoice> expectedInvoices = new ArrayList<>();
-    expectedInvoices.add(savedInvoice1);
-    expectedInvoices.add(savedInvoice2);
-    expectedInvoices.add(savedInvoice3);
+    expectedInvoices.add(savedInvoice1.get());
+    expectedInvoices.add(savedInvoice2.get());
+    expectedInvoices.add(savedInvoice3.get());
 
     //when
-    List<Invoice> invoicesFromDatabase = invoiceDatabase.findAll();
+    Optional<List<Invoice>> invoicesFromDatabase = invoiceDatabase.findAll();
 
     //then
     Assert.assertNotNull(invoicesFromDatabase);
-    Assert.assertEquals(expectedInvoices, invoicesFromDatabase);
+    Assert.assertEquals(expectedInvoices, invoicesFromDatabase.get());
   }
 
   @Test
   void shouldDeleteInvoice() throws InvoiceDatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice = invoiceDatabase.save(invoiceToSave);
-    Assert.assertTrue(invoiceDatabase.existsById(savedInvoice.getId()));
+    Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
+    Assert.assertTrue(invoiceDatabase.existsById(savedInvoice.get().getId()));
 
     //when
-    invoiceDatabase.deleteById(savedInvoice.getId());
-    boolean isInvoiceExists = invoiceDatabase.existsById(savedInvoice.getId());
+    invoiceDatabase.deleteById(savedInvoice.get().getId());
+    boolean isInvoiceExists = invoiceDatabase.existsById(savedInvoice.get().getId());
 
     //then
     Assert.assertFalse(isInvoiceExists);
@@ -134,12 +134,12 @@ class InMemoryInvoiceDatabaseTest {
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
-    Invoice savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
-    Invoice savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
-    invoices.add(savedInvoice1);
-    invoices.add(savedInvoice2);
-    invoices.add(savedInvoice3);
+    Optional<Invoice> savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
+    Optional<Invoice> savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
+    Optional<Invoice> savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
+    invoices.add(savedInvoice1.get());
+    invoices.add(savedInvoice2.get());
+    invoices.add(savedInvoice3.get());
 
     //when
     long numberOfInvoices = invoiceDatabase.count();
@@ -152,12 +152,12 @@ class InMemoryInvoiceDatabaseTest {
   void shouldDeleteAllInvoices() throws InvoiceDatabaseOperationException {
     //given
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
+    Optional<Invoice> savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
     Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
+    Optional<Invoice> savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
     List<Invoice> invoicesInDatabase = new ArrayList<>();
-    invoicesInDatabase.add(savedInvoice1);
-    invoicesInDatabase.add(savedInvoice2);
+    invoicesInDatabase.add(savedInvoice1.get());
+    invoicesInDatabase.add(savedInvoice2.get());
     Assert.assertEquals(invoicesInDatabase.size(), invoiceDatabase.count());
 
     //when
