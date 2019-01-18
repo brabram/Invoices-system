@@ -1,8 +1,8 @@
 package pl.coderstrust.helpers;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
@@ -110,7 +110,7 @@ class FileHelperTestIT {
     boolean result = fileHelper.isEmpty(INPUT_FILE);
 
     //Then
-    Assertions.assertFalse(result);
+    assertFalse(result);
   }
 
   @Test

@@ -1,6 +1,7 @@
 package pl.coderstrust.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -39,6 +40,7 @@ public class InvoiceServiceTest {
     Optional<List<Invoice>> actualInvoices = invoiceService.getAllInvoices();
 
     //Then
+    assertTrue(actualInvoices.isPresent());
     Assert.assertEquals(expectedInvoices, actualInvoices.get());
     verify(invoiceDatabase).findAll();
   }
@@ -68,6 +70,7 @@ public class InvoiceServiceTest {
     Optional<List<Invoice>> actualInvoices = invoiceService.getAllInvoicesInGivenDateRange(fromDate, toDate);
 
     //Then
+    assertTrue(actualInvoices.isPresent());
     Assert.assertEquals(expectedInvoices, actualInvoices.get());
     verify(invoiceDatabase).findAll();
   }
@@ -97,6 +100,7 @@ public class InvoiceServiceTest {
     Optional<Invoice> actualInvoice = invoiceService.addInvoice(expectedInvoice);
 
     //Then
+    assertTrue(actualInvoice.isPresent());
     Assert.assertEquals(expectedInvoice, actualInvoice.get());
     verify(invoiceDatabase).save(expectedInvoice);
   }
