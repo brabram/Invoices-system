@@ -1,8 +1,17 @@
 package pl.coderstrust.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class AccountNumber {
+
+  @Id
+  @GeneratedValue()
+  private long id;
+
   private String ibanNumber;
   private String localNumber;
 

@@ -1,12 +1,24 @@
 package pl.coderstrust.model;
 
+import javax.persistence.*;
+
 import java.util.Objects;
 
+@Entity
 public class Company {
+
+  @Id
+  @GeneratedValue()
+  private long id;
+
   private Long id;
   private String name;
   private String taxIdentificationNumber;
+
+  @ManyToOne
   private AccountNumber accountNumber;
+
+  @ManyToOne
   private ContactDetails contactDetails;
 
   protected Company() {

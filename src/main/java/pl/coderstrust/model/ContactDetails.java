@@ -1,11 +1,20 @@
 package pl.coderstrust.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class ContactDetails {
+
+  @Id
+  @GeneratedValue()
+  private long id;
+
   private String email;
   private String phoneNumber;
   private String website;
+
+  @OneToMany
   private Address address;
 
   protected ContactDetails() {

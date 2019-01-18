@@ -1,20 +1,34 @@
 package pl.coderstrust.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Invoice {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+
   private Long id;
   private String number;
   private LocalDate issueDate;
   private LocalDate dueDate;
-  private Company seller;
-  private Company buyer;
-  private List<InvoiceEntry> entries;
   private BigDecimal totalNetValue;
   private BigDecimal totalGrossValue;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  private Company seller;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  private Company buyer;
+
+  @ManyToMany(cascade = CascadeType.ALL)
+  private List<InvoiceEntry> entries;
+
 
   protected Invoice() {
   }
