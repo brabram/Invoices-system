@@ -67,13 +67,12 @@ class InvoiceValidatorTest {
   }
 
   private static Stream<Arguments> invoiceDateParameters() {
-    LocalDate date = InvoiceGenerator.getRandomInvoice().getIssueDate();
-    LocalDate dueDate = InvoiceGenerator.getRandomInvoice().getIssueDate();
+    LocalDate dueDate = InvoiceGenerator.getRandomInvoice().getDueDate();
     LocalDate issueDate = dueDate.plusDays(2);
     return Stream.of(
-        Arguments.of(null, date, Collections.singletonList("Issue date cannot be null")),
-        Arguments.of(date, null, Collections.singletonList("Due date cannot be null")),
-        Arguments.of(dueDate, issueDate, Collections.singletonList("Issue date cannot be after due date"))
+        Arguments.of(null, dueDate, Collections.singletonList("Issue date cannot be null")),
+        Arguments.of(issueDate, null, Collections.singletonList("Due date cannot be null")),
+        Arguments.of(issueDate, dueDate, Collections.singletonList("Issue date cannot be after due date"))
     );
   }
 
