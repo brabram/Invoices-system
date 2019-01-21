@@ -9,11 +9,6 @@ import java.util.List;
 import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
 
 public class AddressValidator {
-  public static void main(String[] args) {
-    String ree = "243A/5B";
-    boolean regrex = ree.matches("[0-9]{1,4}?[A-Za-z]?/[0-9]{1,4}?[A-Za-z]?");
-    System.out.println(regrex);
-  }
 
   public static List<String> validate(Address address) {
     if (address == null) {
