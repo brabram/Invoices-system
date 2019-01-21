@@ -16,10 +16,6 @@ public class InvoiceGenerator {
   private static Random random = new Random();
   private static AtomicLong atomicInteger = new AtomicLong(random.nextInt(9999));
 
-  public static void main(String[] args) {
-    System.out.println(getRandomInvoice());
-  }
-
   public static Invoice getRandomInvoice() {
     long id = atomicInteger.incrementAndGet();
     String number = String.valueOf(random.nextInt(5000));
