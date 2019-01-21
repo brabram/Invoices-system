@@ -9,7 +9,7 @@ import java.util.List;
 import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
 
 public class AddressValidator {
-
+g
   public static List<String> validate(Address address) {
     if (address == null) {
       return Collections.singletonList("Address cannot be null");
