@@ -23,6 +23,7 @@
     <checkstylePlugin.version>3.0.0</checkstylePlugin.version>
     <projectInfoReportsPlugin.version>3.0.0</projectInfoReportsPlugin.version>
     <checkstyle.config.location>checkstyle-config/google_style_settings.xml</checkstyle.config.location>
+    <linkXRef>false</linkXRef>
   </properties>
 
   <dependencies>
