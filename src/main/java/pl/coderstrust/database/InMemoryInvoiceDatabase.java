@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.stereotype.Repository;
 import pl.coderstrust.model.Invoice;
 
+@Repository
 public class InMemoryInvoiceDatabase implements InvoiceDatabase {
 
   private Map<Long, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());

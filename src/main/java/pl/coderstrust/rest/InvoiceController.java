@@ -4,15 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.*;
-import pl.coderstrust.database.InMemoryInvoiceDatabase;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
 
-@RequestMapping("/invoiceApplication")
+@RequestMapping("/invoicesService")
 @RestController
 public class InvoiceController {
 
-  private InvoiceService invoiceService = new InvoiceService(new InMemoryInvoiceDatabase());
+  private InvoiceService invoiceService;
+
+  public InvoiceController(InvoiceService invoiceService) {
+    this.invoiceService = invoiceService;
+  }
 
   @GetMapping
   public Optional<List<Invoice>> getAllInvoices() {
