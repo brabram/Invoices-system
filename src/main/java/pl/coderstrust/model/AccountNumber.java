@@ -7,11 +7,6 @@ import java.util.Objects;
 
 @Entity
 public class AccountNumber {
-
-  @Id
-  @GeneratedValue()
-  private long id;
-
   private String ibanNumber;
   private String localNumber;
 

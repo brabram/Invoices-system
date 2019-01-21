@@ -1,6 +1,8 @@
 package pl.coderstrust.hibernate;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import pl.coderstrust.database.InvoiceDatabaseOperationException;
 import pl.coderstrust.model.Invoice;
 
@@ -8,11 +10,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+
 @Repository
 public class HibernateInvoiceDatabase implements HibernateInvoiceRepository {
 
   private HibernateInvoiceRepository hibernateInvoiceRepository;
 
+  public HibernateInvoiceDatabase(HibernateInvoiceRepository hibernateInvoiceRepository) {
+    this.hibernateInvoiceRepository = hibernateInvoiceRepository;
+  }
 
   @Override
   public <S extends Invoice> S save(S entity) throws InvoiceDatabaseOperationException {

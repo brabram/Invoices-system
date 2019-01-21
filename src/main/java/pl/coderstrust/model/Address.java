@@ -7,11 +7,6 @@ import java.util.Objects;
 
 @Entity
 public class Address {
-
-  @Id
-  @GeneratedValue()
-  private long id;
-
   private String street;
   private String number;
   private String postalCode;
