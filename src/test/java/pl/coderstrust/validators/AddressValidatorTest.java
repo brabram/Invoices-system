@@ -37,8 +37,7 @@ class AddressValidatorTest {
         Arguments.of("sdf34535", Collections.singletonList("Incorrect street name")),
         Arguments.of("53533242", Collections.singletonList("Incorrect street name")),
         Arguments.of("-53533242", Collections.singletonList("Incorrect street name")),
-        Arguments.of("krakowska", Collections.singletonList("Incorrect street name")),
-        Arguments.of("kRAkoWska", Collections.singletonList("Incorrect street name"))
+        Arguments.of("krakowska", Collections.singletonList("Incorrect street name"))
     );
   }
 

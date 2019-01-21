@@ -35,7 +35,7 @@ public class InvoiceValidator {
 
   private static String validateId(long id) {
     if (id < 0) {
-      return "Id cannot be less than zero";
+      return "Id cannot be less than 0";
     }
     return "";
   }
@@ -54,11 +54,14 @@ public class InvoiceValidator {
   }
 
   private static String validateDate(LocalDate issueDate, LocalDate dueDate) {
-    if (issueDate == null || dueDate == null) {
-      return "Date cannot be null";
+    if (issueDate == null) {
+      return "Issue date cannot be null";
     }
-    if (issueDate.isAfter(dueDate)) {
-      return "Due date cannot be after local date";
+    if (dueDate == null) {
+      return "Due date cannot be null";
+    }
+    if (dueDate.isAfter(issueDate)) {
+      return "Issue date cannot be after due date";
     }
     return "";
   }
@@ -70,6 +73,9 @@ public class InvoiceValidator {
     if (totalNetValue.intValue() < 0) {
       return "Total net value cannot be less than 0";
     }
+    if (totalNetValue.intValue() == 0) {
+      return "Total net value cannot be equal to 0";
+    }
     return "";
   }
 
@@ -79,6 +85,9 @@ public class InvoiceValidator {
     }
     if (totalGrossValue.intValue() < 0) {
       return "Total gross value cannot be less than 0";
+    }
+    if (totalGrossValue.intValue() == 0) {
+      return "Total gross value cannot be equal to 0";
     }
     return "";
   }

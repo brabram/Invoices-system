@@ -34,7 +34,7 @@ class InvoiceValidatorTest {
 
   private static Stream<Arguments> invoiceIdParameters() {
     return Stream.of(
-        Arguments.of(-535, Collections.singletonList("Id cannot be less than zero"))
+        Arguments.of(-535, Collections.singletonList("Id cannot be less than 0"))
     );
   }
 
@@ -58,15 +58,22 @@ class InvoiceValidatorTest {
 
   @ParameterizedTest
   @MethodSource("invoiceDateParameters")
-  void shouldNotValidateInvoiceIssueDate(LocalDate issueDate, List<String> expected) {
+  void shouldNotValidateInvoiceIssueDate(LocalDate issueDate, LocalDate dueDate, List<String> expected) {
     invoice.setIssueDate(issueDate);
+    invoice.setDueDate(dueDate);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
+
   }
 
   private static Stream<Arguments> invoiceDateParameters() {
+    LocalDate date = InvoiceGenerator.getRandomInvoice().getIssueDate();
+    LocalDate dueDate = InvoiceGenerator.getRandomInvoice().getIssueDate();
+    LocalDate issueDate = dueDate.plusDays(2);
     return Stream.of(
-        Arguments.of(null, Collections.singletonList("Date cannot be null"))
+        Arguments.of(null, date, Collections.singletonList("Issue date cannot be null")),
+        Arguments.of(date, null, Collections.singletonList("Due date cannot be null")),
+        Arguments.of(dueDate, issueDate, Collections.singletonList("Issue date cannot be after due date"))
     );
   }
 
@@ -81,7 +88,8 @@ class InvoiceValidatorTest {
   private static Stream<Arguments> totalNetValueParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Total net value cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Total net value cannot be less than 0"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Total net value cannot be less than 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Total net value cannot be equal to 0"))
     );
   }
 
@@ -96,7 +104,8 @@ class InvoiceValidatorTest {
   private static Stream<Arguments> totalGrossValueParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Total gross value cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Total gross value cannot be less than 0"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Total gross value cannot be less than 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Total gross value cannot be equal to 0"))
     );
   }
 

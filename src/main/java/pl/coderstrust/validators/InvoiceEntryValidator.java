@@ -36,7 +36,7 @@ public class InvoiceEntryValidator {
 
   private static String validateId(long id) {
     if (id < 0) {
-      return "Id cannot be less than zero";
+      return "Id cannot be less than 0";
     }
     return "";
   }
@@ -58,8 +58,11 @@ public class InvoiceEntryValidator {
     if (quantity == null) {
       return "Quantity cannot be null";
     }
-    if (quantity <= 0) {
-      return "Quantity cannot be less than zero";
+    if (quantity < 0) {
+      return "Quantity cannot be less than 0";
+    }
+    if (quantity == 0) {
+      return "Quantity cannot be equal to 0";
     }
     return "";
   }
@@ -71,6 +74,9 @@ public class InvoiceEntryValidator {
     if (price.intValue() < 0) {
       return "Price cannot be less than 0";
     }
+    if (price.intValue() == 0) {
+      return "Price cannot be equal to 0";
+    }
     return "";
   }
 
@@ -81,6 +87,9 @@ public class InvoiceEntryValidator {
     if (vatValue.intValue() < 0) {
       return "Vat value cannot be less than 0";
     }
+    if (vatValue.intValue() == 0) {
+      return "Vat value cannot be equal to 0";
+    }
     return "";
   }
 
@@ -90,6 +99,9 @@ public class InvoiceEntryValidator {
     }
     if (grossValue.intValue() < 0) {
       return "Gross value cannot be less than 0";
+    }
+    if (grossValue.intValue() == 0) {
+      return "Gross value cannot be equal to 0";
     }
     return "";
   }

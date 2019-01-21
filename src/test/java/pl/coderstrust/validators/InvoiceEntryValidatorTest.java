@@ -38,7 +38,7 @@ class InvoiceEntryValidatorTest {
 
   private static Stream<Arguments> InvoiceEntryIdParameters() {
     return Stream.of(
-        Arguments.of(-535, Collections.singletonList("Id cannot be less than zero"))
+        Arguments.of(-535, Collections.singletonList("Id cannot be less than 0"))
     );
   }
 
@@ -71,7 +71,7 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> quantityParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Quantity cannot be null")),
-        Arguments.of(Long.valueOf(-535), Collections.singletonList("Quantity cannot be less than zero"))
+        Arguments.of(Long.valueOf(-535), Collections.singletonList("Quantity cannot be less than 0"))
     );
   }
 
@@ -86,7 +86,8 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> priceParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Price cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Price cannot be less than 0"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Price cannot be less than 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Price cannot be equal to 0"))
     );
   }
 
@@ -101,7 +102,8 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> grossValueParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Gross value cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Gross value cannot be less than 0"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Gross value cannot be less than 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Gross value cannot be equal to 0"))
     );
   }
 
@@ -116,7 +118,8 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> vatValueParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Vat value cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Vat value cannot be less than 0"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Vat value cannot be less than 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Vat value cannot be equal to 0"))
     );
   }
 

@@ -18,7 +18,7 @@ public class CompanyGenerator {
   public static Company getRandomCompany() {
     long id = atomicLong.incrementAndGet();
     String name = WordGenerator.getRandomWord();
-    String taxIdentificationNumber = String.format("9%02d-%02d-%04d", random.nextInt(99), random.nextInt(99), random.nextInt(9999));
+    String taxIdentificationNumber = String.format("%05d%05d", random.nextInt(99999), random.nextInt(99999));
     AccountNumber accountNumber = AccountNumberGenerator.getRandomAccount();
     ContactDetails contactDetails = ContactDetailsGenerator.getRandomContactDetails();
     return new Company(id, name, taxIdentificationNumber, accountNumber, contactDetails);

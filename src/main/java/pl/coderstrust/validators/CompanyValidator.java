@@ -53,7 +53,7 @@ public class CompanyValidator {
     if (taxIdentificationNumber.trim().isEmpty()) {
       return "Tax identification number cannot be empty";
     }
-    if (!taxIdentificationNumber.matches("[9-9][0-9]{2}\\-[0-9]{2}\\-[0-9]{4}$")) {
+    if (!taxIdentificationNumber.matches("\\d{10}")) {
       return "Incorrect tax identification number";
     }
     return "";
