@@ -18,8 +18,8 @@ import org.junit.jupiter.api.Test;
 
 class FileHelperTestIT {
 
-  private static final String INPUT_FILE = "src/test/resource/helpers/input_file";
-  private static final String EXPECTED_FILE = "src/test/resource/helpers/expected_file";
+  private static final String INPUT_FILE = "src/test/resources/helpers/input_file";
+  private static final String EXPECTED_FILE = "src/test/resources/helpers/expected_file";
   private static final String ENCODING = "UTF-8";
   private FileHelper fileHelper;
 
