@@ -15,10 +15,10 @@ public class Company {
   private String name;
   private String taxIdentificationNumber;
 
-  @ManyToOne
+  @OneToOne
   private AccountNumber accountNumber;
 
-  @ManyToOne
+  @OneToOne
   private ContactDetails contactDetails;
 
   protected Company() {

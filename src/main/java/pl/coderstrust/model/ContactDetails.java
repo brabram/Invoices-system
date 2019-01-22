@@ -3,13 +3,12 @@ package pl.coderstrust.model;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
 public class ContactDetails {
   private String email;
   private String phoneNumber;
   private String website;
 
-  @OneToMany
+  @OneToOne
   private Address address;
 
   protected ContactDetails() {

@@ -1,9 +1,8 @@
-package pl.coderstrust.hibernate;
+package pl.coderstrust.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import pl.coderstrust.database.InvoiceDatabaseOperationException;
 import pl.coderstrust.model.Invoice;
 
 import java.util.List;
@@ -12,27 +11,28 @@ import java.util.stream.StreamSupport;
 
 
 @Repository
-public class HibernateInvoiceDatabase implements HibernateInvoiceRepository {
+public class HibernateInvoiceDatabase implements InvoiceDatabase {
 
   private HibernateInvoiceRepository hibernateInvoiceRepository;
 
+  @Autowired
   public HibernateInvoiceDatabase(HibernateInvoiceRepository hibernateInvoiceRepository) {
     this.hibernateInvoiceRepository = hibernateInvoiceRepository;
   }
 
-  @Override
-  public <S extends Invoice> S save(S entity) throws InvoiceDatabaseOperationException {
-    return hibernateInvoiceRepository.save(entity);
+   @Override
+  public Invoice save(Invoice invoice) throws InvoiceDatabaseOperationException {
+    return hibernateInvoiceRepository.save(invoice);
   }
 
   @Override
-  public Invoice findById(Long aLong) throws InvoiceDatabaseOperationException {
-    return hibernateInvoiceRepository.findById(aLong);
+  public Invoice findById(Long id) throws InvoiceDatabaseOperationException {
+    return hibernateInvoiceRepository.findById(id).get();
   }
 
   @Override
-  public boolean existsById(Long aLong) throws InvoiceDatabaseOperationException {
-    return hibernateInvoiceRepository.existsById(aLong);
+  public boolean existsById(Long id) throws InvoiceDatabaseOperationException {
+    return hibernateInvoiceRepository.existsById(id);
   }
 
   @Override
@@ -47,8 +47,8 @@ public class HibernateInvoiceDatabase implements HibernateInvoiceRepository {
   }
 
   @Override
-  public void deleteById(Long aLong) throws InvoiceDatabaseOperationException {
-    hibernateInvoiceRepository.deleteById(aLong);
+  public void deleteById(Long id) throws InvoiceDatabaseOperationException {
+    hibernateInvoiceRepository.deleteById(id);
   }
 
   @Override
