@@ -177,6 +177,8 @@
                     </limit>
                   </limits>
                   <excludes>
+                    <exclude>pl.coderstrust.database.InvoiceDatabaseOperationException</exclude>
+                    <exclude>pl.coderstrust.service.InvoiceServiceOperationException</exclude>
                   </excludes>
                 </rule>
               </rules>
