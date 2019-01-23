@@ -33,19 +33,19 @@ public class InvoiceGenerator {
         list, totalNetValue, totalGrossValue);
   }
 
-  public static Invoice getRandomInvoiceWithSpecificIssueDate(LocalDate issueDate){
+  public static Invoice getRandomInvoiceWithSpecificIssueDate(LocalDate issueDate) {
     Invoice invoice = getRandomInvoice();
     invoice.setIssueDate(issueDate);
     return invoice;
   }
 
-  public static Invoice getRandomInvoiceWithSpecificDueDate(LocalDate dueDate){
+  public static Invoice getRandomInvoiceWithSpecificDueDate(LocalDate dueDate) {
     Invoice invoice = getRandomInvoice();
     invoice.setDueDate(dueDate);
     return invoice;
   }
 
-  public static Invoice getRandomInvoicesIssuedInSpecificDateRange(LocalDate startDate, LocalDate endDate){
+  public static Invoice getRandomInvoicesIssuedInSpecificDateRange(LocalDate startDate, LocalDate endDate) {
     Invoice invoice = getRandomInvoice();
     invoice.setIssueDate(createRandomDateInSpecificDateRange(startDate, endDate));
     return invoice;

@@ -3,7 +3,6 @@ package pl.coderstrust.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -36,8 +35,8 @@ public class InvoiceServiceTest {
   public void shouldGetAllInvoices() throws InvoiceDatabaseOperationException, InvoiceServiceOperationException {
     //Given
     List<Invoice> expectedInvoices = new ArrayList<>();
-    Invoice randomInvoice1 =InvoiceGenerator.getRandomInvoice();
-    Invoice randomInvoice2 =InvoiceGenerator.getRandomInvoice();
+    Invoice randomInvoice1 = InvoiceGenerator.getRandomInvoice();
+    Invoice randomInvoice2 = InvoiceGenerator.getRandomInvoice();
     expectedInvoices.add(randomInvoice1);
     expectedInvoices.add(randomInvoice2);
     when(invoiceDatabase.findAll()).thenReturn(Optional.of(expectedInvoices));
@@ -58,25 +57,25 @@ public class InvoiceServiceTest {
     LocalDate toDate = LocalDate.parse("2019-01-10");
     List<Invoice> expectedInvoices = new ArrayList<>();
     Invoice randomInvoice1 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
-    Invoice randomInvoice2 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-10"));
-    Invoice randomInvoice3 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
-    Invoice randomInvoice4 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
-    Invoice randomInvoice5 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-10"));
-    Invoice randomInvoice6 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, fromDate);
-    Invoice randomInvoice7 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(toDate, toDate);
     expectedInvoices.add(randomInvoice1);
-    expectedInvoices.add(randomInvoice3);
-    expectedInvoices.add(randomInvoice4);
-    expectedInvoices.add(randomInvoice6);
-    expectedInvoices.add(randomInvoice7);
-    when(invoiceDatabase.findAll()).thenReturn(Optional.of(expectedInvoices));
     invoiceService.addInvoice(randomInvoice1);
+    Invoice randomInvoice2 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-10"));
     invoiceService.addInvoice(randomInvoice2);
+    Invoice randomInvoice3 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
+    expectedInvoices.add(randomInvoice3);
     invoiceService.addInvoice(randomInvoice3);
+    Invoice randomInvoice4 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
+    expectedInvoices.add(randomInvoice4);
     invoiceService.addInvoice(randomInvoice4);
+    Invoice randomInvoice5 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-10"));
     invoiceService.addInvoice(randomInvoice5);
+    Invoice randomInvoice6 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, fromDate);
+    expectedInvoices.add(randomInvoice6);
     invoiceService.addInvoice(randomInvoice6);
+    Invoice randomInvoice7 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(toDate, toDate);
+    expectedInvoices.add(randomInvoice7);
     invoiceService.addInvoice(randomInvoice7);
+    when(invoiceDatabase.findAll()).thenReturn(Optional.of(expectedInvoices));
 
     //When
     Optional<List<Invoice>> actualInvoices = invoiceService.getAllInvoicesInGivenDateRange(fromDate, toDate);
@@ -106,15 +105,18 @@ public class InvoiceServiceTest {
   public void shouldAddInvoice() throws InvoiceDatabaseOperationException, InvoiceServiceOperationException {
     //Given
     Invoice invoiceToAdd = InvoiceGenerator.getRandomInvoice();
-    when(invoiceDatabase.save(invoiceToAdd)).thenReturn(Optional.of(invoiceToAdd));
+    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
+    when(invoiceDatabase.save(invoiceToAdd)).thenReturn(Optional.of(expectedInvoice));
+    when(invoiceDatabase.existsById(invoiceToAdd.getId())).thenReturn(false);
 
     //When
     Optional<Invoice> actualInvoice = invoiceService.addInvoice(invoiceToAdd);
 
     //Then
     assertTrue(actualInvoice.isPresent());
-    assertEquals(invoiceToAdd, actualInvoice.get());
+    assertEquals(expectedInvoice, actualInvoice.get());
     verify(invoiceDatabase).save(invoiceToAdd);
+    verify(invoiceDatabase).existsById(invoiceToAdd.getId());
   }
 
   @Test
@@ -122,13 +124,14 @@ public class InvoiceServiceTest {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     when(invoiceDatabase.save(invoice)).thenReturn(Optional.of(invoice));
-    invoiceService.addInvoice(invoice);
+    when(invoiceDatabase.existsById(invoice.getId())).thenReturn(true);
 
     //When
     invoiceService.updateInvoice(invoice);
 
     //Then
-    verify(invoiceDatabase, atLeast(2)).save(invoice);
+    verify(invoiceDatabase).save(invoice);
+    verify(invoiceDatabase).existsById(invoice.getId());
   }
 
   @Test
@@ -222,6 +225,17 @@ public class InvoiceServiceTest {
   }
 
   @Test
+  public void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIdIsNotNullAndExistByIdMethodReturnsTrue() throws InvoiceDatabaseOperationException {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long id = invoice.getId();
+    doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).existsById(id);
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.addInvoice(invoice));
+  }
+
+  @Test
   public void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws InvoiceDatabaseOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
@@ -238,7 +252,6 @@ public class InvoiceServiceTest {
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).existsById(invoice.getId());
 
-
     //Then
     assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.updateInvoice(invoice));
   }
@@ -254,7 +267,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenInvoiceDoesNotExist() throws InvoiceDatabaseOperationException {
+  public void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenInvoiceDosesNotExist() throws InvoiceDatabaseOperationException {
     //Given
     doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).existsById(1L);
 

@@ -64,6 +64,10 @@ public class InvoiceService {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
+      Long id = invoice.getId();
+      if (id != null && invoiceDatabase.existsById(id)) {
+        throw new InvoiceServiceOperationException(String.format("Invoice with id %s already exists", id));
+      }
       return invoiceDatabase.save(invoice);
     } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while adding invoice.", e);
@@ -75,11 +79,10 @@ public class InvoiceService {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
-      invoiceDatabase.existsById(invoice.getId());
-    } catch (InvoiceDatabaseOperationException e) {
-      throw new InvoiceServiceOperationException("An error while updating invoice.", e);
-    }
-    try {
+      Long id = invoice.getId();
+      if (id == null || !invoiceDatabase.existsById(id)) {
+        throw new InvoiceServiceOperationException(String.format("Invoice with id %s does not exist", id));
+      }
       invoiceDatabase.save(invoice);
     } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while updating invoice.", e);
@@ -91,11 +94,9 @@ public class InvoiceService {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
-      invoiceDatabase.existsById(id);
-    } catch (InvoiceDatabaseOperationException e) {
-      throw new InvoiceServiceOperationException("An error while deleting invoice.", e);
-    }
-    try {
+      if (!invoiceDatabase.existsById(id)) {
+        throw new InvoiceServiceOperationException(String.format("Invoice with id %s does not exist", id));
+      }
       invoiceDatabase.deleteById(id);
     } catch (InvoiceDatabaseOperationException e) {
       throw new InvoiceServiceOperationException("An error while deleting invoice.", e);

@@ -1,6 +1,11 @@
 package pl.coderstrust.database;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -97,17 +102,17 @@ class InMemoryInvoiceDatabaseTest {
   @Test
   void shouldFindAllInvoices() throws InvoiceDatabaseOperationException {
     //given
-    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
-    Optional<Invoice> savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
-    Optional<Invoice> savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
-    Optional<Invoice> savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
     List<Invoice> expectedInvoices = new ArrayList<>();
+    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
+    Optional<Invoice> savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
     assertTrue(savedInvoice1.isPresent());
     expectedInvoices.add(savedInvoice1.get());
+    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
+    Optional<Invoice> savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
     assertTrue(savedInvoice2.isPresent());
     expectedInvoices.add(savedInvoice2.get());
+    Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
+    Optional<Invoice> savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
     assertTrue(savedInvoice3.isPresent());
     expectedInvoices.add(savedInvoice3.get());
 
@@ -141,15 +146,15 @@ class InMemoryInvoiceDatabaseTest {
     //given
     List<Invoice> invoices = new ArrayList<>();
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice1 = invoiceDatabase.save(invoiceToSave1);
-    Optional<Invoice> savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
-    Optional<Invoice> savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
     assertTrue(savedInvoice1.isPresent());
     invoices.add(savedInvoice1.get());
+    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
+    Optional<Invoice> savedInvoice2 = invoiceDatabase.save(invoiceToSave2);
     assertTrue(savedInvoice2.isPresent());
     invoices.add(savedInvoice2.get());
+    Invoice invoiceToSave3 = InvoiceGenerator.getRandomInvoice();
+    Optional<Invoice> savedInvoice3 = invoiceDatabase.save(invoiceToSave3);
     assertTrue(savedInvoice3.isPresent());
     invoices.add(savedInvoice3.get());
 
