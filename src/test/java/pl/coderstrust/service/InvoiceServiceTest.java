@@ -1,27 +1,29 @@
 package pl.coderstrust.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.database.InvoiceDatabaseOperationException;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InvoiceServiceTest {
 
   @Mock
@@ -33,7 +35,11 @@ public class InvoiceServiceTest {
   @Test
   public void shouldGetAllInvoices() throws InvoiceDatabaseOperationException, InvoiceServiceOperationException {
     //Given
-    List<Invoice> expectedInvoices = Collections.singletonList(InvoiceGenerator.getRandomInvoice());
+    List<Invoice> expectedInvoices = new ArrayList<>();
+    Invoice randomInvoice1 =InvoiceGenerator.getRandomInvoice();
+    Invoice randomInvoice2 =InvoiceGenerator.getRandomInvoice();
+    expectedInvoices.add(randomInvoice1);
+    expectedInvoices.add(randomInvoice2);
     when(invoiceDatabase.findAll()).thenReturn(Optional.of(expectedInvoices));
 
     //When
@@ -41,7 +47,7 @@ public class InvoiceServiceTest {
 
     //Then
     assertTrue(actualInvoices.isPresent());
-    Assert.assertEquals(expectedInvoices, actualInvoices.get());
+    assertEquals(expectedInvoices, actualInvoices.get());
     verify(invoiceDatabase).findAll();
   }
 
@@ -56,22 +62,28 @@ public class InvoiceServiceTest {
     Invoice randomInvoice3 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
     Invoice randomInvoice4 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, toDate);
     Invoice randomInvoice5 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(LocalDate.parse("2018-01-01"), LocalDate.parse("2018-01-10"));
+    Invoice randomInvoice6 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(fromDate, fromDate);
+    Invoice randomInvoice7 = InvoiceGenerator.getRandomInvoicesIssuedInSpecificDateRange(toDate, toDate);
     expectedInvoices.add(randomInvoice1);
     expectedInvoices.add(randomInvoice3);
     expectedInvoices.add(randomInvoice4);
+    expectedInvoices.add(randomInvoice6);
+    expectedInvoices.add(randomInvoice7);
     when(invoiceDatabase.findAll()).thenReturn(Optional.of(expectedInvoices));
-
-    //When
     invoiceService.addInvoice(randomInvoice1);
     invoiceService.addInvoice(randomInvoice2);
     invoiceService.addInvoice(randomInvoice3);
     invoiceService.addInvoice(randomInvoice4);
     invoiceService.addInvoice(randomInvoice5);
+    invoiceService.addInvoice(randomInvoice6);
+    invoiceService.addInvoice(randomInvoice7);
+
+    //When
     Optional<List<Invoice>> actualInvoices = invoiceService.getAllInvoicesInGivenDateRange(fromDate, toDate);
 
     //Then
     assertTrue(actualInvoices.isPresent());
-    Assert.assertEquals(expectedInvoices, actualInvoices.get());
+    assertEquals(expectedInvoices, actualInvoices.get());
     verify(invoiceDatabase).findAll();
   }
 
@@ -86,23 +98,23 @@ public class InvoiceServiceTest {
     Optional<Invoice> actualInvoice = invoiceService.getInvoiceById(id);
 
     //Then
-    Assert.assertEquals(expectedInvoice, actualInvoice);
+    assertEquals(expectedInvoice, actualInvoice);
     verify(invoiceDatabase).findById(id);
   }
 
   @Test
   public void shouldAddInvoice() throws InvoiceDatabaseOperationException, InvoiceServiceOperationException {
     //Given
-    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
-    when(invoiceDatabase.save(expectedInvoice)).thenReturn(Optional.of(expectedInvoice));
+    Invoice invoiceToAdd = InvoiceGenerator.getRandomInvoice();
+    when(invoiceDatabase.save(invoiceToAdd)).thenReturn(Optional.of(invoiceToAdd));
 
     //When
-    Optional<Invoice> actualInvoice = invoiceService.addInvoice(expectedInvoice);
+    Optional<Invoice> actualInvoice = invoiceService.addInvoice(invoiceToAdd);
 
     //Then
     assertTrue(actualInvoice.isPresent());
-    Assert.assertEquals(expectedInvoice, actualInvoice.get());
-    verify(invoiceDatabase).save(expectedInvoice);
+    assertEquals(invoiceToAdd, actualInvoice.get());
+    verify(invoiceDatabase).save(invoiceToAdd);
   }
 
   @Test
@@ -116,7 +128,7 @@ public class InvoiceServiceTest {
     invoiceService.updateInvoice(invoice);
 
     //Then
-    verify(invoiceDatabase).save(invoice);
+    verify(invoiceDatabase, atLeast(2)).save(invoice);
   }
 
   @Test
@@ -130,6 +142,7 @@ public class InvoiceServiceTest {
     invoiceService.deleteInvoiceById(id);
 
     //Then
+    verify(invoiceDatabase).existsById(id);
     verify(invoiceDatabase).deleteById(id);
   }
 
@@ -181,7 +194,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void getAllInvoicesMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceDatabaseOperationException {
+  public void getAllInvoicesMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws InvoiceDatabaseOperationException {
     //Given
     doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).findAll();
 
@@ -190,7 +203,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void getInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceDatabaseOperationException {
+  public void getInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws InvoiceDatabaseOperationException {
     //Given
     doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).findById(1L);
 
@@ -199,7 +212,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceDatabaseOperationException {
+  public void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws InvoiceDatabaseOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).save(invoice);
@@ -209,7 +222,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceDatabaseOperationException {
+  public void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws InvoiceDatabaseOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     when(invoiceDatabase.existsById(invoice.getId())).thenReturn(true);
@@ -220,7 +233,18 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceDatabaseOperationException {
+  public void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenInvoiceDoesNotExist() throws InvoiceDatabaseOperationException {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).existsById(invoice.getId());
+
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.updateInvoice(invoice));
+  }
+
+  @Test
+  public void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws InvoiceDatabaseOperationException {
     //Given
     when(invoiceDatabase.existsById(1L)).thenReturn(true);
     doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).deleteById(1L);
@@ -230,7 +254,16 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void deleteAllMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromRepository() throws InvoiceDatabaseOperationException {
+  public void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenInvoiceDoesNotExist() throws InvoiceDatabaseOperationException {
+    //Given
+    doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).existsById(1L);
+
+    //Then
+    assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.deleteInvoiceById(1L));
+  }
+
+  @Test
+  public void deleteAllMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws InvoiceDatabaseOperationException {
     //Given
     doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).deleteAll();
 
