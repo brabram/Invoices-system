@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceEntry {
-  private long id;
+  private Long id;
   private String item;
   private Long quantity;
   private BigDecimal price;
@@ -12,7 +12,7 @@ public class InvoiceEntry {
   private BigDecimal grossValue;
   private Vat vatRate;
 
-  public InvoiceEntry(long id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, Vat vatRate) {
+  public InvoiceEntry(Long id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, Vat vatRate) {
     this.id = id;
     this.item = item;
     this.quantity = quantity;
@@ -22,11 +22,11 @@ public class InvoiceEntry {
     this.vatRate = vatRate;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

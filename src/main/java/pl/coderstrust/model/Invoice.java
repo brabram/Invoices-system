@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Invoice {
-  private long id;
+  private Long id;
   private String number;
   private LocalDate issueDate;
   private LocalDate dueDate;
@@ -16,7 +16,7 @@ public class Invoice {
   private BigDecimal totalNetValue;
   private BigDecimal totalGrossValue;
 
-  public Invoice(long id, String number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
+  public Invoice(Long id, String number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
     this.id = id;
     this.number = number;
     this.issueDate = issueDate;
@@ -28,11 +28,11 @@ public class Invoice {
     this.totalGrossValue = totalGrossValue;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
