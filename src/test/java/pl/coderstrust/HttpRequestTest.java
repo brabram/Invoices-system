@@ -15,15 +15,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class HttpRequestTest {
 
-    @LocalServerPort
-    private int port;
+  @LocalServerPort
+  private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+  @Autowired
+  private TestRestTemplate restTemplate;
 
-    @Test
-    public void greetingShouldReturnDefaultMessage() throws Exception {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/invoicesService",
-                String.class)).contains("Optional[[]]");
-    }
+  @Test
+  public void greetingShouldReturnDefaultMessage() throws Exception {
+    assertThat(
+        restTemplate.getForObject("http://localhost:" + port + "/invoicesService", String.class))
+        .contains("");
+  }
 }
