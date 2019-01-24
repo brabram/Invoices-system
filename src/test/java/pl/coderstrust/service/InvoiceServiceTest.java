@@ -270,10 +270,11 @@ class InvoiceServiceTest {
   @Test
   void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenInvoiceDosesNotExist() throws DatabaseOperationException {
     //Given
-    doThrow(DatabaseOperationException.class).when(invoiceDatabase).existsById(1L);
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    when(invoiceDatabase.existsById(invoice.getId())).thenReturn(false);
 
     //Then
-    assertThrows(ServiceOperationException.class, () -> invoiceService.deleteInvoiceById(1L));
+    assertThrows(ServiceOperationException.class, () -> invoiceService.deleteInvoiceById(invoice.getId()));
   }
 
   @Test
