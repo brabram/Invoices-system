@@ -34,7 +34,7 @@ public class AddressValidator extends Validator {
     if (street.trim().isEmpty()) {
       return "Street cannot be empty";
     }
-    Matcher matcher = RegrexValidators.geographicalNamePattern.matcher(street);
+    Matcher matcher = RegrexPatterns.geographicalNamePattern.matcher(street);
     if (!matcher.matches()) {
       return "Incorrect street name";
     }
@@ -48,7 +48,7 @@ public class AddressValidator extends Validator {
     if (number.trim().isEmpty()) {
       return "Number cannot be empty";
     }
-    Matcher matcher = RegrexValidators.addressNumberPattern.matcher(number);
+    Matcher matcher = RegrexPatterns.addressNumberPattern.matcher(number);
     if (!matcher.matches()) {
       return "Incorrect address number";
     }
@@ -62,7 +62,7 @@ public class AddressValidator extends Validator {
     if (postalCode.trim().isEmpty()) {
       return "Postal code cannot be empty";
     }
-    Matcher matcher = RegrexValidators.postalCodePattern.matcher(postalCode);
+    Matcher matcher = RegrexPatterns.postalCodePattern.matcher(postalCode);
     if (!matcher.matches()) {
       return "Incorrect postal code";
     }
@@ -76,7 +76,7 @@ public class AddressValidator extends Validator {
     if (city.trim().isEmpty()) {
       return "City cannot be empty";
     }
-    Matcher matcher = RegrexValidators.geographicalNamePattern.matcher(city);
+    Matcher matcher = RegrexPatterns.geographicalNamePattern.matcher(city);
     if (!matcher.matches()) {
       return "Incorrect city name";
     }
@@ -90,7 +90,7 @@ public class AddressValidator extends Validator {
     if (country.trim().isEmpty()) {
       return "Country cannot be empty";
     }
-    Matcher matcher = RegrexValidators.geographicalNamePattern.matcher(country);
+    Matcher matcher = RegrexPatterns.geographicalNamePattern.matcher(country);
     if (!matcher.matches()) {
       return "Incorrect country name";
     }

@@ -32,7 +32,7 @@ public class ContactDetailsValidator extends Validator {
     if (email.trim().isEmpty()) {
       return "Email cannot be empty";
     }
-    Matcher matcher = RegrexValidators.emailPattern.matcher(email);
+    Matcher matcher = RegrexPatterns.emailPattern.matcher(email);
     if (!matcher.matches()) {
       return "Incorrect email address";
     }
@@ -46,7 +46,7 @@ public class ContactDetailsValidator extends Validator {
     if (phoneNumber.trim().isEmpty()) {
       return "Phone number cannot be empty";
     }
-    Matcher matcher = RegrexValidators.phoneNumberPattern.matcher(phoneNumber);
+    Matcher matcher = RegrexPatterns.phoneNumberPattern.matcher(phoneNumber);
     if (!matcher.matches()) {
       return "Incorrect phone number";
     }
@@ -60,7 +60,7 @@ public class ContactDetailsValidator extends Validator {
     if (webSite.trim().isEmpty()) {
       return "Web site cannot be empty";
     }
-    Matcher matcher = RegrexValidators.webSitePattern.matcher(webSite);
+    Matcher matcher = RegrexPatterns.webSitePattern.matcher(webSite);
     if (!matcher.matches()) {
       return "Incorrect web site type";
     }

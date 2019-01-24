@@ -38,7 +38,7 @@ public class InvoiceEntryValidator extends Validator{
     if (item.trim().isEmpty()) {
       return "Item cannot be empty";
     }
-    Matcher matcher = RegrexValidators.itemNamePattern.matcher(item);
+    Matcher matcher = RegrexPatterns.itemNamePattern.matcher(item);
     if (!matcher.matches()) {
       return "Incorrect item";
     }

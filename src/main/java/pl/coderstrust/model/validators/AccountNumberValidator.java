@@ -32,7 +32,7 @@ public class AccountNumberValidator extends Validator {
     if (localNumber.trim().isEmpty()) {
       return "Local number cannot be empty";
     }
-    Matcher matcher = RegrexValidators.numberPattern.matcher(localNumber);
+    Matcher matcher = RegrexPatterns.numberPattern.matcher(localNumber);
     if (!matcher.matches()) {
       return "Local number cannot contain letters or another special chars";
     }
@@ -46,7 +46,7 @@ public class AccountNumberValidator extends Validator {
     if (ibanNumber.trim().isEmpty()) {
       return "Iban number cannot be empty";
     }
-    Matcher matcher = RegrexValidators.ibanNumberPattern.matcher(ibanNumber);
+    Matcher matcher = RegrexPatterns.ibanNumberPattern.matcher(ibanNumber);
     if (!matcher.matches()) {
       return "Incorrect iban number";
     }

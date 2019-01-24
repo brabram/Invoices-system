@@ -2,7 +2,7 @@ package pl.coderstrust.model.validators;
 
 import java.util.regex.Pattern;
 
-public class RegrexValidators {
+public class RegrexPatterns {
   protected static Pattern numberPattern = Pattern.compile("[0-9]+");
   protected static Pattern ibanNumberPattern = Pattern.compile("[A-Z]{2}[0-9]+");
   protected static Pattern geographicalNamePattern = Pattern.compile("^([A-Z][a-z]*)+(?:[\\s-][A-Z][a-z]*)*$");

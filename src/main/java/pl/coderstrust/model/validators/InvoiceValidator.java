@@ -47,7 +47,7 @@ public class InvoiceValidator extends Validator{
     if(number.trim().isEmpty()){
       return "Number cannot be empty";
     }
-    Matcher matcher = RegrexValidators.numberPattern.matcher(number);
+    Matcher matcher = RegrexPatterns.numberPattern.matcher(number);
     if(!matcher.matches()){
       return "Incorrect number";
     }

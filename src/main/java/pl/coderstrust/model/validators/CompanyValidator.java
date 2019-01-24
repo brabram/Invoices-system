@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CompanyValidator extends Validator {
 
@@ -45,7 +44,7 @@ public class CompanyValidator extends Validator {
     if (name.trim().isEmpty()) {
       return "Name cannot be empty";
     }
-    Matcher matcher = RegrexValidators.companyNamePattern.matcher(name);
+    Matcher matcher = RegrexPatterns.companyNamePattern.matcher(name);
     if (!matcher.matches()) {
       return "Incorrect name";
     }
@@ -59,7 +58,7 @@ public class CompanyValidator extends Validator {
     if (taxIdentificationNumber.trim().isEmpty()) {
       return "Tax identification number cannot be empty";
     }
-    Matcher matcher = RegrexValidators.taxIdentificationNumberPattern.matcher(taxIdentificationNumber);
+    Matcher matcher = RegrexPatterns.taxIdentificationNumberPattern.matcher(taxIdentificationNumber);
     if (!matcher.matches()) {
       return "Incorrect tax identification number";
     }
