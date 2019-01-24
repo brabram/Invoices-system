@@ -225,16 +225,6 @@ class InvoiceServiceTest {
     assertThrows(ServiceOperationException.class, () -> invoiceService.addInvoice(invoice));
   }
 
-//  @Test
-//  void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIdIsNotNullAndExistByIdMethodReturnsTrue() throws DatabaseOperationException {
-//    //Given
-//    Invoice invoice = InvoiceGenerator.getRandomInvoice();
-//    doThrow(DatabaseOperationException.class).when(invoiceDatabase).existsById(invoice.getId());
-//
-//    //Then
-//    assertThrows(ServiceOperationException.class, () -> invoiceService.addInvoice(invoice));
-//  }
-
   @Test
   void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIdIsNotNullAndExistByIdMethodReturnsTrue() throws DatabaseOperationException {
     //Given
@@ -261,7 +251,7 @@ class InvoiceServiceTest {
   void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenInvoiceDoesNotExist() throws DatabaseOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    doThrow(DatabaseOperationException.class).when(invoiceDatabase).existsById(invoice.getId());
+    when(invoiceDatabase.existsById(invoice.getId())).thenReturn(false);
 
     //Then
     assertThrows(ServiceOperationException.class, () -> invoiceService.updateInvoice(invoice));
