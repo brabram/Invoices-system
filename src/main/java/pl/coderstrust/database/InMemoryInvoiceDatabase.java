@@ -73,7 +73,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   }
 
   @Override
-  public void deleteById(Long id) throws InvoiceDatabaseOperationException {
+  public void deleteById(Long id) throws DatabaseOperationException {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
@@ -82,7 +82,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
         throw new IllegalArgumentException("Id cannot be lower than zero");
       }
       if (!isInvoiceExist(id)) {
-        throw new InvoiceDatabaseOperationException("Invoice does not exist");
+        throw new DatabaseOperationException("Invoice does not exist");
       }
       invoices.remove(id);
     }

@@ -27,7 +27,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldSaveInvoice() throws InvoiceDatabaseOperationException {
+  void shouldSaveInvoice() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
@@ -42,7 +42,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldUpdateInvoice() throws InvoiceDatabaseOperationException {
+  void shouldUpdateInvoice() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> invoiceToUpdate = invoiceDatabase.save(invoiceToSave);
@@ -62,7 +62,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldFindOneInvoice() throws InvoiceDatabaseOperationException {
+  void shouldFindOneInvoice() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
@@ -77,7 +77,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldReturnTrueIfInvoiceExistsInDatabase() throws InvoiceDatabaseOperationException {
+  void shouldReturnTrueIfInvoiceExistsInDatabase() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
@@ -91,7 +91,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldReturnFalseIfInvoiceNotExistsInDatabase() throws InvoiceDatabaseOperationException {
+  void shouldReturnFalseIfInvoiceNotExistsInDatabase() throws DatabaseOperationException {
     //when
     boolean isInvoiceExists = invoiceDatabase.existsById(1L);
 
@@ -100,7 +100,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldFindAllInvoices() throws InvoiceDatabaseOperationException {
+  void shouldFindAllInvoices() throws DatabaseOperationException {
     //given
     List<Invoice> expectedInvoices = new ArrayList<>();
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
@@ -126,7 +126,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldDeleteInvoice() throws InvoiceDatabaseOperationException {
+  void shouldDeleteInvoice() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
@@ -142,7 +142,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldReturnNumberOfInvoices() throws InvoiceDatabaseOperationException {
+  void shouldReturnNumberOfInvoices() throws DatabaseOperationException {
     //given
     List<Invoice> invoices = new ArrayList<>();
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
@@ -166,7 +166,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldDeleteAllInvoices() throws InvoiceDatabaseOperationException {
+  void shouldDeleteAllInvoices() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice1 = invoiceDatabase.save(invoiceToSave1);

@@ -6,17 +6,17 @@ import java.util.Optional;
 
 public interface Database<T, ID extends Serializable> {
 
-  Optional<T> save(T entity) throws InvoiceDatabaseOperationException;
+  Optional<T> save(T entity) throws DatabaseOperationException;
 
-  Optional<T> findById(ID id) throws InvoiceDatabaseOperationException;
+  Optional<T> findById(ID id) throws DatabaseOperationException;
 
-  boolean existsById(ID id) throws InvoiceDatabaseOperationException;
+  boolean existsById(ID id) throws DatabaseOperationException;
 
-  Optional<List<T>> findAll() throws InvoiceDatabaseOperationException;
+  Optional<List<T>> findAll() throws DatabaseOperationException;
 
-  long count() throws InvoiceDatabaseOperationException;
+  long count() throws DatabaseOperationException;
 
-  void deleteById(ID id) throws InvoiceDatabaseOperationException;
+  void deleteById(ID id) throws DatabaseOperationException;
 
-  void deleteAll() throws InvoiceDatabaseOperationException;
+  void deleteAll() throws DatabaseOperationException;
 }
