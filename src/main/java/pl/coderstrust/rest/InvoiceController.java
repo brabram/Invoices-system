@@ -2,6 +2,8 @@ package pl.coderstrust.rest;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +16,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/invoices")
 public class InvoiceController {
 
   private InvoiceService invoiceService;
@@ -29,8 +31,19 @@ public class InvoiceController {
   }
 
   @GetMapping("/{id}")
-  public Optional<Invoice> getInvoiceById(@PathVariable("id") Long id) {
-    return invoiceService.getInvoiceById(id);
+  public ResponseEntity<?> getInvoiceById(@PathVariable("id") Long id) {
+    if (id == null) {
+      return new ResponseEntity<>(new ErrorMessage("Invalid id."), HttpStatus.BAD_REQUEST);
+    }
+    try {
+      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
+      if (optionalInvoice.isPresent()) {
+        return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);
+      }
+      return new ResponseEntity<>(new ErrorMessage("Invoice not found."), HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
 //  @GetMapping("/{number}")
