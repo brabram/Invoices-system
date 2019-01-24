@@ -1,30 +1,29 @@
-package pl.coderstrust.validators;
+package pl.coderstrust.model.validators;
 
 import pl.coderstrust.model.Address;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 
-import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
-
-public class AddressValidator {
+public class AddressValidator extends Validator {
 
   public static List<String> validate(Address address) {
     if (address == null) {
       return Collections.singletonList("Address cannot be null");
     }
     List<String> result = new ArrayList<>();
-    String streetNameValidator = validateStreet(address.getStreet());
-    String addressNumberValidator = validateNumber(address.getNumber());
-    String postalCodeValidator = validatePostalCode(address.getPostalCode());
-    String cityNameValidator = validateCityName(address.getCity());
-    String countryNameValidator = validateCountryName(address.getCountry());
-    addResultOfValidation(result, streetNameValidator);
-    addResultOfValidation(result, addressNumberValidator);
-    addResultOfValidation(result, postalCodeValidator);
-    addResultOfValidation(result, cityNameValidator);
-    addResultOfValidation(result, countryNameValidator);
+    String resultOfStreetNameValidation = validateStreet(address.getStreet());
+    String resultOfAddressNumberValidation = validateNumber(address.getNumber());
+    String resultOPostalCodeValidation = validatePostalCode(address.getPostalCode());
+    String resultOfCityNameValidation = validateCityName(address.getCity());
+    String resultOfCountryNameValidation = validateCountryName(address.getCountry());
+    addResultOfValidation(result, resultOfStreetNameValidation);
+    addResultOfValidation(result, resultOfAddressNumberValidation);
+    addResultOfValidation(result, resultOPostalCodeValidation);
+    addResultOfValidation(result, resultOfCityNameValidation);
+    addResultOfValidation(result, resultOfCountryNameValidation);
     return result;
   }
 
@@ -35,10 +34,11 @@ public class AddressValidator {
     if (street.trim().isEmpty()) {
       return "Street cannot be empty";
     }
-    if (!street.matches("^([A-Z][a-z]*)+(?:[\\s-][A-Z][a-z]*)*$")) {
+    Matcher matcher = RegrexValidators.geographicalNamePattern.matcher(street);
+    if (!matcher.matches()) {
       return "Incorrect street name";
     }
-    return "";
+    return null;
   }
 
   private static String validateNumber(String number) {
@@ -48,10 +48,11 @@ public class AddressValidator {
     if (number.trim().isEmpty()) {
       return "Number cannot be empty";
     }
-    if (!number.matches("[0-9]{1,4}?[A-Za-z]?/[0-9]{1,4}?[A-Za-z]?")) {
+    Matcher matcher = RegrexValidators.addressNumberPattern.matcher(number);
+    if (!matcher.matches()) {
       return "Incorrect address number";
     }
-    return "";
+    return null;
   }
 
   private static String validatePostalCode(String postalCode) {
@@ -61,10 +62,11 @@ public class AddressValidator {
     if (postalCode.trim().isEmpty()) {
       return "Postal code cannot be empty";
     }
-    if (!postalCode.matches("[0-9]{2}-[0-9]{3}")) {
+    Matcher matcher = RegrexValidators.postalCodePattern.matcher(postalCode);
+    if (!matcher.matches()) {
       return "Incorrect postal code";
     }
-    return "";
+    return null;
   }
 
   private static String validateCityName(String city) {
@@ -74,10 +76,11 @@ public class AddressValidator {
     if (city.trim().isEmpty()) {
       return "City cannot be empty";
     }
-    if (!city.matches("^([A-Z][a-z]*)+(?:[\\s-][A-Z][a-z]*)*$")) {
+    Matcher matcher = RegrexValidators.geographicalNamePattern.matcher(city);
+    if (!matcher.matches()) {
       return "Incorrect city name";
     }
-    return "";
+    return null;
   }
 
   private static String validateCountryName(String country) {
@@ -87,9 +90,10 @@ public class AddressValidator {
     if (country.trim().isEmpty()) {
       return "Country cannot be empty";
     }
-    if (!country.matches("^([A-Z][a-z]*)+(?:[\\s-][A-Z][a-z]*)*$")) {
+    Matcher matcher = RegrexValidators.geographicalNamePattern.matcher(country);
+    if (!matcher.matches()) {
       return "Incorrect country name";
     }
-    return "";
+    return null;
   }
 }

@@ -1,4 +1,4 @@
-package pl.coderstrust.validators;
+package pl.coderstrust.model.validators;
 
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.InvoiceEntriesGenerator;
+import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
 
@@ -16,30 +17,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import javax.management.StringValueExp;
-
 class InvoiceEntryValidatorTest {
   private InvoiceEntry invoiceEntry;
 
   @BeforeEach
   void setup() {
     invoiceEntry = InvoiceEntriesGenerator.getRandomInvoiceEntry();
-  }
-
-  @ParameterizedTest
-  @MethodSource("InvoiceEntryIdParameters")
-  void shouldNotValidateInvoiceEntryId(long id, List<String> expected) {
-    invoiceEntry.setId(id);
-    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(expected, resultOfValidation);
-  }
-
-  private static Stream<Arguments> InvoiceEntryIdParameters() {
-    return Stream.of(
-        Arguments.of(-535, Collections.singletonList("Id cannot be less than 0"))
-    );
   }
 
   @ParameterizedTest
@@ -71,7 +54,9 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> quantityParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Quantity cannot be null")),
-        Arguments.of(Long.valueOf(-535), Collections.singletonList("Quantity cannot be less than 0"))
+        Arguments.of(Long.valueOf(-535), Collections.singletonList("Quantity cannot be less than or equal to 0")),
+        Arguments.of(Long.valueOf(0), Collections.singletonList("Quantity cannot be less than or equal to 0")),
+        Arguments.of(Long.valueOf(30), new ArrayList<String>())
     );
   }
 
@@ -86,8 +71,9 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> priceParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Price cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Price cannot be less than 0")),
-        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Price cannot be equal to 0"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Price cannot be less than or equal to 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Price cannot be less than or equal to 0")),
+        Arguments.of(BigDecimal.valueOf(30), new ArrayList<String>())
     );
   }
 
@@ -102,14 +88,15 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> grossValueParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Gross value cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Gross value cannot be less than 0")),
-        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Gross value cannot be equal to 0"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Gross value cannot be less than or equal to 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Gross value cannot be less than or equal to 0")),
+        Arguments.of(BigDecimal.valueOf(30), new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("vatValueParameters")
-  void shouldNotValidateVatValue(BigDecimal vatValue, List<String> expected) {
+  void shouldValidateVatValue(BigDecimal vatValue, List<String> expected) {
     invoiceEntry.setVatValue(vatValue);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     Assert.assertEquals(expected, resultOfValidation);
@@ -118,29 +105,24 @@ class InvoiceEntryValidatorTest {
   private static Stream<Arguments> vatValueParameters() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Vat value cannot be null")),
-        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Vat value cannot be less than 0")),
-        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Vat value cannot be equal to 0"))
-    );
-  }
-
-  @ParameterizedTest
-  @MethodSource("vatRateParameters")
-  void shouldNotValidateVatRate(Vat vatRate, List<String> expected) {
-    invoiceEntry.setVatRate(vatRate);
-    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(expected, resultOfValidation);
-  }
-
-  private static Stream<Arguments> vatRateParameters() {
-    return Stream.of(
-        Arguments.of(null, Collections.singletonList("Vat rate cannot be null"))
+        Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Vat value cannot be less than or equal to 0")),
+        Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Vat value cannot be less than or equal to 0")),
+        Arguments.of(BigDecimal.valueOf(30), new ArrayList<String>())
     );
   }
 
   @Test
-  void shouldApproveInvoiceEntry() {
-    List<String> actual = InvoiceEntryValidator.validate(invoiceEntry);
-    List<String> expected = new ArrayList<>();
-    Assert.assertEquals(expected, actual);
+  void shouldThrowExceptionWhenVatRateIsNull() {
+    invoiceEntry.setVatRate(null);
+    List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
+    List<String> expected = Collections.singletonList("Vat rate cannot be null");
+    Assert.assertEquals(expected, resultOfValidation);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenInvoiceEntryIsNull() {
+    List<String> resultOfValidation = InvoiceEntryValidator.validate(null);
+    List<String> expected = Collections.singletonList("Invoice entry cannot be null");
+    Assert.assertEquals(expected, resultOfValidation);
   }
 }

@@ -1,4 +1,4 @@
-package pl.coderstrust.validators;
+package pl.coderstrust.model.validators;
 
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,16 +15,16 @@ import java.util.List;
 import java.util.stream.Stream;
 
 class CompanyValidatorTest {
- private Company company;
+  private Company company;
 
- @BeforeEach
- void setup(){
-   company = CompanyGenerator.getRandomCompany();
- }
+  @BeforeEach
+  void setup() {
+    company = CompanyGenerator.getRandomCompany();
+  }
 
   @ParameterizedTest
   @MethodSource("companyIdParameters")
-  void shouldNotValidateCompanyId(long id, List<String> expected) {
+  void shouldValidateCompanyId(Long id, List<String> expected) {
     company.setId(id);
     List<String> resultOfValidation = CompanyValidator.validate(company);
     Assert.assertEquals(expected, resultOfValidation);
@@ -32,13 +32,16 @@ class CompanyValidatorTest {
 
   private static Stream<Arguments> companyIdParameters() {
     return Stream.of(
-        Arguments.of(-535, Collections.singletonList("Id cannot be less than zero"))
+        Arguments.of(null, Collections.singletonList("Id cannot be null")),
+        Arguments.of(Long.valueOf(-535), Collections.singletonList("Id cannot be less than or equal to 0")),
+        Arguments.of(Long.valueOf(0), Collections.singletonList("Id cannot be less than or equal to 0")),
+        Arguments.of(Long.valueOf(50), new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("companyNameParameters")
-  void shouldNotValidateCompanyName(String name, List<String> expected) {
+  void shouldValidateCompanyName(String name, List<String> expected) {
     company.setName(name);
     List<String> resultOfValidation = CompanyValidator.validate(company);
     Assert.assertEquals(expected, resultOfValidation);
@@ -48,13 +51,15 @@ class CompanyValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Name cannot be null")),
         Arguments.of("", Collections.singletonList("Name cannot be empty")),
-        Arguments.of("fewf%^$", Collections.singletonList("Incorrect name"))
+        Arguments.of("fewf%^$", Collections.singletonList("Incorrect name")),
+        Arguments.of("3M", new ArrayList<String>()),
+        Arguments.of("Aferf", new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("taxIdentificationNumberParameters")
-  void shouldNotValidateTaxIdentificationNumber(String taxIdentificationNumber, List<String> expected) {
+  void shouldValidateTaxIdentificationNumber(String taxIdentificationNumber, List<String> expected) {
     company.setTaxIdentificationNumber(taxIdentificationNumber);
     List<String> resultOfValidation = CompanyValidator.validate(company);
     Assert.assertEquals(expected, resultOfValidation);
@@ -67,14 +72,15 @@ class CompanyValidatorTest {
         Arguments.of("fewf%^$", Collections.singletonList("Incorrect tax identification number")),
         Arguments.of("856-42-8943", Collections.singletonList("Incorrect tax identification number")),
         Arguments.of("956428943", Collections.singletonList("Incorrect tax identification number")),
-        Arguments.of("fwfw", Collections.singletonList("Incorrect tax identification number"))
+        Arguments.of("fwfw", Collections.singletonList("Incorrect tax identification number")),
+        Arguments.of("1111111111", new ArrayList<String>())
     );
   }
 
   @Test
-  void shouldApproveContactDetails() {
-    List<String> resultOfValidation = CompanyValidator.validate(company);
-    List expected = new ArrayList<String>();
+  void shouldThrowExceptionWhenCompanyIsNull() {
+    List<String> resultOfValidation = CompanyValidator.validate(null);
+    List<String> expected = Collections.singletonList("Company cannot be null");
     Assert.assertEquals(expected, resultOfValidation);
   }
 }

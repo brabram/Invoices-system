@@ -1,4 +1,4 @@
-package pl.coderstrust.validators;
+package pl.coderstrust.model.validators;
 
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ class ContactDetailsValidatorTest {
 
   @ParameterizedTest
   @MethodSource("emailParameters")
-  void shouldNotValidateEmail(String email, List<String> expected) {
+  void shouldValidateEmail(String email, List<String> expected) {
     contactDetails.setEmail(email);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     Assert.assertEquals(expected, resultOfValidation);
@@ -36,13 +36,15 @@ class ContactDetailsValidatorTest {
         Arguments.of(null, Collections.singletonList("Email cannot be null")),
         Arguments.of("", Collections.singletonList("Email cannot be empty")),
         Arguments.of("weefwfw", Collections.singletonList("Incorrect email address")),
-        Arguments.of("weefwfw@fer", Collections.singletonList("Incorrect email address"))
+        Arguments.of("weefwfw@fer", Collections.singletonList("Incorrect email address")),
+        Arguments.of("weefwfw@gmail.com", new ArrayList<String>()),
+        Arguments.of("Weefwfw@gmail.com.pl", new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("webSiteParameters")
-  void shouldNotValidateWebSite(String webSite, List<String> expected) {
+  void shouldValidateWebSite(String webSite, List<String> expected) {
     contactDetails.setWebsite(webSite);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     Assert.assertEquals(expected, resultOfValidation);
@@ -55,13 +57,15 @@ class ContactDetailsValidatorTest {
         Arguments.of("5366544", Collections.singletonList("Incorrect web site type")),
         Arguments.of("vergtre", Collections.singletonList("Incorrect web site type")),
         Arguments.of("rgtrtr.com", Collections.singletonList("Incorrect web site type")),
-        Arguments.of("www.rgtr@#$%tr.com", Collections.singletonList("Incorrect web site type"))
+        Arguments.of("www.rgtr@#$%tr.com", Collections.singletonList("Incorrect web site type")),
+        Arguments.of("www.rgtrtr.com", new ArrayList<String>()),
+        Arguments.of("www.rgtrtr.com.pl", new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("phoneNumberParameters")
-  void shouldNotValidatePhoneNumber(String phoneNumber, List<String> expected) {
+  void shouldValidatePhoneNumber(String phoneNumber, List<String> expected) {
     contactDetails.setPhoneNumber(phoneNumber);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     Assert.assertEquals(expected, resultOfValidation);
@@ -72,14 +76,15 @@ class ContactDetailsValidatorTest {
         Arguments.of(null, Collections.singletonList("Phone number cannot be null")),
         Arguments.of("", Collections.singletonList("Phone number cannot be empty")),
         Arguments.of("gtr", Collections.singletonList("Incorrect phone number")),
-        Arguments.of("23243grrg", Collections.singletonList("Incorrect phone number"))
+        Arguments.of("23243grrg", Collections.singletonList("Incorrect phone number")),
+        Arguments.of("+48111111111", new ArrayList<String>())
     );
   }
 
   @Test
-  void shouldApproveContactDetails() {
-    List<String> actual = ContactDetailsValidator.validate(contactDetails);
-    List<String> expected = new ArrayList<>();
-    Assert.assertEquals(expected, actual);
+  void shouldThrowExceptionWhenContactDetailsIsNull() {
+    List<String> resultOfValidation = ContactDetailsValidator.validate(null);
+    List<String> expected = Collections.singletonList("Contact details cannot be null");
+    Assert.assertEquals(expected, resultOfValidation);
   }
 }

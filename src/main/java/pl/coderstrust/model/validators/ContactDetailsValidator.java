@@ -1,27 +1,27 @@
-package pl.coderstrust.validators;
+package pl.coderstrust.model.validators;
 
 import pl.coderstrust.model.ContactDetails;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 
-import static pl.coderstrust.validators.ResultOfValidation.addResultOfValidation;
-
-public class ContactDetailsValidator {
+public class ContactDetailsValidator extends Validator {
 
   public static List<String> validate(ContactDetails contactDetails) {
     if (contactDetails == null) {
       return Collections.singletonList("Contact details cannot be null");
     }
     List<String> result = new ArrayList<>();
-    String emailAddressValidator = validateEmail(contactDetails.getEmail());
-    String phoneNumberValidator = validatePhoneNumber(contactDetails.getPhoneNumber());
-    String webSiteValidator = validateWebSite(contactDetails.getWebsite());
-    AddressValidator.validate(contactDetails.getAddress());
-    addResultOfValidation(result, emailAddressValidator);
-    addResultOfValidation(result, phoneNumberValidator);
-    addResultOfValidation(result, webSiteValidator);
+    String resultOfEmailAddressValidation = validateEmail(contactDetails.getEmail());
+    String resultOfPhoneNumberValidation = validatePhoneNumber(contactDetails.getPhoneNumber());
+    String resultOfWebSiteValidation = validateWebSite(contactDetails.getWebsite());
+    List<String> resultOfAddressValidation = AddressValidator.validate(contactDetails.getAddress());
+    addResultOfValidation(result, resultOfEmailAddressValidation);
+    addResultOfValidation(result, resultOfPhoneNumberValidation);
+    addResultOfValidation(result, resultOfWebSiteValidation);
+    addResultOfValidation(result, resultOfAddressValidation);
     return result;
   }
 
@@ -32,10 +32,11 @@ public class ContactDetailsValidator {
     if (email.trim().isEmpty()) {
       return "Email cannot be empty";
     }
-    if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
+    Matcher matcher = RegrexValidators.emailPattern.matcher(email);
+    if (!matcher.matches()) {
       return "Incorrect email address";
     }
-    return "";
+    return null;
   }
 
   private static String validatePhoneNumber(String phoneNumber) {
@@ -45,10 +46,11 @@ public class ContactDetailsValidator {
     if (phoneNumber.trim().isEmpty()) {
       return "Phone number cannot be empty";
     }
-    if (!phoneNumber.matches("[+0-9]+")) {
+    Matcher matcher = RegrexValidators.phoneNumberPattern.matcher(phoneNumber);
+    if (!matcher.matches()) {
       return "Incorrect phone number";
     }
-    return "";
+    return null;
   }
 
   private static String validateWebSite(String webSite) {
@@ -58,9 +60,10 @@ public class ContactDetailsValidator {
     if (webSite.trim().isEmpty()) {
       return "Web site cannot be empty";
     }
-    if (!webSite.matches("(www.)([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?")) {
+    Matcher matcher = RegrexValidators.webSitePattern.matcher(webSite);
+    if (!matcher.matches()) {
       return "Incorrect web site type";
     }
-    return "";
+    return null;
   }
 }

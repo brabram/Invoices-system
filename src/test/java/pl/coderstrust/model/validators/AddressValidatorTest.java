@@ -1,4 +1,4 @@
-package pl.coderstrust.validators;
+package pl.coderstrust.model.validators;
 
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ class AddressValidatorTest {
 
   @ParameterizedTest
   @MethodSource("streetParameters")
-  void shouldNotValidateStreet(String street, List<String> expected) {
+  void shouldValidateStreet(String street, List<String> expected) {
     address.setStreet(street);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
@@ -37,13 +37,14 @@ class AddressValidatorTest {
         Arguments.of("sdf34535", Collections.singletonList("Incorrect street name")),
         Arguments.of("53533242", Collections.singletonList("Incorrect street name")),
         Arguments.of("-53533242", Collections.singletonList("Incorrect street name")),
-        Arguments.of("krakowska", Collections.singletonList("Incorrect street name"))
+        Arguments.of("krakowska", Collections.singletonList("Incorrect street name")),
+        Arguments.of("Krakowska", new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("cityParameters")
-  void shouldNotValidateCity(String city, List<String> expected) {
+  void shouldValidateCity(String city, List<String> expected) {
     address.setCity(city);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
@@ -57,13 +58,14 @@ class AddressValidatorTest {
         Arguments.of("53533242", Collections.singletonList("Incorrect city name")),
         Arguments.of("-53533242", Collections.singletonList("Incorrect city name")),
         Arguments.of("warsaw", Collections.singletonList("Incorrect city name")),
-        Arguments.of("wARsaw", Collections.singletonList("Incorrect city name"))
+        Arguments.of("wARsaw", Collections.singletonList("Incorrect city name")),
+        Arguments.of("Warsaw", new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("countryParameters")
-  void shouldNotValidateCountry(String country, List<String> expected) {
+  void shouldValidateCountry(String country, List<String> expected) {
     address.setCountry(country);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
@@ -76,13 +78,14 @@ class AddressValidatorTest {
         Arguments.of("sdf34535", Collections.singletonList("Incorrect country name")),
         Arguments.of("53533242", Collections.singletonList("Incorrect country name")),
         Arguments.of("pOlAND", Collections.singletonList("Incorrect country name")),
-        Arguments.of("poland", Collections.singletonList("Incorrect country name"))
+        Arguments.of("poland", Collections.singletonList("Incorrect country name")),
+        Arguments.of("Poland", new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("addressNumberParameters")
-  void shouldNotValidateAddressNumber(String addressNumber, List<String> expected) {
+  void shouldValidateAddressNumber(String addressNumber, List<String> expected) {
     address.setNumber(addressNumber);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
@@ -94,13 +97,14 @@ class AddressValidatorTest {
         Arguments.of("", Collections.singletonList("Number cannot be empty")),
         Arguments.of("sdf34535", Collections.singletonList("Incorrect address number")),
         Arguments.of("5352", Collections.singletonList("Incorrect address number")),
-        Arguments.of("4363/35654", Collections.singletonList("Incorrect address number"))
+        Arguments.of("4363/35654", Collections.singletonList("Incorrect address number")),
+        Arguments.of("63/55", new ArrayList<String>())
     );
   }
 
   @ParameterizedTest
   @MethodSource("postalCodeParameters")
-  void shouldNotValidatePostalCode(String postalCode, List<String> expected) {
+  void shouldValidatePostalCode(String postalCode, List<String> expected) {
     address.setPostalCode(postalCode);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
@@ -111,15 +115,15 @@ class AddressValidatorTest {
         Arguments.of(null, Collections.singletonList("Postal code cannot be null")),
         Arguments.of("", Collections.singletonList("Postal code cannot be empty")),
         Arguments.of("sdf34535", Collections.singletonList("Incorrect postal code")),
-        Arguments.of("32555", Collections.singletonList("Incorrect postal code")),
-        Arguments.of("53543-453", Collections.singletonList("Incorrect postal code"))
+        Arguments.of("53543-453", Collections.singletonList("Incorrect postal code")),
+        Arguments.of("53543", new ArrayList<String>())
     );
   }
 
   @Test
-  void shouldApproveAddressValidation() {
-    List<String> actual = AddressValidator.validate(address);
-    List<String> expected = new ArrayList<>();
-    Assert.assertEquals(expected, actual);
+  void shouldThrowExceptionWhenAddressIsNull() {
+    List<String> resultOfValidation = AddressValidator.validate(null);
+    List<String> expected = Collections.singletonList("Address cannot be null");
+    Assert.assertEquals(expected, resultOfValidation);
   }
 }
