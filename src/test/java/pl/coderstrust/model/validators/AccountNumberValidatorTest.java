@@ -62,7 +62,7 @@ class AccountNumberValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("accountNumberParameters")
+  @MethodSource("accountNumberArguments")
   void shouldCompareIbanNumberAndLocalNumber(String localNumber, String ibanNumber, List<String> expected) {
     accountNumber.setLocalNumber(localNumber);
     accountNumber.setIbanNumber(ibanNumber);
@@ -70,7 +70,7 @@ class AccountNumberValidatorTest {
     Assert.assertEquals(expected.toString(), resultOfValidation.toString());
   }
 
-  private static Stream<Arguments> accountNumberParameters() {
+  private static Stream<Arguments> accountNumberArguments() {
     return Stream.of(
         Arguments.of("34342", "PL54646", Collections.singletonList("Check if iban number and local number are same, iban number must contain 2 letters at the beginning")),
         Arguments.of("34222", "PL34222", new ArrayList<String>())

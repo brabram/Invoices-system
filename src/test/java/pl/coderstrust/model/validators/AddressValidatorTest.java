@@ -23,14 +23,14 @@ class AddressValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("streetParameters")
+  @MethodSource("streetArguments")
   void shouldValidateStreet(String street, List<String> expected) {
     address.setStreet(street);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> streetParameters() {
+  private static Stream<Arguments> streetArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Street cannot be null")),
         Arguments.of("", Collections.singletonList("Street cannot be empty")),
@@ -43,14 +43,14 @@ class AddressValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("cityParameters")
+  @MethodSource("cityArguments")
   void shouldValidateCity(String city, List<String> expected) {
     address.setCity(city);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> cityParameters() {
+  private static Stream<Arguments> cityArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("City cannot be null")),
         Arguments.of("", Collections.singletonList("City cannot be empty")),
@@ -64,14 +64,14 @@ class AddressValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("countryParameters")
+  @MethodSource("countryArguments")
   void shouldValidateCountry(String country, List<String> expected) {
     address.setCountry(country);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> countryParameters() {
+  private static Stream<Arguments> countryArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Country cannot be null")),
         Arguments.of("", Collections.singletonList("Country cannot be empty")),
@@ -84,14 +84,14 @@ class AddressValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("addressNumberParameters")
+  @MethodSource("addressNumberArguments")
   void shouldValidateAddressNumber(String addressNumber, List<String> expected) {
     address.setNumber(addressNumber);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> addressNumberParameters() {
+  private static Stream<Arguments> addressNumberArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Number cannot be null")),
         Arguments.of("", Collections.singletonList("Number cannot be empty")),
@@ -103,14 +103,14 @@ class AddressValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("postalCodeParameters")
+  @MethodSource("postalCodeArguments")
   void shouldValidatePostalCode(String postalCode, List<String> expected) {
     address.setPostalCode(postalCode);
     List<String> resultOfValidation = AddressValidator.validate(address);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> postalCodeParameters() {
+  private static Stream<Arguments> postalCodeArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Postal code cannot be null")),
         Arguments.of("", Collections.singletonList("Postal code cannot be empty")),

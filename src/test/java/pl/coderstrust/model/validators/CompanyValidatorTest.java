@@ -23,14 +23,14 @@ class CompanyValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("companyIdParameters")
+  @MethodSource("companyIdArguments")
   void shouldValidateCompanyId(Long id, List<String> expected) {
     company.setId(id);
     List<String> resultOfValidation = CompanyValidator.validate(company);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> companyIdParameters() {
+  private static Stream<Arguments> companyIdArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Id cannot be null")),
         Arguments.of(Long.valueOf(-535), Collections.singletonList("Id cannot be less than or equal to 0")),
@@ -40,14 +40,14 @@ class CompanyValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("companyNameParameters")
+  @MethodSource("companyNameArguments")
   void shouldValidateCompanyName(String name, List<String> expected) {
     company.setName(name);
     List<String> resultOfValidation = CompanyValidator.validate(company);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> companyNameParameters() {
+  private static Stream<Arguments> companyNameArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Name cannot be null")),
         Arguments.of("", Collections.singletonList("Name cannot be empty")),
@@ -58,14 +58,14 @@ class CompanyValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("taxIdentificationNumberParameters")
+  @MethodSource("taxIdentificationNumberArguments")
   void shouldValidateTaxIdentificationNumber(String taxIdentificationNumber, List<String> expected) {
     company.setTaxIdentificationNumber(taxIdentificationNumber);
     List<String> resultOfValidation = CompanyValidator.validate(company);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> taxIdentificationNumberParameters() {
+  private static Stream<Arguments> taxIdentificationNumberArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Tax identification number cannot be null")),
         Arguments.of("", Collections.singletonList("Tax identification number cannot be empty")),

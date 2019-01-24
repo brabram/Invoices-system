@@ -24,14 +24,14 @@ class ContactDetailsValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("emailParameters")
+  @MethodSource("emailArguments")
   void shouldValidateEmail(String email, List<String> expected) {
     contactDetails.setEmail(email);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> emailParameters() {
+  private static Stream<Arguments> emailArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Email cannot be null")),
         Arguments.of("", Collections.singletonList("Email cannot be empty")),
@@ -43,14 +43,14 @@ class ContactDetailsValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("webSiteParameters")
+  @MethodSource("webSiteArguments")
   void shouldValidateWebSite(String webSite, List<String> expected) {
     contactDetails.setWebsite(webSite);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> webSiteParameters() {
+  private static Stream<Arguments> webSiteArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Web site cannot be null")),
         Arguments.of("", Collections.singletonList("Web site cannot be empty")),
@@ -64,14 +64,14 @@ class ContactDetailsValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("phoneNumberParameters")
+  @MethodSource("phoneNumberArguments")
   void shouldValidatePhoneNumber(String phoneNumber, List<String> expected) {
     contactDetails.setPhoneNumber(phoneNumber);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> phoneNumberParameters() {
+  private static Stream<Arguments> phoneNumberArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Phone number cannot be null")),
         Arguments.of("", Collections.singletonList("Phone number cannot be empty")),

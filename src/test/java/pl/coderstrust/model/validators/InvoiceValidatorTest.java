@@ -26,14 +26,14 @@ class InvoiceValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("invoiceIdParameters")
+  @MethodSource("invoiceIdArguments")
   void shouldValidateInvoiceId(long id, List<String> expected) {
     invoice.setId(id);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> invoiceIdParameters() {
+  private static Stream<Arguments> invoiceIdArguments() {
     return Stream.of(
         Arguments.of(-535, Collections.singletonList("Id cannot be less than or equal to 0")),
         Arguments.of(0, Collections.singletonList("Id cannot be less than or equal to 0")),
@@ -42,14 +42,14 @@ class InvoiceValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("invoiceNumberParameters")
+  @MethodSource("invoiceNumberArguments")
   void shouldValidateInvoiceNumber(String number, List<String> expected) {
     invoice.setNumber(number);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> invoiceNumberParameters() {
+  private static Stream<Arguments> invoiceNumberArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Number cannot be null")),
         Arguments.of("", Collections.singletonList("Number cannot be empty")),
@@ -61,7 +61,7 @@ class InvoiceValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("invoiceDateParameters")
+  @MethodSource("invoiceDateArguments")
   void shouldValidateInvoiceIssueDate(LocalDate issueDate, LocalDate dueDate, List<String> expected) {
     invoice.setIssueDate(issueDate);
     invoice.setDueDate(dueDate);
@@ -69,7 +69,7 @@ class InvoiceValidatorTest {
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> invoiceDateParameters() {
+  private static Stream<Arguments> invoiceDateArguments() {
     LocalDate dueDate = InvoiceGenerator.getRandomInvoice().getDueDate();
     LocalDate issueDate = dueDate.plusDays(2);
     return Stream.of(
@@ -81,14 +81,14 @@ class InvoiceValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("totalNetValueParameters")
+  @MethodSource("totalNetValueArguments")
   void shouldValidateTotalNetValue(BigDecimal netValue, List<String> expected) {
     invoice.setTotalNetValue(netValue);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> totalNetValueParameters() {
+  private static Stream<Arguments> totalNetValueArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Total net value cannot be null")),
         Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Total net value cannot be less than or equal to 0")),
@@ -98,14 +98,14 @@ class InvoiceValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("totalGrossValueParameters")
+  @MethodSource("totalGrossValueArguments")
   void shouldValidateTotalGrossValue(BigDecimal grossValue, List<String> expected) {
     invoice.setTotalGrossValue(grossValue);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
     Assert.assertEquals(expected, resultOfValidation);
   }
 
-  private static Stream<Arguments> totalGrossValueParameters() {
+  private static Stream<Arguments> totalGrossValueArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Total gross value cannot be null")),
         Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Total gross value cannot be less than or equal to 0")),
