@@ -228,8 +228,7 @@ class InvoiceServiceTest {
   void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIdIsNotNullAndExistByIdMethodReturnsTrue() throws InvoiceDatabaseOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    Long id = invoice.getId();
-    doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).existsById(id);
+    doThrow(InvoiceDatabaseOperationException.class).when(invoiceDatabase).existsById(invoice.getId());
 
     //Then
     assertThrows(InvoiceServiceOperationException.class, () -> invoiceService.addInvoice(invoice));
