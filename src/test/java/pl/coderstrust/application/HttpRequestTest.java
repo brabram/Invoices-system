@@ -1,4 +1,4 @@
-package pl.coderstrust;
+package pl.coderstrust.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

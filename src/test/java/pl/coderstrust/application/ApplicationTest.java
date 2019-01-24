@@ -1,4 +1,4 @@
-package pl.coderstrust;
+package pl.coderstrust.application;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
