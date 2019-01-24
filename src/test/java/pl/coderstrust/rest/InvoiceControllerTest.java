@@ -1,69 +1,79 @@
 package pl.coderstrust.rest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
 
-@ExtendWith(MockitoExtension.class)
-class InvoiceControllerTest {
+@RunWith(SpringRunner.class)
+@WebMvcTest(InvoiceController.class)
+public class InvoiceControllerTest {
 
+  @Autowired
+  private MockMvc mockMvc;
 
-  @Mock
+  @MockBean
   private InvoiceService invoiceService;
 
-  @InjectMocks
-  private InvoiceController invoiceController;
-
   @Test
-  void shouldGetAllInvoices() {
+  public void getAllInvoicesMethodShouldReturnIsOkStatusFromService() throws Exception {
     //Given
     List<Invoice> expectedInvoices = new ArrayList<>();
-    Invoice randomInvoice1 = InvoiceGenerator.getRandomInvoice();
-    Invoice randomInvoice2 = InvoiceGenerator.getRandomInvoice();
-    expectedInvoices.add(randomInvoice1);
-    expectedInvoices.add(randomInvoice2);
     when(invoiceService.getAllInvoices()).thenReturn(Optional.of(expectedInvoices));
 
-    //When
-    Optional<List<Invoice>> actualInvoices = invoiceController.getAllInvoices();
+    //Then
+    this.mockMvc.perform(get("")).andDo(print()).andExpect(status().isOk())
+        .andExpect(content().string(containsString("[]")));
+  }
+
+  @Test
+  public void getAllInvoicesMethodShouldReturnIsNotFoundStatusFromService() throws Exception {
+    //Given
+    List<Invoice> expectedInvoices = new ArrayList<>();
+    when(invoiceService.getAllInvoices()).thenReturn(Optional.of(expectedInvoices));
 
     //Then
-    assertTrue(actualInvoices.isPresent());
-    assertEquals(expectedInvoices, actualInvoices.get());
-    verify(invoiceService).getAllInvoices();
-  }
-
-
-  @Test
-  void shouldGetInvoiceById() {
+    this.mockMvc.perform(get("test")).andDo(print()).andExpect(status().isNotFound())
+        .andExpect(content().string(containsString("")));
   }
 
   @Test
-  void shouldGetInvoiceByNumber() {
+  public void getInvoicesByIdMethodShouldReturnInvoiceFromService() throws Exception {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long expectedId = invoice.getId();
+    when(invoiceService.getInvoiceById(expectedId)).thenReturn(Optional.of(invoice));
+
+    //Then
+    this.mockMvc.perform(get("/{id}", expectedId)).andDo(print()).andExpect(status().isOk())
+        .andExpect(content().string(containsString("" + invoice.getId())));
   }
 
   @Test
-  void shouldAddInvoice() {
-  }
+  public void getInvoicesByIdMethodShouldReturnEmptyBodyForIncorrectId() throws Exception {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long expectedId = invoice.getId();
+    when(invoiceService.getInvoiceById(expectedId)).thenReturn(Optional.of(invoice));
 
-  @Test
-  void shouldUpdateInvoice() {
-  }
-
-  @Test
-  void shouldRemoveInvoice() {
+    //Then
+    this.mockMvc.perform(get("/{id}", expectedId + 1)).andDo(print()).andExpect(status().isOk())
+        .andExpect(content().string(containsString("")));
   }
 }
