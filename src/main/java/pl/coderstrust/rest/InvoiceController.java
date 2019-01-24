@@ -14,7 +14,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
 
 @RestController
-@RequestMapping("/invoicesService")
+@RequestMapping()
 public class InvoiceController {
 
   private InvoiceService invoiceService;
@@ -28,7 +28,7 @@ public class InvoiceController {
     return invoiceService.getAllInvoices();
   }
 
-  @GetMapping("/{id")
+  @GetMapping("/{id}")
   public Optional<Invoice> getInvoiceById(@PathVariable("id") Long id) {
     return invoiceService.getInvoiceById(id);
   }
@@ -45,12 +45,12 @@ public class InvoiceController {
     return invoiceService.addInvoice(invoice);
   }
 
-  @PutMapping
+  @PutMapping("/{id}")
   public void updateInvoice(@PathVariable("id") Long id, @RequestBody Invoice invoice) {
     invoiceService.updateInvoice(invoice);
   }
 
-  @DeleteMapping
+  @DeleteMapping("/{id}")
   public void removeInvoice(@PathVariable("id") Long id) {
     invoiceService.deleteInvoiceById(id);
   }
