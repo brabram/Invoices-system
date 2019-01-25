@@ -109,7 +109,7 @@ public class Invoice {
       return false;
     }
     Invoice invoice = (Invoice) o;
-    return id == invoice.id
+    return Objects.equals(id, invoice.id)
         && Objects.equals(number, invoice.number)
         && Objects.equals(issueDate, invoice.issueDate)
         && Objects.equals(dueDate, invoice.dueDate)

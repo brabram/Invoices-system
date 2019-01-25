@@ -87,7 +87,7 @@ public class InvoiceEntry {
       return false;
     }
     InvoiceEntry invoiceEntry = (InvoiceEntry) o;
-    return id == invoiceEntry.id
+    return Objects.equals(id, invoiceEntry.id)
         && Objects.equals(item, invoiceEntry.item)
         && Objects.equals(quantity, invoiceEntry.quantity)
         && Objects.equals(price, invoiceEntry.price)

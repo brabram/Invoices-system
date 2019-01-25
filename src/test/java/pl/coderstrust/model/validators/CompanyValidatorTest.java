@@ -1,6 +1,5 @@
 package pl.coderstrust.model.validators;
 
-import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,6 +7,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.CompanyGenerator;
 import pl.coderstrust.model.Company;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,28 +24,11 @@ class CompanyValidatorTest {
   }
 
   @ParameterizedTest
-  @MethodSource("companyIdArguments")
-  void shouldValidateCompanyId(Long id, List<String> expected) {
-    company.setId(id);
-    List<String> resultOfValidation = CompanyValidator.validate(company);
-    Assert.assertEquals(expected, resultOfValidation);
-  }
-
-  private static Stream<Arguments> companyIdArguments() {
-    return Stream.of(
-        Arguments.of(null, Collections.singletonList("Id cannot be null")),
-        Arguments.of(Long.valueOf(-535), Collections.singletonList("Id cannot be less than or equal to 0")),
-        Arguments.of(Long.valueOf(0), Collections.singletonList("Id cannot be less than or equal to 0")),
-        Arguments.of(Long.valueOf(50), new ArrayList<String>())
-    );
-  }
-
-  @ParameterizedTest
   @MethodSource("companyNameArguments")
   void shouldValidateCompanyName(String name, List<String> expected) {
     company.setName(name);
     List<String> resultOfValidation = CompanyValidator.validate(company);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> companyNameArguments() {
@@ -62,7 +46,7 @@ class CompanyValidatorTest {
   void shouldValidateTaxIdentificationNumber(String taxIdentificationNumber, List<String> expected) {
     company.setTaxIdentificationNumber(taxIdentificationNumber);
     List<String> resultOfValidation = CompanyValidator.validate(company);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> taxIdentificationNumberArguments() {
@@ -81,6 +65,6 @@ class CompanyValidatorTest {
   void shouldThrowExceptionWhenCompanyIsNull() {
     List<String> resultOfValidation = CompanyValidator.validate(null);
     List<String> expected = Collections.singletonList("Company cannot be null");
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 }

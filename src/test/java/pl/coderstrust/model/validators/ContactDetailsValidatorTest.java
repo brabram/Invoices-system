@@ -1,6 +1,5 @@
 package pl.coderstrust.model.validators;
 
-import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,6 +7,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.ContactDetailsGenerator;
 import pl.coderstrust.model.ContactDetails;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +29,7 @@ class ContactDetailsValidatorTest {
   void shouldValidateEmail(String email, List<String> expected) {
     contactDetails.setEmail(email);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> emailArguments() {
@@ -47,7 +48,7 @@ class ContactDetailsValidatorTest {
   void shouldValidateWebSite(String webSite, List<String> expected) {
     contactDetails.setWebsite(webSite);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> webSiteArguments() {
@@ -68,7 +69,7 @@ class ContactDetailsValidatorTest {
   void shouldValidatePhoneNumber(String phoneNumber, List<String> expected) {
     contactDetails.setPhoneNumber(phoneNumber);
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> phoneNumberArguments() {
@@ -77,7 +78,8 @@ class ContactDetailsValidatorTest {
         Arguments.of("", Collections.singletonList("Phone number cannot be empty")),
         Arguments.of("gtr", Collections.singletonList("Incorrect phone number")),
         Arguments.of("23243grrg", Collections.singletonList("Incorrect phone number")),
-        Arguments.of("+48111111111", new ArrayList<String>())
+        Arguments.of("+48111111111", new ArrayList<String>()),
+        Arguments.of("48111111111", new ArrayList<String>())
     );
   }
 
@@ -85,6 +87,6 @@ class ContactDetailsValidatorTest {
   void shouldThrowExceptionWhenContactDetailsIsNull() {
     List<String> resultOfValidation = ContactDetailsValidator.validate(null);
     List<String> expected = Collections.singletonList("Contact details cannot be null");
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 }

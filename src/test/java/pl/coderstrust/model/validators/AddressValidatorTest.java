@@ -1,6 +1,5 @@
 package pl.coderstrust.model.validators;
 
-import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,6 +7,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.AddressGenerator;
 import pl.coderstrust.model.Address;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +28,7 @@ class AddressValidatorTest {
   void shouldValidateStreet(String street, List<String> expected) {
     address.setStreet(street);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> streetArguments() {
@@ -38,7 +39,8 @@ class AddressValidatorTest {
         Arguments.of("53533242", Collections.singletonList("Incorrect street name")),
         Arguments.of("-53533242", Collections.singletonList("Incorrect street name")),
         Arguments.of("krakowska", Collections.singletonList("Incorrect street name")),
-        Arguments.of("Krakowska", new ArrayList<String>())
+        Arguments.of("Krakowska", new ArrayList<String>()),
+        Arguments.of("Krakowska Eefefe Rege", new ArrayList<String>())
     );
   }
 
@@ -47,7 +49,7 @@ class AddressValidatorTest {
   void shouldValidateCity(String city, List<String> expected) {
     address.setCity(city);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> cityArguments() {
@@ -59,7 +61,8 @@ class AddressValidatorTest {
         Arguments.of("-53533242", Collections.singletonList("Incorrect city name")),
         Arguments.of("warsaw", Collections.singletonList("Incorrect city name")),
         Arguments.of("wARsaw", Collections.singletonList("Incorrect city name")),
-        Arguments.of("Warsaw", new ArrayList<String>())
+        Arguments.of("Warsaw", new ArrayList<String>()),
+        Arguments.of("Wfef Ffefr", new ArrayList<String>())
     );
   }
 
@@ -68,7 +71,7 @@ class AddressValidatorTest {
   void shouldValidateCountry(String country, List<String> expected) {
     address.setCountry(country);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> countryArguments() {
@@ -79,7 +82,9 @@ class AddressValidatorTest {
         Arguments.of("53533242", Collections.singletonList("Incorrect country name")),
         Arguments.of("pOlAND", Collections.singletonList("Incorrect country name")),
         Arguments.of("poland", Collections.singletonList("Incorrect country name")),
-        Arguments.of("Poland", new ArrayList<String>())
+        Arguments.of("United arab Emirates", Collections.singletonList("Incorrect country name")),
+        Arguments.of("Poland", new ArrayList<String>()),
+        Arguments.of("United Arab Emirates", new ArrayList<String>())
     );
   }
 
@@ -88,7 +93,7 @@ class AddressValidatorTest {
   void shouldValidateAddressNumber(String addressNumber, List<String> expected) {
     address.setNumber(addressNumber);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> addressNumberArguments() {
@@ -107,7 +112,7 @@ class AddressValidatorTest {
   void shouldValidatePostalCode(String postalCode, List<String> expected) {
     address.setPostalCode(postalCode);
     List<String> resultOfValidation = AddressValidator.validate(address);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> postalCodeArguments() {
@@ -124,6 +129,6 @@ class AddressValidatorTest {
   void shouldThrowExceptionWhenAddressIsNull() {
     List<String> resultOfValidation = AddressValidator.validate(null);
     List<String> expected = Collections.singletonList("Address cannot be null");
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 }

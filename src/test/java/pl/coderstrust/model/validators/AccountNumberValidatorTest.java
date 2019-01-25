@@ -1,6 +1,5 @@
 package pl.coderstrust.model.validators;
 
-import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.AccountNumberGenerator;
 import pl.coderstrust.model.AccountNumber;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,17 +27,18 @@ class AccountNumberValidatorTest {
   @MethodSource("ibanNumberArguments")
   void shouldValidateIbanNumber(String ibanNumber, List<String> expected) {
     accountNumber.setIbanNumber(ibanNumber);
+    accountNumber.setLocalNumber("53533242");
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> ibanNumberArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Iban number cannot be null")),
         Arguments.of("", Collections.singletonList("Iban number cannot be empty")),
-        Arguments.of("sdf", Collections.singletonList("Incorrect iban number")),
-        Arguments.of("53533242", Collections.singletonList("Incorrect iban number")),
-        Arguments.of("PL53533242", Collections.singletonList("Check if iban number and local number are same, iban number must contain 2 letters at the beginning"))
+        Arguments.of("sdf", Collections.singletonList("Incorrect iban number, iban number must contain two letters at the beginning and then numbers")),
+        Arguments.of("53533242", Collections.singletonList("Incorrect iban number, iban number must contain two letters at the beginning and then numbers")),
+        Arguments.of("PL53533242", new ArrayList<String>())
     );
   }
 
@@ -46,8 +46,9 @@ class AccountNumberValidatorTest {
   @MethodSource("localNumberArguments")
   void shouldValidateLocalNumber(String localNumber, List<String> expected) {
     accountNumber.setLocalNumber(localNumber);
+    accountNumber.setIbanNumber("PL4343433");
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> localNumberArguments() {
@@ -57,7 +58,7 @@ class AccountNumberValidatorTest {
         Arguments.of("sdf", Collections.singletonList("Local number cannot contain letters or another special chars")),
         Arguments.of("sdf4353", Collections.singletonList("Local number cannot contain letters or another special chars")),
         Arguments.of("PL435346546", Collections.singletonList("Local number cannot contain letters or another special chars")),
-        Arguments.of("435346546", Collections.singletonList("Check if iban number and local number are same, iban number must contain 2 letters at the beginning"))
+        Arguments.of("4343433", new ArrayList<String>())
     );
   }
 
@@ -67,7 +68,7 @@ class AccountNumberValidatorTest {
     accountNumber.setLocalNumber(localNumber);
     accountNumber.setIbanNumber(ibanNumber);
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
-    Assert.assertEquals(expected.toString(), resultOfValidation.toString());
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> accountNumberArguments() {
@@ -81,6 +82,6 @@ class AccountNumberValidatorTest {
   void shouldThrowExceptionWhenAccountNumberIsNull() {
     List<String> resultOfValidation = AccountNumberValidator.validate(null);
     List<String> expected = Collections.singletonList("Account number cannot be null");
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 }

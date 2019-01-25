@@ -18,7 +18,7 @@ public class AccountNumberValidator extends Validator {
     String resultOfLocalNumberValidation = validateLocalNumber(accountNumber.getLocalNumber());
     addResultOfValidation(result, resultOfIbanNumberValidation);
     addResultOfValidation(result, resultOfLocalNumberValidation);
-    if ((resultOfIbanNumberValidation == null && resultOfLocalNumberValidation == null)) {
+    if ((resultOfIbanNumberValidation == null) && (resultOfLocalNumberValidation == null)) {
       String resultOfComparison = compareNumbers(accountNumber.getLocalNumber(), accountNumber.getIbanNumber());
       addResultOfValidation(result, resultOfComparison);
     }
@@ -32,7 +32,7 @@ public class AccountNumberValidator extends Validator {
     if (localNumber.trim().isEmpty()) {
       return "Local number cannot be empty";
     }
-    Matcher matcher = RegrexPatterns.numberPattern.matcher(localNumber);
+    Matcher matcher = RegExpPatterns.numberPattern.matcher(localNumber);
     if (!matcher.matches()) {
       return "Local number cannot contain letters or another special chars";
     }
@@ -46,9 +46,9 @@ public class AccountNumberValidator extends Validator {
     if (ibanNumber.trim().isEmpty()) {
       return "Iban number cannot be empty";
     }
-    Matcher matcher = RegrexPatterns.ibanNumberPattern.matcher(ibanNumber);
+    Matcher matcher = RegExpPatterns.ibanNumberPattern.matcher(ibanNumber);
     if (!matcher.matches()) {
-      return "Incorrect iban number";
+      return "Incorrect iban number, iban number must contain two letters at the beginning and then numbers";
     }
     return null;
   }

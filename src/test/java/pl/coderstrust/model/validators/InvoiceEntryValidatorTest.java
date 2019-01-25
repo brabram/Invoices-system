@@ -1,15 +1,14 @@
 package pl.coderstrust.model.validators;
 
-import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import pl.coderstrust.generators.InvoiceEntriesGenerator;
-import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.InvoiceEntry;
-import pl.coderstrust.model.Vat;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ class InvoiceEntryValidatorTest {
   void shouldNotValidateItemName(String item, List<String> expected) {
     invoiceEntry.setItem(item);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> itemNameArguments() {
@@ -39,7 +38,12 @@ class InvoiceEntryValidatorTest {
         Arguments.of("", Collections.singletonList("Item cannot be empty")),
         Arguments.of("sdf35", Collections.singletonList("Incorrect item")),
         Arguments.of("35fewf", Collections.singletonList("Incorrect item")),
-        Arguments.of("-535", Collections.singletonList("Incorrect item"))
+        Arguments.of("-535", Collections.singletonList("Incorrect item")),
+        Arguments.of("Something", new ArrayList<String>()),
+        Arguments.of("something", new ArrayList<String>()),
+        Arguments.of("free wwd fre", new ArrayList<String>()),
+        Arguments.of("Free Wwd Fre", new ArrayList<String>()),
+        Arguments.of("Free-Wwd-Fre", new ArrayList<String>())
     );
   }
 
@@ -48,7 +52,7 @@ class InvoiceEntryValidatorTest {
   void shouldNotValidateQuantity(Long quantity, List<String> expected) {
     invoiceEntry.setQuantity(quantity);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> quantityArguments() {
@@ -65,7 +69,7 @@ class InvoiceEntryValidatorTest {
   void shouldNotValidatePrice(BigDecimal price, List<String> expected) {
     invoiceEntry.setPrice(price);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> priceArguments() {
@@ -82,7 +86,7 @@ class InvoiceEntryValidatorTest {
   void shouldNotValidateGrossValue(BigDecimal grossValue, List<String> expected) {
     invoiceEntry.setGrossValue(grossValue);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> grossValueArguments() {
@@ -99,7 +103,7 @@ class InvoiceEntryValidatorTest {
   void shouldValidateVatValue(BigDecimal vatValue, List<String> expected) {
     invoiceEntry.setVatValue(vatValue);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> vatValueArguments() {
@@ -116,13 +120,13 @@ class InvoiceEntryValidatorTest {
     invoiceEntry.setVatRate(null);
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     List<String> expected = Collections.singletonList("Vat rate cannot be null");
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 
   @Test
   void shouldThrowExceptionWhenInvoiceEntryIsNull() {
     List<String> resultOfValidation = InvoiceEntryValidator.validate(null);
     List<String> expected = Collections.singletonList("Invoice entry cannot be null");
-    Assert.assertEquals(expected, resultOfValidation);
+    assertEquals(expected, resultOfValidation);
   }
 }

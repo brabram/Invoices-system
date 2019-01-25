@@ -66,7 +66,7 @@ public class Company {
       return false;
     }
     Company company = (Company) o;
-    return id == company.id
+    return Objects.equals(id, company.id)
         && Objects.equals(name, company.name)
         && Objects.equals(taxIdentificationNumber, company.taxIdentificationNumber)
         && Objects.equals(accountNumber, company.accountNumber)

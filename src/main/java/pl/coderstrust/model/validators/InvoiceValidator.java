@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 
-public class InvoiceValidator extends Validator{
+public class InvoiceValidator extends Validator {
 
   public static List<String> validate(Invoice invoice) {
     if (invoice == null) {
@@ -33,7 +33,10 @@ public class InvoiceValidator extends Validator{
     return result;
   }
 
-  private static String validateId(long id) {
+  private static String validateId(Long id) {
+    if(id == null){
+      return "Id cannot be null";
+    }
     if (id <= 0) {
       return "Id cannot be less than or equal to 0";
     }
@@ -44,11 +47,11 @@ public class InvoiceValidator extends Validator{
     if (number == null) {
       return "Number cannot be null";
     }
-    if(number.trim().isEmpty()){
+    if (number.trim().isEmpty()) {
       return "Number cannot be empty";
     }
-    Matcher matcher = RegrexPatterns.numberPattern.matcher(number);
-    if(!matcher.matches()){
+    Matcher matcher = RegExpPatterns.invoiceNumberPattern.matcher(number);
+    if (!matcher.matches()) {
       return "Incorrect number";
     }
     return null;
