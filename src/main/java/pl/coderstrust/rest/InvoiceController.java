@@ -26,8 +26,16 @@ public class InvoiceController {
   }
 
   @GetMapping
-  public Optional<List<Invoice>> getAllInvoices() {
-    return invoiceService.getAllInvoices();
+  public ResponseEntity<?> getAllInvoices() {
+    try {
+      Optional<List<Invoice>> optionalInvoicesList = invoiceService.getAllInvoices();
+      if (optionalInvoicesList.isPresent()) {
+        return new ResponseEntity<>(optionalInvoicesList.get(), HttpStatus.OK);
+      }
+      return new ResponseEntity<>(new ErrorMessage("Not found any invoices."), HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @GetMapping("/{id}")
@@ -47,23 +55,69 @@ public class InvoiceController {
   }
 
 //  @GetMapping("/{number}")
-//  public Optional<Invoice> getInvoiceByNumber(@PathVariable("number") String number) {
-//    //do something here
-//    return invoiceService.getInvoiceById(id);
+//  public ResponseEntity<?> getInvoiceByNumber(@PathVariable("number") String number) {
+//    if (number == null) {
+//      return new ResponseEntity<>(new ErrorMessage("Invalid number."), HttpStatus.BAD_REQUEST);
+//    }
+//    try {
+//      Optional<Invoice> optionalInvoice = invoiceService.getAllInvoices().flatMap(invoices -> )filter(invoices -> );
+//      if (optionalInvoicesList.isPresent()) {
+//        optionalInvoicesList.filter(invoices -> invoices.)
+//        return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);
+//      }
+//      return new ResponseEntity<>(new ErrorMessage("Invoice not found."), HttpStatus.NOT_FOUND);
+//    } catch (Exception e) {
+//      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 //  }
 
   @PostMapping
-  public Optional<Invoice> addInvoice(@RequestBody Invoice invoice) {
-    return invoiceService.addInvoice(invoice);
+  public ResponseEntity<?> addInvoice(@RequestBody Invoice invoice) {
+    if (invoice == null) {
+      return new ResponseEntity<>(new ErrorMessage("Invoice cannot be null."), HttpStatus.BAD_REQUEST);
+    }
+    try {
+      Optional<Invoice> optionalInvoice = invoiceService.addInvoice(invoice);
+      if (optionalInvoice.isPresent()) {
+        return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.CREATED);
+      }
+      return new ResponseEntity<>(new ErrorMessage("Invoice already exist."), HttpStatus.CONFLICT);
+    } catch (Exception e) {
+      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @PutMapping("/{id}")
-  public void updateInvoice(@PathVariable("id") Long id, @RequestBody Invoice invoice) {
-    invoiceService.updateInvoice(invoice);
+  public ResponseEntity<?> updateInvoice(@PathVariable("id") Long id, @RequestBody Invoice invoice) {
+    if (id == null) {
+      return new ResponseEntity<>(new ErrorMessage("Invalid id"), HttpStatus.BAD_REQUEST);
+    }
+    try {
+      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
+      if (optionalInvoice.isPresent()) {
+        invoiceService.updateInvoice(invoice);
+        return new ResponseEntity<>(HttpStatus.OK);
+      }
+      return new ResponseEntity<>(new ErrorMessage("Invoice does not exist."), HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @DeleteMapping("/{id}")
-  public void removeInvoice(@PathVariable("id") Long id) {
-    invoiceService.deleteInvoiceById(id);
+  public ResponseEntity<?> removeInvoice(@PathVariable("id") Long id) {
+    if (id == null) {
+      return new ResponseEntity<>(new ErrorMessage("Invalid id"), HttpStatus.BAD_REQUEST);
+    }
+    try {
+      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
+      if (optionalInvoice.isPresent()) {
+        invoiceService.deleteInvoiceById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+      }
+      return new ResponseEntity<>(new ErrorMessage("Invoice does not exist."), HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
