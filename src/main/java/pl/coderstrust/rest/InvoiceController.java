@@ -54,22 +54,28 @@ public class InvoiceController {
     }
   }
 
-//  @GetMapping("/{number}")
-//  public ResponseEntity<?> getInvoiceByNumber(@PathVariable("number") String number) {
-//    if (number == null) {
-//      return new ResponseEntity<>(new ErrorMessage("Invalid number."), HttpStatus.BAD_REQUEST);
-//    }
-//    try {
-//      Optional<Invoice> optionalInvoice = invoiceService.getAllInvoices().flatMap(invoices -> )filter(invoices -> );
-//      if (optionalInvoicesList.isPresent()) {
-//        optionalInvoicesList.filter(invoices -> invoices.)
-//        return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);
-//      }
-//      return new ResponseEntity<>(new ErrorMessage("Invoice not found."), HttpStatus.NOT_FOUND);
-//    } catch (Exception e) {
-//      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
-//  }
+  @GetMapping("/{number}")
+  public ResponseEntity<?> getInvoiceByNumber(@PathVariable("number") String number) {
+    if (number == null) {
+      return new ResponseEntity<>(new ErrorMessage("Invalid number."), HttpStatus.BAD_REQUEST);
+    }
+    try {
+      Optional<List<Invoice>> optionalInvoicesList = invoiceService.getAllInvoices();
+      if (optionalInvoicesList.isPresent()) {
+        Optional<Invoice> optionalInvoice = optionalInvoicesList.get()
+            .stream()
+            .filter(invoiceToGet -> invoiceToGet.getNumber().equals(number))
+            .findAny();
+        if (optionalInvoice.isPresent()) {
+          return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ErrorMessage("Invoice not found."), HttpStatus.NOT_FOUND);
+      }
+      return new ResponseEntity<>(new ErrorMessage("Not found any invoices."), HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
   @PostMapping
   public ResponseEntity<?> addInvoice(@RequestBody Invoice invoice) {
