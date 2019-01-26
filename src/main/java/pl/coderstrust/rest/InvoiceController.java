@@ -104,13 +104,17 @@ public class InvoiceController {
     if (id == null) {
       return new ResponseEntity<>(new ErrorMessage("Invalid id"), HttpStatus.BAD_REQUEST);
     }
+    if (invoice == null) {
+      return new ResponseEntity<>(new ErrorMessage("Updated Invoice cannot be empty."), HttpStatus.BAD_REQUEST);
+    }
     try {
-      if (invoice == null) {
-        return new ResponseEntity<>(new ErrorMessage("Invoice does not exist."), HttpStatus.NOT_FOUND);
+      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
+      if (optionalInvoice.isPresent()) {
+        invoice.setId(id);
+        invoiceService.updateInvoice(invoice);
+        return new ResponseEntity<>(HttpStatus.OK);
       }
-      invoice.setId(id);
-      invoiceService.updateInvoice(invoice);
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseEntity<>(new ErrorMessage("Invoice does not exist."), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
       return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
