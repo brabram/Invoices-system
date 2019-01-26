@@ -1,5 +1,8 @@
 package pl.coderstrust.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ import pl.coderstrust.service.InvoiceService;
 public class InvoiceController {
 
   private InvoiceService invoiceService;
+  private ObjectMapper mapper = new ObjectMapper();
+
 
   public InvoiceController(InvoiceService invoiceService) {
     this.invoiceService = invoiceService;
@@ -85,7 +90,8 @@ public class InvoiceController {
     try {
       Optional<Invoice> optionalInvoice = invoiceService.addInvoice(invoice);
       if (optionalInvoice.isPresent()) {
-        return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.CREATED);
+        configureLocalDateJsonFormat();
+        return new ResponseEntity<>(mapper.writeValueAsString(optionalInvoice.get()), HttpStatus.CREATED);
       }
       return new ResponseEntity<>(new ErrorMessage("Invoice already exist."), HttpStatus.CONFLICT);
     } catch (Exception e) {
@@ -125,5 +131,10 @@ public class InvoiceController {
     } catch (Exception e) {
       return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  private void configureLocalDateJsonFormat() {
+    mapper.registerModule(new JSR310Module());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
   }
 }

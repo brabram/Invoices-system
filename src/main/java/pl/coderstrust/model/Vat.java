@@ -8,6 +8,9 @@ public enum Vat {
 
   private float value;
 
+  Vat() {
+  }
+
   Vat(float value) {
     this.value = value;
   }

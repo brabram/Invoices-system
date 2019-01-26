@@ -9,6 +9,9 @@ public class Company {
   private AccountNumber accountNumber;
   private ContactDetails contactDetails;
 
+  public Company() {
+  }
+
   public Company(Long id, String name, String taxIdentificationNumber, AccountNumber accountNumber, ContactDetails contactDetails) {
     this.id = id;
     this.name = name;

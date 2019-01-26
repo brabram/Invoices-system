@@ -12,6 +12,9 @@ public class InvoiceEntry {
   private BigDecimal grossValue;
   private Vat vatRate;
 
+  public InvoiceEntry() {
+  }
+
   public InvoiceEntry(Long id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, Vat vatRate) {
     this.id = id;
     this.item = item;
