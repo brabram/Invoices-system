@@ -1,6 +1,7 @@
 package pl.coderstrust.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class InvoiceController {
     }
   }
 
-  @GetMapping("/{number}")
+  @GetMapping("/number={number}")
   public ResponseEntity<?> getInvoiceByNumber(@PathVariable("number") String number) {
     if (number == null) {
       return new ResponseEntity<>(new ErrorMessage("Invalid number."), HttpStatus.BAD_REQUEST);
@@ -89,6 +90,7 @@ public class InvoiceController {
       Optional<Invoice> optionalInvoice = invoiceService.addInvoice(invoice);
       if (optionalInvoice.isPresent()) {
         mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         return new ResponseEntity<>(mapper.writeValueAsString(optionalInvoice.get()), HttpStatus.CREATED);
       }
       return new ResponseEntity<>(new ErrorMessage("Invoice already exist."), HttpStatus.CONFLICT);
@@ -103,12 +105,12 @@ public class InvoiceController {
       return new ResponseEntity<>(new ErrorMessage("Invalid id"), HttpStatus.BAD_REQUEST);
     }
     try {
-      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
-      if (optionalInvoice.isPresent()) {
-        invoiceService.updateInvoice(invoice);
-        return new ResponseEntity<>(HttpStatus.OK);
+      if (invoice == null) {
+        return new ResponseEntity<>(new ErrorMessage("Invoice does not exist."), HttpStatus.NOT_FOUND);
       }
-      return new ResponseEntity<>(new ErrorMessage("Invoice does not exist."), HttpStatus.NOT_FOUND);
+      invoice.setId(id);
+      invoiceService.updateInvoice(invoice);
+      return new ResponseEntity<>(HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
