@@ -125,7 +125,7 @@ class InvoiceValidatorTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenCompanySellerIsNull() {
+  void shouldValidateCompanySeller() {
     invoice.setSeller(null);
     List<String> expected = Collections.singletonList("Company cannot be null");
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);
@@ -133,7 +133,7 @@ class InvoiceValidatorTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenCompanyBuyerIsNull() {
+  void shouldValidateCompanyBuyer() {
     invoice.setBuyer(null);
     List<String> expected = Collections.singletonList("Company cannot be null");
     List<String> resultOfValidation = InvoiceValidator.validate(invoice);

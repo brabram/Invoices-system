@@ -91,7 +91,7 @@ class ContactDetailsValidatorTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenAddressIsNull() {
+  void shouldValidateAddress() {
     contactDetails.setAddress(null);
     List<String> expected = Collections.singletonList("Address cannot be null");
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);

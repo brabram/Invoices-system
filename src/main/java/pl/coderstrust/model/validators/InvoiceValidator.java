@@ -35,7 +35,7 @@ public class InvoiceValidator extends Validator {
   }
 
   private static String validateId(Long id) {
-    if(id == null){
+    if (id == null) {
       return "Id cannot be null";
     }
     if (id <= 0) {

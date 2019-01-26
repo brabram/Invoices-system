@@ -16,7 +16,7 @@ public class CompanyGenerator {
   private static AtomicLong atomicLong = new AtomicLong(random.nextInt(Math.toIntExact(9999L)));
 
   public static Company getRandomCompany() {
-    long id = atomicLong.incrementAndGet();
+    Long id = atomicLong.incrementAndGet();
     String name = WordGenerator.getRandomWord();
     String taxIdentificationNumber = String.format("%05d%05d", random.nextInt(99999), random.nextInt(99999));
     AccountNumber accountNumber = AccountNumberGenerator.getRandomAccount();

@@ -69,7 +69,7 @@ class CompanyValidatorTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenAccountNumberIsNull() {
+  void shouldValidateAccountNumber() {
     company.setAccountNumber(null);
     List<String> expected = Collections.singletonList("Account number cannot be null");
     List<String> resultOfValidation = CompanyValidator.validate(company);
@@ -77,7 +77,7 @@ class CompanyValidatorTest {
   }
 
   @Test
-  void shouldThrowExceptionWhenContactDetailsIsNull() {
+  void shouldValidateContactDetails() {
     company.setContactDetails(null);
     List<String> expected = Collections.singletonList("Contact details cannot be null");
     List<String> resultOfValidation = CompanyValidator.validate(company);
