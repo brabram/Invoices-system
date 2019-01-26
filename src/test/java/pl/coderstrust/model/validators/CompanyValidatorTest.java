@@ -67,4 +67,20 @@ class CompanyValidatorTest {
     List<String> expected = Collections.singletonList("Company cannot be null");
     assertEquals(expected, resultOfValidation);
   }
+
+  @Test
+  void shouldThrowExceptionWhenAccountNumberIsNull() {
+    company.setAccountNumber(null);
+    List<String> expected = Collections.singletonList("Account number cannot be null");
+    List<String> resultOfValidation = CompanyValidator.validate(company);
+    assertEquals(expected, resultOfValidation);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenContactDetailsIsNull() {
+    company.setContactDetails(null);
+    List<String> expected = Collections.singletonList("Contact details cannot be null");
+    List<String> resultOfValidation = CompanyValidator.validate(company);
+    assertEquals(expected, resultOfValidation);
+  }
 }

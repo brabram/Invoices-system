@@ -89,4 +89,12 @@ class ContactDetailsValidatorTest {
     List<String> expected = Collections.singletonList("Contact details cannot be null");
     assertEquals(expected, resultOfValidation);
   }
+
+  @Test
+  void shouldThrowExceptionWhenAddressIsNull() {
+    contactDetails.setAddress(null);
+    List<String> expected = Collections.singletonList("Address cannot be null");
+    List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
+    assertEquals(expected, resultOfValidation);
+  }
 }

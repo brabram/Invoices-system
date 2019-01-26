@@ -123,4 +123,28 @@ class InvoiceValidatorTest {
     List<String> expected = Collections.singletonList("Invoice cannot be null");
     assertEquals(expected, resultOfValidation);
   }
+
+  @Test
+  void shouldThrowExceptionWhenInvoiceEntryIsNull() {
+    invoice.setEntries(null);
+    List<String> expected = Collections.singletonList("Invoice entry cannot be null");
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    assertEquals(expected, resultOfValidation);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenCompanySellerIsNull() {
+    invoice.setSeller(null);
+    List<String> expected = Collections.singletonList("Company cannot be null");
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    assertEquals(expected, resultOfValidation);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenCompanyBuyerIsNull() {
+    invoice.setBuyer(null);
+    List<String> expected = Collections.singletonList("Company cannot be null");
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    assertEquals(expected, resultOfValidation);
+  }
 }

@@ -1,6 +1,7 @@
 package pl.coderstrust.model.validators;
 
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.model.InvoiceEntry;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class InvoiceValidator extends Validator {
     String resultOfTotalGrossValueValidation = validateTotalGrossValue(invoice.getTotalGrossValue());
     List<String> resultOfCompanySellerValidation = CompanyValidator.validate(invoice.getSeller());
     List<String> resultOfCompanyBuyerValidation = CompanyValidator.validate(invoice.getBuyer());
+    List<String> resultOfInvoiceEntryValidation = InvoiceEntryValidator.validate((InvoiceEntry) invoice.getEntries());
     addResultOfValidation(result, resultOfIdValidation);
     addResultOfValidation(result, resultOfNumberValidation);
     addResultOfValidation(result, resultOfIssueDateValidation);
@@ -30,6 +32,7 @@ public class InvoiceValidator extends Validator {
     addResultOfValidation(result, resultOfTotalGrossValueValidation);
     addResultOfValidation(result, resultOfCompanySellerValidation);
     addResultOfValidation(result, resultOfCompanyBuyerValidation);
+    addResultOfValidation(result, resultOfInvoiceEntryValidation);
     return result;
   }
 
