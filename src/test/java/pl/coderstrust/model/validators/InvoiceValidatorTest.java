@@ -36,9 +36,9 @@ class InvoiceValidatorTest {
   private static Stream<Arguments> invoiceIdArguments() {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Id cannot be null")),
-        Arguments.of(Long.valueOf(-535), Collections.singletonList("Id cannot be less than or equal to 0")),
-        Arguments.of(Long.valueOf(0), Collections.singletonList("Id cannot be less than or equal to 0")),
-        Arguments.of(Long.valueOf(30), new ArrayList<String>())
+        Arguments.of(-535L, Collections.singletonList("Id cannot be less than or equal to 0")),
+        Arguments.of(0L, Collections.singletonList("Id cannot be less than or equal to 0")),
+        Arguments.of(30L, new ArrayList<String>())
     );
   }
 
