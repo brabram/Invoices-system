@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.service.InvoiceService;
+import pl.coderstrust.service.ServiceOperationException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -14,45 +17,45 @@ import java.util.stream.StreamSupport;
 public class HibernateInvoiceDatabase implements InvoiceDatabase {
 
   private HibernateInvoiceRepository hibernateInvoiceRepository;
+  private InvoiceService invoiceService;
 
   @Autowired
   public HibernateInvoiceDatabase(HibernateInvoiceRepository hibernateInvoiceRepository) {
     this.hibernateInvoiceRepository = hibernateInvoiceRepository;
   }
 
-   @Override
-  public Invoice save(Invoice invoice) throws InvoiceDatabaseOperationException {
-    return hibernateInvoiceRepository.save(invoice);
+  @Override
+  public Optional<Invoice> save(Invoice invoice) throws ServiceOperationException {
+    return invoiceService.addInvoice(invoice);
   }
 
   @Override
-  public Invoice findById(Long id) throws InvoiceDatabaseOperationException {
-    return hibernateInvoiceRepository.findById(id).get();
+  public Optional<Invoice> findById(Long id) throws ServiceOperationException {
+    return invoiceService.getInvoiceById(id);
   }
 
   @Override
-  public boolean existsById(Long id) throws InvoiceDatabaseOperationException {
+  public boolean existsById(Long id) {
     return hibernateInvoiceRepository.existsById(id);
   }
 
   @Override
-  public List<Invoice> findAll() throws InvoiceDatabaseOperationException {
-    Iterable<Invoice> invoices = hibernateInvoiceRepository.findAll();
-    return StreamSupport.stream(invoices.spliterator(), false).collect(Collectors.toList());
+  public Optional<List<Invoice>> findAll() throws ServiceOperationException {
+    return invoiceService.getAllInvoices();
   }
 
   @Override
-  public long count() throws InvoiceDatabaseOperationException {
+  public long count() {
     return hibernateInvoiceRepository.count();
   }
 
   @Override
-  public void deleteById(Long id) throws InvoiceDatabaseOperationException {
-    hibernateInvoiceRepository.deleteById(id);
+  public void deleteById(Long id) throws ServiceOperationException {
+    invoiceService.deleteInvoiceById(id);
   }
 
   @Override
-  public void deleteAll() throws InvoiceDatabaseOperationException {
-    hibernateInvoiceRepository.deleteAll();
+  public void deleteAll() throws ServiceOperationException {
+    invoiceService.deleteAll();
   }
 }

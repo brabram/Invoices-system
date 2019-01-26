@@ -12,8 +12,6 @@ public class InvoiceEntry {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-
   private Long id;
   private String item;
   private Long quantity;

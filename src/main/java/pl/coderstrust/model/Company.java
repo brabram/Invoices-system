@@ -9,8 +9,6 @@ public class Company {
 
   @Id
   @GeneratedValue()
-  private long id;
-
   private Long id;
   private String name;
   private String taxIdentificationNumber;
