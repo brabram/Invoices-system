@@ -1,6 +1,5 @@
 package pl.coderstrust.database;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.service.ServiceOperationException;
 
 class InMemoryInvoiceDatabaseTest {
 
@@ -28,7 +26,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldSaveInvoice() throws DatabaseOperationException, ServiceOperationException {
+  void shouldSaveInvoice() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
