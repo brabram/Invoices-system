@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.service.ServiceOperationException;
 
 class InMemoryInvoiceDatabaseTest {
 
@@ -27,7 +28,7 @@ class InMemoryInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldSaveInvoice() throws DatabaseOperationException {
+  void shouldSaveInvoice() throws DatabaseOperationException, ServiceOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
     Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
