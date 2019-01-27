@@ -12,8 +12,8 @@ import pl.coderstrust.database.HibernateInvoiceRepository;
 import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.service.ServiceOperationException;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,130 +35,117 @@ class HibernateInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldSaveInvoice() throws DatabaseOperationException, ServiceOperationException {
+  void shouldSaveInvoice() throws DatabaseOperationException {
     //given
-    Invoice invoice1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoice2 = InvoiceGenerator.getRandomInvoice();
-    when(hibernateInvoiceRepository.save(invoice1)).thenReturn(invoice2);
+    Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
+    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
+    when(hibernateInvoiceRepository.save(invoiceToSave)).thenReturn(expectedInvoice);
 
     //when
-    Optional actualInvoice = invoiceDatabase.save(invoice1);
+    Optional actualInvoice = invoiceDatabase.save(invoiceToSave);
 
     //then
-    assertEquals(invoice2, actualInvoice);
-    verify(hibernateInvoiceRepository).save(invoice1);
+    assertEquals(Optional.of(expectedInvoice), actualInvoice);
+    verify(hibernateInvoiceRepository).save(invoiceToSave);
   }
 
-//  @Test
-//  void shouldFindOneInvoice() throws DatabaseOperationException {
-//    //given
-//    Invoice invoice1 = InvoiceGenerator.getRandomInvoice();
-//    Invoice invoice2 = InvoiceGenerator.getRandomInvoice();
-//    when(hibernateInvoiceRepository.save(invoice1)).thenReturn(invoice2);
-//    when(hibernateInvoiceRepository.findById(invoice1.getId())).thenReturn(java.util.Optional.ofNullable(invoice2));
-//
-//    //when
-//    Optional<Invoice> actualInvoice = invoiceDatabase.save(invoice1);
-//    Invoice expectedInvoice = invoiceDatabase.findById(invoice1.getId());
-//
-//    //then
-//    assertEquals(actualInvoice, expectedInvoice);
-//    verify(hibernateInvoiceRepository).save(invoice1);
-//    verify(hibernateInvoiceRepository).findById(invoice1.getId());
-//  }
-//
-//  @Test
-//  void shouldReturnTrueIfInvoiceExistsInDatabase() throws InvoiceDatabaseOperationException {
-//    //given
-//    Invoice invoice1 = InvoiceGenerator.getRandomInvoice();
-//    Invoice invoice2 = InvoiceGenerator.getRandomInvoice();
-//    when(hibernateInvoiceRepository.save(invoice1)).thenReturn(invoice2);
-//    when(hibernateInvoiceRepository.existsById(invoice1.getId())).thenReturn(true);
-//
-//    //when
-//    invoiceDatabase.save(invoice1);
-//    boolean isInvoiceExists = invoiceDatabase.existsById(invoice1.getId());
-//
-//    //then
-//    Assert.assertTrue(isInvoiceExists);
-//    verify(hibernateInvoiceRepository).save(invoice1);
-//    verify(hibernateInvoiceRepository).existsById(invoice1.getId());
-//  }
-//
-//  @Test
-//  void shouldFindAllInvoices() throws InvoiceDatabaseOperationException {
-//    //given
-//    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-//    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-//    Invoice savedInvoice1 = hibernateInvoiceRepository.save(invoiceToSave1);
-//    Invoice savedInvoice2 = hibernateInvoiceRepository.save(invoiceToSave2);
-//    List<Invoice> arrayOfInvoices = new ArrayList<>();
-//    arrayOfInvoices.add(savedInvoice1);
-//    arrayOfInvoices.add(savedInvoice2);
-//
-//    //when
-//    when(hibernateInvoiceRepository.findAll()).thenReturn(arrayOfInvoices);
-//    List<Invoice> invoicesFromDatabase = invoiceDatabase.findAll();
-//
-//    //then
-//    Assert.assertNotNull(invoicesFromDatabase);
-//    Assert.assertEquals(arrayOfInvoices, invoicesFromDatabase);
-//    verify(hibernateInvoiceRepository).findAll();
-//  }
-//
-//
-//  @Test
-//  void shouldReturnNumberOfInvoices() throws InvoiceDatabaseOperationException {
-//    //given
-//    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-//    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-//    Invoice savedInvoice1 = hibernateInvoiceRepository.save(invoiceToSave1);
-//    Invoice savedInvoice2 = hibernateInvoiceRepository.save(invoiceToSave2);
-//    List<Invoice> arrayOfInvoices = new ArrayList<>();
-//    arrayOfInvoices.add(savedInvoice1);
-//    arrayOfInvoices.add(savedInvoice2);
-//
-//    //when
-//    invoiceDatabase.count();
-//
-//    //then
-//    assertNotNull(arrayOfInvoices);
-//    verify(hibernateInvoiceRepository).count();
-//  }
-//
-//  @Test
-//  void deleteById() throws InvoiceDatabaseOperationException {
-//    //given
-//    Invoice invoice1 = InvoiceGenerator.getRandomInvoice();
-//    Invoice invoice2 = InvoiceGenerator.getRandomInvoice();
-//    when(hibernateInvoiceRepository.save(invoice1)).thenReturn(invoice2);
-//
-//    //when
-//    Invoice actualInvoice = invoiceDatabase.save(invoice1);
-//    invoiceDatabase.deleteById(actualInvoice.getId());
-//
-//    //then
-//    assertEquals(invoice2, actualInvoice);
-//    verify(hibernateInvoiceRepository).deleteById(actualInvoice.getId());
-//  }
-//
-//  @Test
-//  void shouldDeleteAllInvoices() throws InvoiceDatabaseOperationException {
-//    //given
-//    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-//    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-//    Invoice savedInvoice1 = hibernateInvoiceRepository.save(invoiceToSave1);
-//    Invoice savedInvoice2 = hibernateInvoiceRepository.save(invoiceToSave2);
-//    List<Invoice> arrayOfInvoices = new ArrayList<>();
-//    arrayOfInvoices.add(savedInvoice1);
-//    arrayOfInvoices.add(savedInvoice2);
-//
-//    //when
-//    invoiceDatabase.deleteAll();
-//    long numberOfInvoices = invoiceDatabase.count();
-//
-//    //then
-//    Assert.assertEquals(0, numberOfInvoices);
-//    verify(hibernateInvoiceRepository).deleteAll();
-//  }
+  @Test
+  void shouldFindOneInvoice() throws DatabaseOperationException {
+    //given
+    Optional<Invoice> expectedInvoice = Optional.of(InvoiceGenerator.getRandomInvoice());
+    Long id = expectedInvoice.get().getId();
+    when(hibernateInvoiceRepository.findById(id)).thenReturn(expectedInvoice);
+
+    //When
+    Optional<Invoice> actualInvoice = invoiceDatabase.findById(id);
+
+    //Then
+    assertEquals(expectedInvoice, actualInvoice);
+    verify(hibernateInvoiceRepository).findById(id);
+  }
+
+  @Test
+  void shouldReturnTrueIfInvoiceExistsInDatabase() throws DatabaseOperationException {
+    //given
+    Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
+    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
+    when(hibernateInvoiceRepository.save(invoiceToSave)).thenReturn(expectedInvoice);
+    when(hibernateInvoiceRepository.existsById(invoiceToSave.getId())).thenReturn(true);
+
+    //when
+    invoiceDatabase.save(invoiceToSave);
+    boolean isInvoiceExists = invoiceDatabase.existsById(invoiceToSave.getId());
+
+    //then
+    Assert.assertTrue(isInvoiceExists);
+    verify(hibernateInvoiceRepository).save(invoiceToSave);
+    verify(hibernateInvoiceRepository).existsById(invoiceToSave.getId());
+  }
+
+  @Test
+  void shouldFindAllInvoices() throws DatabaseOperationException {
+    //given
+    List<Invoice> expectedInvoices = new ArrayList<>();
+    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
+    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
+    expectedInvoices.add(invoiceToSave1);
+    expectedInvoices.add(invoiceToSave2);
+    when(hibernateInvoiceRepository.findAll()).thenReturn(expectedInvoices);
+
+    //When
+    Optional<List<Invoice>> actualInvoices = invoiceDatabase.findAll();
+
+    //Then
+    assertTrue(actualInvoices.isPresent());
+    assertEquals(expectedInvoices, actualInvoices.get());
+    verify(hibernateInvoiceRepository).findAll();
+  }
+
+
+  @Test
+  void shouldReturnNumberOfInvoices() throws DatabaseOperationException {
+    //given
+    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
+    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
+    Invoice savedInvoice1 = hibernateInvoiceRepository.save(invoiceToSave1);
+    Invoice savedInvoice2 = hibernateInvoiceRepository.save(invoiceToSave2);
+    List<Invoice> arrayOfInvoices = new ArrayList<>();
+    arrayOfInvoices.add(savedInvoice1);
+    arrayOfInvoices.add(savedInvoice2);
+    when(hibernateInvoiceRepository.findAll()).thenReturn(arrayOfInvoices);
+    when(hibernateInvoiceRepository.count()).thenReturn(Long.valueOf(arrayOfInvoices.size()));
+
+    //when
+    invoiceDatabase.findAll();
+    long invoicesFromDatabase = invoiceDatabase.count();
+
+    //then
+    Assert.assertNotNull(invoicesFromDatabase);
+    Assert.assertEquals(arrayOfInvoices.size(), invoicesFromDatabase);
+    verify(hibernateInvoiceRepository).findAll();
+    verify(hibernateInvoiceRepository).count();
+  }
+
+  @Test
+  void shouldDeleteById() throws DatabaseOperationException {
+    Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
+    when(hibernateInvoiceRepository.existsById(invoiceToSave.getId())).thenReturn(true);
+    assertTrue(hibernateInvoiceRepository.existsById(invoiceToSave.getId()));
+    doNothing().when(hibernateInvoiceRepository).deleteById(invoiceToSave.getId());
+    invoiceDatabase.deleteById(invoiceToSave.getId());
+    verify(hibernateInvoiceRepository).existsById(invoiceToSave.getId());
+    verify(hibernateInvoiceRepository).deleteById(invoiceToSave.getId());
+  }
+
+  @Test
+  void shouldDeleteAllInvoices() throws DatabaseOperationException {
+    //given
+    doNothing().when(hibernateInvoiceRepository).deleteAll();
+
+    //when
+    invoiceDatabase.deleteAll();
+
+    //then
+    verify(hibernateInvoiceRepository).deleteAll();
+  }
 }

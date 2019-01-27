@@ -4,20 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.service.InvoiceService;
-import pl.coderstrust.service.ServiceOperationException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 
 @Repository
 public class HibernateInvoiceDatabase implements InvoiceDatabase {
 
   private HibernateInvoiceRepository hibernateInvoiceRepository;
-  private InvoiceService invoiceService;
 
   @Autowired
   public HibernateInvoiceDatabase(HibernateInvoiceRepository hibernateInvoiceRepository) {
@@ -25,13 +20,13 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   }
 
   @Override
-  public Optional<Invoice> save(Invoice invoice) throws ServiceOperationException {
-    return invoiceService.addInvoice(invoice);
+  public Optional<Invoice> save(Invoice invoice) {
+    return Optional.of(hibernateInvoiceRepository.save(invoice));
   }
 
   @Override
-  public Optional<Invoice> findById(Long id) throws ServiceOperationException {
-    return invoiceService.getInvoiceById(id);
+  public Optional<Invoice> findById(Long id) {
+    return hibernateInvoiceRepository.findById(id);
   }
 
   @Override
@@ -40,8 +35,8 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   }
 
   @Override
-  public Optional<List<Invoice>> findAll() throws ServiceOperationException {
-    return invoiceService.getAllInvoices();
+  public Optional<List<Invoice>> findAll() {
+    return Optional.of(hibernateInvoiceRepository.findAll());
   }
 
   @Override
@@ -50,12 +45,12 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   }
 
   @Override
-  public void deleteById(Long id) throws ServiceOperationException {
-    invoiceService.deleteInvoiceById(id);
+  public void deleteById(Long id) {
+    hibernateInvoiceRepository.deleteById(id);
   }
 
   @Override
-  public void deleteAll() throws ServiceOperationException {
-    invoiceService.deleteAll();
+  public void deleteAll() {
+    hibernateInvoiceRepository.deleteAll();
   }
 }
