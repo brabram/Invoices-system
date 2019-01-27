@@ -42,7 +42,7 @@ public class InvoiceController {
     }
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/id={id}")
   public ResponseEntity<?> getInvoiceById(@PathVariable("id") Long id) {
     if (id == null) {
       return new ResponseEntity<>(new ErrorMessage("Invalid id."), HttpStatus.BAD_REQUEST);
@@ -87,11 +87,12 @@ public class InvoiceController {
       return new ResponseEntity<>(new ErrorMessage("Invoice cannot be null."), HttpStatus.BAD_REQUEST);
     }
     try {
-      Optional<Invoice> optionalInvoice = invoiceService.addInvoice(invoice);
-      if (optionalInvoice.isPresent()) {
+      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(invoice.getId());
+      if (!optionalInvoice.isPresent()) {
+        invoiceService.addInvoice(invoice);
         mapper.registerModule(new JavaTimeModule());
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return new ResponseEntity<>(mapper.writeValueAsString(optionalInvoice.get()), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.writeValueAsString(invoice), HttpStatus.CREATED);
       }
       return new ResponseEntity<>(new ErrorMessage("Invoice already exist."), HttpStatus.CONFLICT);
     } catch (Exception e) {
@@ -99,7 +100,7 @@ public class InvoiceController {
     }
   }
 
-  @PutMapping("/{id}")
+  @PutMapping("/updateId={id}")
   public ResponseEntity<?> updateInvoice(@PathVariable("id") Long id, @RequestBody Invoice invoice) {
     if (id == null) {
       return new ResponseEntity<>(new ErrorMessage("Invalid id"), HttpStatus.BAD_REQUEST);
@@ -120,10 +121,10 @@ public class InvoiceController {
     }
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/deleteId={id}")
   public ResponseEntity<?> removeInvoice(@PathVariable("id") Long id) {
     if (id == null) {
-      return new ResponseEntity<>(new ErrorMessage("Invalid id"), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(new ErrorMessage("Invalid id."), HttpStatus.BAD_REQUEST);
     }
     try {
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);

@@ -8,6 +8,9 @@ public class ErrorMessage {
   private String message;
   private List<String> details;
 
+  public ErrorMessage() {
+  }
+
   public ErrorMessage(String message) {
     this.message = message;
     details = new ArrayList<>();
