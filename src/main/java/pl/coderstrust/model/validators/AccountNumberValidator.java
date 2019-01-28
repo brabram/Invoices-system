@@ -1,11 +1,11 @@
 package pl.coderstrust.model.validators;
 
-import pl.coderstrust.model.AccountNumber;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
+
+import pl.coderstrust.model.AccountNumber;
 
 public class AccountNumberValidator extends Validator {
 
@@ -15,8 +15,8 @@ public class AccountNumberValidator extends Validator {
     }
     List<String> result = new ArrayList<>();
     String resultOfIbanNumberValidation = validateIbanNumber(accountNumber.getIbanNumber());
-    String resultOfLocalNumberValidation = validateLocalNumber(accountNumber.getLocalNumber());
     addResultOfValidation(result, resultOfIbanNumberValidation);
+    String resultOfLocalNumberValidation = validateLocalNumber(accountNumber.getLocalNumber());
     addResultOfValidation(result, resultOfLocalNumberValidation);
     if ((resultOfIbanNumberValidation == null) && (resultOfLocalNumberValidation == null)) {
       String resultOfComparison = compareNumbers(accountNumber.getLocalNumber(), accountNumber.getIbanNumber());

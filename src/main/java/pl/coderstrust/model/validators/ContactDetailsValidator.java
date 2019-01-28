@@ -1,11 +1,11 @@
 package pl.coderstrust.model.validators;
 
-import pl.coderstrust.model.ContactDetails;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
+
+import pl.coderstrust.model.ContactDetails;
 
 public class ContactDetailsValidator extends Validator {
 
@@ -15,12 +15,12 @@ public class ContactDetailsValidator extends Validator {
     }
     List<String> result = new ArrayList<>();
     String resultOfEmailAddressValidation = validateEmail(contactDetails.getEmail());
-    String resultOfPhoneNumberValidation = validatePhoneNumber(contactDetails.getPhoneNumber());
-    String resultOfWebSiteValidation = validateWebSite(contactDetails.getWebsite());
-    List<String> resultOfAddressValidation = AddressValidator.validate(contactDetails.getAddress());
     addResultOfValidation(result, resultOfEmailAddressValidation);
+    String resultOfPhoneNumberValidation = validatePhoneNumber(contactDetails.getPhoneNumber());
     addResultOfValidation(result, resultOfPhoneNumberValidation);
+    String resultOfWebSiteValidation = validateWebSite(contactDetails.getWebsite());
     addResultOfValidation(result, resultOfWebSiteValidation);
+    List<String> resultOfAddressValidation = AddressValidator.validate(contactDetails.getAddress());
     addResultOfValidation(result, resultOfAddressValidation);
     return result;
   }

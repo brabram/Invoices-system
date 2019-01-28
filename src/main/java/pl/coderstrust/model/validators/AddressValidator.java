@@ -1,11 +1,11 @@
 package pl.coderstrust.model.validators;
 
-import pl.coderstrust.model.Address;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
+
+import pl.coderstrust.model.Address;
 
 public class AddressValidator extends Validator {
 
@@ -15,14 +15,14 @@ public class AddressValidator extends Validator {
     }
     List<String> result = new ArrayList<>();
     String resultOfStreetNameValidation = validateStreet(address.getStreet());
-    String resultOfAddressNumberValidation = validateNumber(address.getNumber());
-    String resultOPostalCodeValidation = validatePostalCode(address.getPostalCode());
-    String resultOfCityNameValidation = validateCityName(address.getCity());
-    String resultOfCountryNameValidation = validateCountryName(address.getCountry());
     addResultOfValidation(result, resultOfStreetNameValidation);
+    String resultOfAddressNumberValidation = validateNumber(address.getNumber());
     addResultOfValidation(result, resultOfAddressNumberValidation);
+    String resultOPostalCodeValidation = validatePostalCode(address.getPostalCode());
     addResultOfValidation(result, resultOPostalCodeValidation);
+    String resultOfCityNameValidation = validateCityName(address.getCity());
     addResultOfValidation(result, resultOfCityNameValidation);
+    String resultOfCountryNameValidation = validateCountryName(address.getCountry());
     addResultOfValidation(result, resultOfCountryNameValidation);
     return result;
   }

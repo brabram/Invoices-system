@@ -1,13 +1,13 @@
 package pl.coderstrust.model.validators;
 
-import pl.coderstrust.model.Invoice;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
+
+import pl.coderstrust.model.Invoice;
 
 public class InvoiceValidator extends Validator {
 
@@ -16,23 +16,23 @@ public class InvoiceValidator extends Validator {
       return Collections.singletonList("Invoice cannot be null");
     }
     List<String> result = new ArrayList<>();
-    if(isIdRequired) {
+    if (isIdRequired) {
       String resultOfIdValidation = validateId(invoice.getId());
       addResultOfValidation(result, resultOfIdValidation);
     }
     String resultOfNumberValidation = validateNumber(invoice.getNumber());
     addResultOfValidation(result, resultOfNumberValidation);
     String resultOfIssueDateValidation = validateDate(invoice.getIssueDate(), invoice.getDueDate());
-    String resultOfTotalNetValueValidation = validateTotalNetValue(invoice.getTotalNetValue());
-    String resultOfTotalGrossValueValidation = validateTotalGrossValue(invoice.getTotalGrossValue());
-    List<String> resultOfCompanySellerValidation = CompanyValidator.validate(invoice.getSeller());
-    List<String> resultOfCompanyBuyerValidation = CompanyValidator.validate(invoice.getBuyer());
-    List<String> resultOfInvoiceEntriesValidation = InvoiceEntryValidator.validate(invoice.getEntries());
     addResultOfValidation(result, resultOfIssueDateValidation);
+    String resultOfTotalNetValueValidation = validateTotalNetValue(invoice.getTotalNetValue());
     addResultOfValidation(result, resultOfTotalNetValueValidation);
+    String resultOfTotalGrossValueValidation = validateTotalGrossValue(invoice.getTotalGrossValue());
     addResultOfValidation(result, resultOfTotalGrossValueValidation);
+    List<String> resultOfCompanySellerValidation = CompanyValidator.validate(invoice.getSeller());
     addResultOfValidation(result, resultOfCompanySellerValidation);
+    List<String> resultOfCompanyBuyerValidation = CompanyValidator.validate(invoice.getBuyer());
     addResultOfValidation(result, resultOfCompanyBuyerValidation);
+    List<String> resultOfInvoiceEntriesValidation = InvoiceEntryValidator.validate(invoice.getEntries());
     addResultOfValidation(result, resultOfInvoiceEntriesValidation);
     return result;
   }

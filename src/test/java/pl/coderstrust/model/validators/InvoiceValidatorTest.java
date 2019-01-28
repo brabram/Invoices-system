@@ -1,13 +1,5 @@
 package pl.coderstrust.model.validators;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import pl.coderstrust.generators.InvoiceGenerator;
-import pl.coderstrust.model.Invoice;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
@@ -16,6 +8,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+
+import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import pl.coderstrust.generators.InvoiceGenerator;
+import pl.coderstrust.model.Invoice;
 
 class InvoiceValidatorTest {
   private Invoice invoice;
@@ -29,7 +29,7 @@ class InvoiceValidatorTest {
   @MethodSource("invoiceIdArguments")
   void shouldValidateInvoiceId(Long id, List<String> expected) {
     invoice.setId(id);
-    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
 
@@ -42,11 +42,19 @@ class InvoiceValidatorTest {
     );
   }
 
+  @Test
+  void shouldValidateInvoiceWhenIdNotRequired() {
+    invoice.setId(2L);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, false);
+    List expected = new ArrayList<String>();
+    assertEquals(expected, resultOfValidation);
+  }
+
   @ParameterizedTest
   @MethodSource("invoiceNumberArguments")
   void shouldValidateInvoiceNumber(String number, List<String> expected) {
     invoice.setNumber(number);
-    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
 
@@ -68,7 +76,7 @@ class InvoiceValidatorTest {
   void shouldValidateInvoiceIssueDate(LocalDate issueDate, LocalDate dueDate, List<String> expected) {
     invoice.setIssueDate(issueDate);
     invoice.setDueDate(dueDate);
-    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
 
@@ -87,7 +95,7 @@ class InvoiceValidatorTest {
   @MethodSource("totalNetValueArguments")
   void shouldValidateTotalNetValue(BigDecimal netValue, List<String> expected) {
     invoice.setTotalNetValue(netValue);
-    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
 
@@ -104,7 +112,7 @@ class InvoiceValidatorTest {
   @MethodSource("totalGrossValueArguments")
   void shouldValidateTotalGrossValue(BigDecimal grossValue, List<String> expected) {
     invoice.setTotalGrossValue(grossValue);
-    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
 
@@ -119,7 +127,7 @@ class InvoiceValidatorTest {
 
   @Test
   void shouldThrowExceptionWhenInvoiceIsNull() {
-    List<String> resultOfValidation = InvoiceValidator.validate(null);
+    List<String> resultOfValidation = InvoiceValidator.validate(null, true);
     List<String> expected = Collections.singletonList("Invoice cannot be null");
     assertEquals(expected, resultOfValidation);
   }
@@ -128,7 +136,7 @@ class InvoiceValidatorTest {
   void shouldValidateCompanySeller() {
     invoice.setSeller(null);
     List<String> expected = Collections.singletonList("Company cannot be null");
-    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
 
@@ -136,7 +144,15 @@ class InvoiceValidatorTest {
   void shouldValidateCompanyBuyer() {
     invoice.setBuyer(null);
     List<String> expected = Collections.singletonList("Company cannot be null");
-    List<String> resultOfValidation = InvoiceValidator.validate(invoice);
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
+    assertEquals(expected, resultOfValidation);
+  }
+
+  @Test
+  void shouldValidateInvoiceEntries() {
+    invoice.setEntries(null);
+    List<String> expected = Collections.singletonList("Invoice entries cannot be null");
+    List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
 }

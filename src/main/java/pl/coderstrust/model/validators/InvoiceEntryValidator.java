@@ -1,15 +1,15 @@
 package pl.coderstrust.model.validators;
 
-import pl.coderstrust.model.InvoiceEntry;
-import pl.coderstrust.model.Vat;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 
-public class InvoiceEntryValidator extends Validator{
+import pl.coderstrust.model.InvoiceEntry;
+import pl.coderstrust.model.Vat;
+
+public class InvoiceEntryValidator extends Validator {
 
   public static List<String> validate(InvoiceEntry invoiceEntry) {
     if (invoiceEntry == null) {
@@ -17,22 +17,22 @@ public class InvoiceEntryValidator extends Validator{
     }
     List<String> result = new ArrayList<>();
     String resultOfItemValidation = validateItem(invoiceEntry.getItem());
-    String resultOfQuantityValidation = validateQuantity(invoiceEntry.getQuantity());
-    String resultOfPriceValidation = validatePrice(invoiceEntry.getPrice());
-    String resultOfVatValueValidation = validateVatValue(invoiceEntry.getVatValue());
-    String resultOfGrossValueValidation = validateGrossValue(invoiceEntry.getGrossValue());
-    String resultOfVatRateValidation = validateVatRate(invoiceEntry.getVatRate());
     addResultOfValidation(result, resultOfItemValidation);
+    String resultOfQuantityValidation = validateQuantity(invoiceEntry.getQuantity());
     addResultOfValidation(result, resultOfQuantityValidation);
+    String resultOfPriceValidation = validatePrice(invoiceEntry.getPrice());
     addResultOfValidation(result, resultOfPriceValidation);
+    String resultOfVatValueValidation = validateVatValue(invoiceEntry.getVatValue());
     addResultOfValidation(result, resultOfVatValueValidation);
+    String resultOfGrossValueValidation = validateGrossValue(invoiceEntry.getGrossValue());
     addResultOfValidation(result, resultOfGrossValueValidation);
+    String resultOfVatRateValidation = validateVatRate(invoiceEntry.getVatRate());
     addResultOfValidation(result, resultOfVatRateValidation);
     return result;
   }
 
   public static List<String> validate(List<InvoiceEntry> invoiceEntries) {
-    if(invoiceEntries == null) {
+    if (invoiceEntries == null) {
       return Collections.singletonList("Invoice entries cannot be null");
     }
     List<String> result = new ArrayList<>();
