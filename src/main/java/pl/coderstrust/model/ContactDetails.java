@@ -1,7 +1,10 @@
 package pl.coderstrust.model;
 
-import javax.persistence.*;
 import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
 
 @Entity
 public class ContactDetails {

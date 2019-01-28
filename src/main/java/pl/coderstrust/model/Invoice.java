@@ -1,10 +1,18 @@
 package pl.coderstrust.model;
 
-import javax.persistence.*;
+import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+
 
 @Entity
 public class Invoice {

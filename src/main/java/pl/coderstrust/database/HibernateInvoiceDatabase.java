@@ -1,16 +1,14 @@
 package pl.coderstrust.database;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.NonTransientDataAccessException;
-import org.springframework.stereotype.Repository;
-
-import pl.coderstrust.model.Invoice;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.NonTransientDataAccessException;
+import org.springframework.stereotype.Repository;
+import pl.coderstrust.model.Invoice;
 
 @Repository
 public class HibernateInvoiceDatabase implements InvoiceDatabase {
