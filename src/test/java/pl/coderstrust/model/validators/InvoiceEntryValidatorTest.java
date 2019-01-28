@@ -8,9 +8,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.junit.Test;
-
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -129,6 +128,13 @@ class InvoiceEntryValidatorTest {
   void shouldThrowExceptionWhenInvoiceEntryIsNull() {
     List<String> resultOfValidation = InvoiceEntryValidator.validate((InvoiceEntry) null);
     List<String> expected = Collections.singletonList("Invoice entry cannot be null");
+    assertEquals(expected, resultOfValidation);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenInvoiceEntryListIsNull1() {
+    List<String> resultOfValidation = InvoiceEntryValidator.validate((List<InvoiceEntry>) null);
+    List<String> expected = Collections.singletonList("Invoice entries cannot be null");
     assertEquals(expected, resultOfValidation);
   }
 }
