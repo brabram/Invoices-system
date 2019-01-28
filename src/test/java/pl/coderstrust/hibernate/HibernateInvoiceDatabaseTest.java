@@ -158,21 +158,22 @@ class HibernateInvoiceDatabaseTest {
   }
 
   @Test
-  void saveInvoiceMethodShouldThrowExceptionWhenInvoiceIsNull(){
-    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.save(null)); }
+  void saveInvoiceMethodShouldThrowExceptionWhenInvoiceIsNull() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.save(null));
+  }
 
   @Test
-  void findByIdMethodShouldThrowExceptionWhenIdIsNull(){
+  void findByIdMethodShouldThrowExceptionWhenIdIsNull() {
     assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.findById(null));
   }
 
   @Test
-  void existByIdMethodShouldThrowExceptionWhenIdIsNull(){
+  void existByIdMethodShouldThrowExceptionWhenIdIsNull() {
     assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.existsById(null));
   }
 
   @Test
-  void deleteByIdMethodShouldThrowExceptionWhenIdIsNull(){
+  void deleteByIdMethodShouldThrowExceptionWhenIdIsNull() {
     assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.deleteById(null));
   }
 

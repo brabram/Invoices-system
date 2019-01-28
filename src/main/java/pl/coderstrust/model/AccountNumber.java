@@ -5,15 +5,25 @@ import javax.persistence.Entity;
 
 @Entity
 public class AccountNumber {
+  private Long id;
   private String ibanNumber;
   private String localNumber;
 
   protected AccountNumber() {
   }
 
-  public AccountNumber(String ibanNumber, String localNumber) {
+  public AccountNumber(Long id, String ibanNumber, String localNumber) {
+    this.id = id;
     this.ibanNumber = ibanNumber;
     this.localNumber = localNumber;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getIbanNumber() {
@@ -41,17 +51,18 @@ public class AccountNumber {
       return false;
     }
     AccountNumber that = (AccountNumber) o;
-    return Objects.equals(ibanNumber, that.ibanNumber)
-        && Objects.equals(localNumber, that.localNumber);
+    return Objects.equals(id, that.id) &&
+        Objects.equals(ibanNumber, that.ibanNumber) &&
+        Objects.equals(localNumber, that.localNumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(ibanNumber, localNumber);
+    return Objects.hash(id, ibanNumber, localNumber);
   }
 
   @Override
   public String toString() {
-    return String.format("ibanNumber: %s, localNumber: %s", ibanNumber, localNumber);
+    return
   }
 }
