@@ -82,7 +82,7 @@ public class InvoiceController {
   }
 
   @PostMapping
-  public ResponseEntity<?> addInvoice(@RequestBody Invoice invoice) {
+  public ResponseEntity<?> addInvoice(@RequestBody(required = false) Invoice invoice) {
     if (invoice == null) {
       return new ResponseEntity<>(new ErrorMessage("Invoice cannot be null."), HttpStatus.BAD_REQUEST);
     }
