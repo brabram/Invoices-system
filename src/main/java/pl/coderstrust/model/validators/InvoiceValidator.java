@@ -1,7 +1,6 @@
 package pl.coderstrust.model.validators;
 
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.model.InvoiceEntry;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,21 +11,23 @@ import java.util.regex.Matcher;
 
 public class InvoiceValidator extends Validator {
 
-  public static List<String> validate(Invoice invoice) {
+  public static List<String> validate(Invoice invoice, boolean isIdRequired) {
     if (invoice == null) {
       return Collections.singletonList("Invoice cannot be null");
     }
     List<String> result = new ArrayList<>();
-    String resultOfIdValidation = validateId(invoice.getId());
+    if(isIdRequired) {
+      String resultOfIdValidation = validateId(invoice.getId());
+      addResultOfValidation(result, resultOfIdValidation);
+    }
     String resultOfNumberValidation = validateNumber(invoice.getNumber());
+    addResultOfValidation(result, resultOfNumberValidation);
     String resultOfIssueDateValidation = validateDate(invoice.getIssueDate(), invoice.getDueDate());
     String resultOfTotalNetValueValidation = validateTotalNetValue(invoice.getTotalNetValue());
     String resultOfTotalGrossValueValidation = validateTotalGrossValue(invoice.getTotalGrossValue());
     List<String> resultOfCompanySellerValidation = CompanyValidator.validate(invoice.getSeller());
     List<String> resultOfCompanyBuyerValidation = CompanyValidator.validate(invoice.getBuyer());
     List<String> resultOfInvoiceEntriesValidation = InvoiceEntryValidator.validate(invoice.getEntries());
-    addResultOfValidation(result, resultOfIdValidation);
-    addResultOfValidation(result, resultOfNumberValidation);
     addResultOfValidation(result, resultOfIssueDateValidation);
     addResultOfValidation(result, resultOfTotalNetValueValidation);
     addResultOfValidation(result, resultOfTotalGrossValueValidation);
