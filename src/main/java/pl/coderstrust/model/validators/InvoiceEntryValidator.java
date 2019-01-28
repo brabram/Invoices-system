@@ -31,6 +31,16 @@ public class InvoiceEntryValidator extends Validator{
     return result;
   }
 
+  public static List<String> validate(List<InvoiceEntry> invoiceEntries) {
+    if(invoiceEntries == null) {
+      return Collections.singletonList("Invoice entries cannot be null");
+    }
+    List<String> result = new ArrayList<>();
+    invoiceEntries.forEach(invoiceEntry -> addResultOfValidation(result, validate(invoiceEntry)));
+    return result;
+  }
+
+
   private static String validateItem(String item) {
     if (item == null) {
       return "Item cannot be null";

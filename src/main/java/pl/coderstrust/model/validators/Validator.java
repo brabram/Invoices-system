@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Validator {
   static void addResultOfValidation(List<String> resultList, List<String> resultsOfValidation) {
-    resultsOfValidation.stream().forEach(element -> resultList.add(element));
+    resultList.addAll(resultsOfValidation);
   }
 
   static void addResultOfValidation(List<String> resultList, String resultOfValidation) {
