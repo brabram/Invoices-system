@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.NonTransientDataAccessException;
@@ -172,11 +173,12 @@ class HibernateInvoiceDatabaseTest {
   @Test
   void saveInvoiceMethodShouldThrowException() throws DatabaseOperationException {
     //Given
+    NonTransientDataAccessException mockedException = Mockito.mock(NonTransientDataAccessException.class);
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    doThrow(DatabaseOperationException.class).when(invoiceDatabase).save(invoice);
+    doThrow(mockedException).when(hibernateInvoiceRepository).save(invoice);
 
     //Then
-    assertThrows(NonTransientDataAccessException.class, () -> hibernateInvoiceRepository.save(invoice));
+    assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.save(invoice));
   }
 
   @Test
