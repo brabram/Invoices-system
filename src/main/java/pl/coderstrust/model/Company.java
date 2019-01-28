@@ -8,15 +8,15 @@ import java.util.Objects;
 public class Company {
 
   @Id
-  @GeneratedValue()
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String name;
   private String taxIdentificationNumber;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   private AccountNumber accountNumber;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   private ContactDetails contactDetails;
 
   protected Company() {

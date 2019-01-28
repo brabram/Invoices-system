@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.NonTransientDataAccessException;
 import pl.coderstrust.database.DatabaseOperationException;
 import pl.coderstrust.database.HibernateInvoiceDatabase;
 import pl.coderstrust.database.HibernateInvoiceRepository;
@@ -13,9 +15,7 @@ import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,5 +147,54 @@ class HibernateInvoiceDatabaseTest {
 
     //then
     verify(hibernateInvoiceRepository).deleteAll();
+  }
+
+  @Test
+  void saveInvoiceMethodShouldThrowExceptionWhenInvoiceIsNull(){
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.save(null));
+  }
+
+  @Test
+  void findByIdMethodShouldThrowExceptionWhenIdIsNull(){
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.findById(null));
+  }
+
+  @Test
+  void existByIdMethodShouldThrowExceptionWhenIdIsNull(){
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.existsById(null));
+  }
+
+  @Test
+  void deleteByIdMethodShouldThrowExceptionWhenIdIsNull(){
+    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.deleteById(null));
+  }
+
+  @Test
+  void saveInvoiceMethodShouldThrowException() throws DatabaseOperationException {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    doThrow(DatabaseOperationException.class).when(invoiceDatabase).save(invoice);
+
+    //Then
+    assertThrows(NonTransientDataAccessException.class, () -> hibernateInvoiceRepository.save(invoice));
+  }
+
+  @Test
+  void deleteInvoiceByIdMethodShouldThrowException() throws DatabaseOperationException {
+    //Given
+    when(invoiceDatabase.existsById(1L)).thenReturn(true);
+    doThrow(EmptyResultDataAccessException.class).when(invoiceDatabase).deleteById(1L);
+
+    //Then
+    assertThrows(DatabaseOperationException.class, () -> hibernateInvoiceRepository.deleteById(1L));
+  }
+
+  @Test
+  void deleteAllMethodShouldThrowException() throws DatabaseOperationException {
+    //Given
+    doThrow(NonTransientDataAccessException.class).when(invoiceDatabase).deleteAll();
+
+    //Then
+    assertThrows(DatabaseOperationException.class, () -> hibernateInvoiceRepository.deleteAll());
   }
 }

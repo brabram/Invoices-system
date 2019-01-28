@@ -8,7 +8,7 @@ public class ContactDetails {
   private String phoneNumber;
   private String website;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   private Address address;
 
   protected ContactDetails() {

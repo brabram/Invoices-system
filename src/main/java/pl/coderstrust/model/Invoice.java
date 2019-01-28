@@ -24,7 +24,7 @@ public class Invoice {
   @ManyToOne(cascade = CascadeType.ALL)
   private Company buyer;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<InvoiceEntry> entries;
 
 
