@@ -100,14 +100,17 @@ public class InvoiceController {
       return new ResponseEntity<>(new ErrorMessage("Updated Invoice cannot be empty."), HttpStatus.BAD_REQUEST);
     }
     try {
-
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {
-        invoice.setId(id);
-        invoiceService.updateInvoice(invoice);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Long invoiceToAddId = invoice.getId();
+        if (invoiceToAddId.equals(id)) {
+          invoiceService.updateInvoice(invoice);
+          return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ErrorMessage(String.format("Invoice to update has different id than %d.", id)), HttpStatus.BAD_REQUEST);
+
       }
-      return new ResponseEntity<>(new ErrorMessage("Invoice does not exist."), HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(new ErrorMessage(String.format("Invoice with %d id does not exist.", id)), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
       return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
