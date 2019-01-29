@@ -11,10 +11,11 @@ public class ContactDetailsGenerator {
   private static Random random = new Random();
 
   public static ContactDetails getRandomContactDetails() {
+    long id = IdGenerator.getRandomId();
     String email = String.format("%s@gmail.com", getRandomWord());
     String phoneNumber = String.format("+48%09d", random.nextInt(999999999));
     String webSite = String.format("www.%s.com", getRandomWord());
     Address address = AddressGenerator.getRandomAddress();
-    return new ContactDetails(email, phoneNumber, webSite, address);
+    return new ContactDetails(id, email, phoneNumber, webSite, address);
   }
 }

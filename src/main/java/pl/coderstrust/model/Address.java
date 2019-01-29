@@ -1,8 +1,17 @@
 package pl.coderstrust.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Objects;
 
+@Entity
 public class Address {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
   private String street;
   private String number;
   private String postalCode;
@@ -12,12 +21,21 @@ public class Address {
   protected Address() {
   }
 
-  public Address(String street, String number, String postalCode, String city, String country) {
+  public Address(Long id, String street, String number, String postalCode, String city, String country) {
+    this.id = id;
     this.street = street;
     this.number = number;
     this.postalCode = postalCode;
     this.city = city;
     this.country = country;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getStreet() {
@@ -65,25 +83,26 @@ public class Address {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof Address)) {
       return false;
     }
     Address address = (Address) o;
-    return number.equals(address.number)
-        && postalCode.equals(address.postalCode)
-        && Objects.equals(street, address.street)
-        && Objects.equals(city, address.city)
-        && Objects.equals(country, address.country);
+    return Objects.equals(id, address.id) &&
+        Objects.equals(street, address.street) &&
+        Objects.equals(number, address.number) &&
+        Objects.equals(postalCode, address.postalCode) &&
+        Objects.equals(city, address.city) &&
+        Objects.equals(country, address.country);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(street, number, postalCode, city, country);
+    return Objects.hash(id, street, number, postalCode, city, country);
   }
 
   @Override
   public String toString() {
-    return String.format("street: %s, number: %s, postalCode: %s, city: %s, country: %s",
+    return String.format("id: %d, street: %s, number: %s, postalCode: %s, city: %s, country: %s",
         street, number, postalCode, city, country);
   }
 }

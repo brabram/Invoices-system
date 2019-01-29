@@ -2,9 +2,15 @@ package pl.coderstrust.model;
 
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class AccountNumber {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String ibanNumber;
   private String localNumber;
@@ -63,6 +69,6 @@ public class AccountNumber {
 
   @Override
   public String toString() {
-    return
+    return String.format("id: %d", "ibanNumber: %s, localNumber: %s", ibanNumber, localNumber);
   }
 }

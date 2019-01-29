@@ -3,11 +3,17 @@ package pl.coderstrust.model;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
-
 
 @Entity
 public class ContactDetails {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
   private String email;
   private String phoneNumber;
   private String website;
@@ -18,11 +24,20 @@ public class ContactDetails {
   protected ContactDetails() {
   }
 
-  public ContactDetails(String email, String phoneNumber, String website, Address address) {
+  public ContactDetails(Long id, String email, String phoneNumber, String website, Address address) {
+    this.id = id;
     this.email = email;
     this.phoneNumber = phoneNumber;
     this.website = website;
     this.address = address;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getEmail() {
@@ -62,24 +77,25 @@ public class ContactDetails {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof ContactDetails)) {
       return false;
     }
-    ContactDetails contactDetails = (ContactDetails) o;
-    return phoneNumber.equals(contactDetails.phoneNumber)
-        && Objects.equals(email, contactDetails.email)
-        && Objects.equals(website, contactDetails.website)
-        && Objects.equals(address, contactDetails.address);
+    ContactDetails that = (ContactDetails) o;
+    return Objects.equals(id, that.id) &&
+        Objects.equals(email, that.email) &&
+        Objects.equals(phoneNumber, that.phoneNumber) &&
+        Objects.equals(website, that.website) &&
+        Objects.equals(address, that.address);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, phoneNumber, website, address);
+    return Objects.hash(id, email, phoneNumber, website, address);
   }
 
   @Override
   public String toString() {
-    return String.format("email: %s, phoneNumber: %s, website: %s, address: %s",
+    return String.format("id: %d, email: %s, phoneNumber: %s, website: %s, address: %s",
         email, phoneNumber, website, address);
   }
 }
