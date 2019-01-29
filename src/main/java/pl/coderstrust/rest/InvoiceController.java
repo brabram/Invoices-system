@@ -19,7 +19,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
 
 @RestController
-@RequestMapping("/invoices")
+@RequestMapping("/invoices/")
 public class InvoiceController {
 
   private InvoiceService invoiceService;
@@ -42,11 +42,8 @@ public class InvoiceController {
     }
   }
 
-  @GetMapping("/id={id}")
+  @GetMapping("{id}")
   public ResponseEntity<?> getInvoiceById(@PathVariable("id") Long id) {
-    if (id == null) {
-      return new ResponseEntity<>(new ErrorMessage("Invalid id."), HttpStatus.BAD_REQUEST);
-    }
     try {
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {
@@ -58,11 +55,8 @@ public class InvoiceController {
     }
   }
 
-  @GetMapping("/number={number}")
+  @GetMapping("number/{number}")
   public ResponseEntity<?> getInvoiceByNumber(@PathVariable("number") String number) {
-    if (number == null) {
-      return new ResponseEntity<>(new ErrorMessage("Invalid number."), HttpStatus.BAD_REQUEST);
-    }
     try {
       Optional<List<Invoice>> optionalInvoicesList = invoiceService.getAllInvoices();
       if (optionalInvoicesList.isPresent()) {
@@ -75,7 +69,7 @@ public class InvoiceController {
         }
         return new ResponseEntity<>(new ErrorMessage("Invoice not found."), HttpStatus.NOT_FOUND);
       }
-      return new ResponseEntity<>(new ErrorMessage("Not found any invoices."), HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(new ErrorMessage("Invoice not found."), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
       return new ResponseEntity<>(new ErrorMessage("Internal Server Error."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -100,15 +94,13 @@ public class InvoiceController {
     }
   }
 
-  @PutMapping("/updateId={id}")
-  public ResponseEntity<?> updateInvoice(@PathVariable("id") Long id, @RequestBody Invoice invoice) {
-    if (id == null) {
-      return new ResponseEntity<>(new ErrorMessage("Invalid id"), HttpStatus.BAD_REQUEST);
-    }
+  @PutMapping("{id}")
+  public ResponseEntity<?> updateInvoice(@PathVariable("id") Long id, @RequestBody(required = false) Invoice invoice) {
     if (invoice == null) {
       return new ResponseEntity<>(new ErrorMessage("Updated Invoice cannot be empty."), HttpStatus.BAD_REQUEST);
     }
     try {
+
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {
         invoice.setId(id);
@@ -121,11 +113,8 @@ public class InvoiceController {
     }
   }
 
-  @DeleteMapping("/deleteId={id}")
+  @DeleteMapping("{id}")
   public ResponseEntity<?> removeInvoice(@PathVariable("id") Long id) {
-    if (id == null) {
-      return new ResponseEntity<>(new ErrorMessage("Invalid id."), HttpStatus.BAD_REQUEST);
-    }
     try {
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {

@@ -1,6 +1,7 @@
 package pl.coderstrust.rest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,13 +31,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
+import pl.coderstrust.service.ServiceOperationException;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(InvoiceController.class)
 @AutoConfigureMockMvc
 class InvoiceControllerTest {
 
-  private final String urlAddressTemplate = "/invoices";
+  private final String urlAddressTemplate = "/invoices/";
   private ObjectMapper mapper = new ObjectMapper();
 
   @Autowired
@@ -47,7 +49,7 @@ class InvoiceControllerTest {
 
 
   @Test
-  void getAllInvoicesMethod_ShouldReturnOkStatus_WhenAnyInvoiceExist() throws Exception {
+  void getAllInvoicesMethodShouldReturnOkStatusWhenAnyInvoiceExist() throws Exception {
     //Given
     List<Invoice> expectedInvoices = new ArrayList<>();
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
@@ -66,9 +68,10 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getAllInvoicesMethod_ShouldReturnNotFoundStatus_WhenThereAreNoInvoicesInTheDatabase() throws Exception {
+  void getAllInvoicesMethodShouldReturnNotFoundStatusWhenThereAreNoInvoicesInTheDatabase() throws Exception {
     //Given
     ErrorMessage expectedResponse = new ErrorMessage("Not found any invoices.");
+    when(invoiceService.getAllInvoices()).thenReturn(Optional.empty());
 
     //When
     MvcResult result = mockMvc
@@ -80,10 +83,29 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    verify(invoiceService).getAllInvoices();
   }
 
   @Test
-  void getInvoiceByIdMethod_ShouldReturnOkStatus_WhenInvoiceExist() throws Exception {
+  void getAllInvoicesMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+    //Given
+    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
+    doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
+
+    //When
+    MvcResult result = mockMvc
+        .perform(get(urlAddressTemplate).accept(MediaType.APPLICATION_JSON_UTF8))
+        .andReturn();
+    int actualHttpStatus = result.getResponse().getStatus();
+    ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+
+    //Then
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
+    assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+  }
+
+  @Test
+  void getInvoiceByIdMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
@@ -91,7 +113,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/id=%d", urlAddressTemplate, id)).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%s%d", urlAddressTemplate, id)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
 
@@ -101,14 +123,14 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByIdMethod_ShouldReturnNotFoundStatus_WhenInvoiceWithSpecificIdDoesNotExist() throws Exception {
+  void getInvoiceByIdMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificIdDoesNotExist() throws Exception {
     //Given
     ErrorMessage expectedResponse = new ErrorMessage("Invoice not found.");
+    when(invoiceService.getInvoiceById(1L)).thenReturn(Optional.empty());
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/id=%d", urlAddressTemplate, 1)).accept(MediaType.APPLICATION_JSON_UTF8))
-        .andDo(print())
+        .perform(get(String.format("%s%d", urlAddressTemplate, 1)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
@@ -116,28 +138,30 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    verify(invoiceService).getInvoiceById(1L);
   }
 
   @Test
-  void getInvoiceByIdMethod_ShouldReturnBadRequest_WhenIdIsNull() throws Exception {
+  void getInvoiceByIdMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Invalid id.");
+    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
+    doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(1L);
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/id=%s", urlAddressTemplate, "")).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%s%d", urlAddressTemplate, 1)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
-    int httpStatus = result.getResponse().getStatus();
+    int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
 
     //Then
-    assertEquals(HttpStatus.BAD_REQUEST.value(), httpStatus);
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService, never()).getInvoiceById(null);
+    verify(invoiceService).getInvoiceById(1L);
   }
 
   @Test
-  void getInvoiceByNumberMethod_ShouldReturnOkStatus_WhenInvoiceExist() throws Exception {
+  void getInvoiceByNumberMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     List<Invoice> invoicesList = new ArrayList<>();
@@ -147,7 +171,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/number=%s", urlAddressTemplate, number)).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%s/number/%s", urlAddressTemplate, number)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
 
@@ -157,7 +181,7 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByNumberMethod_ShouldReturnNotFoundStatus_WhenInvoiceWithSpecificNumberDoesNotExist() throws Exception {
+  void getInvoiceByNumberMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificNumberDoesNotExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     List<Invoice> invoicesList = new ArrayList<>();
@@ -167,7 +191,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/number=%s", urlAddressTemplate, "kkk")).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%snumber/%s", urlAddressTemplate, "1")).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
@@ -175,16 +199,18 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    verify(invoiceService).getAllInvoices();
   }
 
   @Test
-  void getInvoiceByNumberMethod_ShouldReturnNotFoundStatus_WhenThereAreNoInvoicesInTheDatabase() throws Exception {
+  void getInvoiceByNumberMethodShouldReturnNotFoundStatusWhenThereAreNoInvoicesInTheDatabase() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Not found any invoices.");
+    ErrorMessage expectedResponse = new ErrorMessage("Invoice not found.");
+    when(invoiceService.getAllInvoices()).thenReturn(Optional.empty());
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/number=%s", urlAddressTemplate, "1")).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%snumber/%s", urlAddressTemplate, "1")).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
@@ -192,36 +218,39 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    verify(invoiceService).getAllInvoices();
   }
 
   @Test
-  void getInvoiceByNumberMethod_ShouldReturnBadRequestStatus_WhenNumberIsNull() throws Exception {
+  void getInvoiceByNumberMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Invalid number.");
+    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
+    doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/number=%s", urlAddressTemplate, "")).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%snumber/%s", urlAddressTemplate, 1)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
 
     //Then
-    assertEquals(HttpStatus.BAD_REQUEST.value(), actualHttpStatus);
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService, never()).getAllInvoices();
+    verify(invoiceService).getAllInvoices();
   }
 
   @Test
-  void addInvoiceMethod_ShouldReturnCreatedStatus_WhenInvoiceDoesNotExist() throws Exception {
+  void addInvoiceMethodShouldReturnCreatedStatusWhenInvoiceDoesNotExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    when(invoiceService.getInvoiceById(invoice.getId())).thenReturn(Optional.empty());
 
     //When
     MvcResult result = mockMvc
-        .perform(post(String.format("%s", urlAddressTemplate))
+        .perform(post(urlAddressTemplate)
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(invoice))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -230,10 +259,11 @@ class InvoiceControllerTest {
 
     //Then
     assertEquals(HttpStatus.CREATED.value(), actualHttpStatus);
+    verify(invoiceService).getInvoiceById(invoice.getId());
   }
 
   @Test
-  void addInvoiceMethod_ShouldReturnConflictStatus_WhenInvoiceExist() throws Exception {
+  void addInvoiceMethodShouldReturnConflictStatusWhenInvoiceExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     when(invoiceService.getInvoiceById(invoice.getId())).thenReturn(Optional.of(invoice));
@@ -243,7 +273,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(post(String.format("%s", urlAddressTemplate))
+        .perform(post(urlAddressTemplate)
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(invoice))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -258,13 +288,13 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void addInvoiceMethod_ShouldReturnBadRequestStatus_WhenInvoiceIsNull() throws Exception {
+  void addInvoiceMethodShouldReturnBadRequestStatusWhenInvoiceIsNull() throws Exception {
     //Given
     ErrorMessage expectedResponse = new ErrorMessage("Invoice cannot be null.");
 
     //When
     MvcResult result = mockMvc
-        .perform(post(String.format("%s", urlAddressTemplate))
+        .perform(post(urlAddressTemplate)
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(null))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -276,6 +306,31 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.BAD_REQUEST.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    verify(invoiceService, never()).addInvoice(null);
+  }
+
+  @Test
+  void addInvoiceMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+    //Given
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
+    doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(invoice.getId());
+
+    //When
+    MvcResult result = mockMvc
+        .perform(post(urlAddressTemplate)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(mapper.writeValueAsString(invoice))
+            .accept(MediaType.APPLICATION_JSON_UTF8))
+        .andReturn();
+    int actualHttpStatus = result.getResponse().getStatus();
+    ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+
+    //Then
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
+    assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    verify(invoiceService).getInvoiceById(invoice.getId());
+    verify(invoiceService, never()).addInvoice(invoice);
   }
 
   @Test
