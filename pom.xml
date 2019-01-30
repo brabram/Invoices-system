@@ -216,7 +216,6 @@
                     </limit>
                   </limits>
                   <excludes>
-                    <exclude>pl.coderstrust.repository.InvoiceRepositoryOperationException</exclude>
                     <exclude>pl.coderstrust.database.DatabaseOperationException</exclude>
                     <exclude>pl.coderstrust.service.ServiceOperationException</exclude>
 
