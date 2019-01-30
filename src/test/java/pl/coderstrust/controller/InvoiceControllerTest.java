@@ -46,7 +46,7 @@ import pl.coderstrust.service.ServiceOperationException;
 class InvoiceControllerTest {
 
   private final String urlAddressTemplate = "/invoices";
-  private ObjectMapper mapper = ApplicationConfiguration.getObjectMapper();
+  private ObjectMapper mapper = new ApplicationConfiguration().getObjectMapper();
 
   @Autowired
   private MockMvc mockMvc;

@@ -61,6 +61,10 @@ public class Invoice {
     this.totalGrossValue = totalGrossValue;
   }
 
+  public Invoice(Invoice that) {
+    this(that.getId(), that.getNumber(), that.getIssueDate(), that.getDueDate(), that.getSeller(), that.getBuyer(), that.getEntries(), that.getTotalNetValue(), that.getTotalGrossValue());
+  }
+
   public Long getId() {
     return id;
   }

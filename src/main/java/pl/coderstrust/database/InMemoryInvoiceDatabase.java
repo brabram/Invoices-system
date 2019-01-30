@@ -30,14 +30,15 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
         throw new IllegalArgumentException("Invoice cannot be null");
       }
       log.debug("Saving invoice: {}", invoice);
-      if (isInvoiceExist(invoice.getId())) {
-        invoices.put(invoice.getId(), invoice);
-        return Optional.of(invoice);
+      Invoice invoiceToAddOrUpdate = new Invoice(invoice);
+      if (invoiceToAddOrUpdate.getId() != null && isInvoiceExist(invoiceToAddOrUpdate.getId())) {
+        invoices.put(invoiceToAddOrUpdate.getId(), invoiceToAddOrUpdate);
+        return Optional.of(invoiceToAddOrUpdate);
       }
       long id = counter.incrementAndGet();
-      invoice.setId(id);
-      invoices.put(id, invoice);
-      return Optional.of(invoice);
+      invoiceToAddOrUpdate.setId(id);
+      invoices.put(id, invoiceToAddOrUpdate);
+      return Optional.of(invoiceToAddOrUpdate);
     }
   }
 

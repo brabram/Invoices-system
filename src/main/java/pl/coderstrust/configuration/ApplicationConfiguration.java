@@ -12,7 +12,7 @@ public class ApplicationConfiguration {
 
   @Bean
   @Primary
-  public static ObjectMapper getObjectMapper() {
+  public ObjectMapper getObjectMapper() {
     ObjectMapper mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
