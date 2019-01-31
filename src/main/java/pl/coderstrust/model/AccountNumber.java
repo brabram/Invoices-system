@@ -6,7 +6,7 @@ public class AccountNumber {
   private String ibanNumber;
   private String localNumber;
 
-  public AccountNumber() {
+  protected AccountNumber() {
   }
 
   public AccountNumber(String ibanNumber, String localNumber) {

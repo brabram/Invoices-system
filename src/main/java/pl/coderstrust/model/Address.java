@@ -9,7 +9,7 @@ public class Address {
   private String city;
   private String country;
 
-  public Address() {
+  protected Address() {
   }
 
   public Address(String street, String number, String postalCode, String city, String country) {

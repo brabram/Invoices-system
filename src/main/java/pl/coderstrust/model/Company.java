@@ -9,7 +9,7 @@ public class Company {
   private AccountNumber accountNumber;
   private ContactDetails contactDetails;
 
-  public Company() {
+  protected Company() {
   }
 
   public Company(Long id, String name, String taxIdentificationNumber, AccountNumber accountNumber, ContactDetails contactDetails) {

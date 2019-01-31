@@ -163,38 +163,69 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsFromDate() {
+  void shouldReturnTrueWhenExistById() throws DatabaseOperationException, ServiceOperationException {
+    //Given
+    Long id = 3448L;
+    when(invoiceDatabase.existsById(id)).thenReturn(true);
+
+    //When
+    invoiceService.invoiceExistsById(id);
+
+    //Then
+    verify(invoiceDatabase).existsById(id);
+  }
+
+  @Test
+  void shouldReturnFalseWhenNotExistById() throws DatabaseOperationException, ServiceOperationException {
+    //Given
+    Long id = 3448L;
+    when(invoiceDatabase.existsById(id)).thenReturn(false);
+
+    //When
+    invoiceService.invoiceExistsById(id);
+
+    //Then
+    verify(invoiceDatabase).existsById(id);
+  }
+
+  @Test
+  void getAllInvoicesInGivenDateRangeMethodShouldThrowIllegalArgumentExceptionForNullAsFromDate() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.getAllInvoicesInGivenDateRange(null, LocalDate.now()));
   }
 
   @Test
-  void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForNullAsToDate() {
+  void getAllInvoicesInGivenDateRangeMethodShouldThrowIllegalArgumentExceptionForNullAsToDate() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.getAllInvoicesInGivenDateRange(LocalDate.now(), null));
   }
 
   @Test
-  void getAllInvoicesInGivenDateRangeMethodShouldThrowExceptionForToDateBeforeFromDate() {
+  void getAllInvoicesInGivenDateRangeMethodShouldThrowIllegalArgumentExceptionForToDateBeforeFromDate() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.getAllInvoicesInGivenDateRange(LocalDate.now(), LocalDate.of(2018, 10, 10)));
   }
 
   @Test
-  void getInvoiceByIdMethodShouldThrowExceptionForNullAsId() {
+  void getInvoiceByIdMethodShouldThrowIllegalArgumentExceptionForNullAsId() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.getInvoiceById(null));
   }
 
   @Test
-  void addInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
+  void addInvoiceMethodShouldThrowIllegalArgumentExceptionForNullAsInvoice() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.addInvoice(null));
   }
 
   @Test
-  void updateInvoiceMethodShouldThrowExceptionForNullAsInvoice() {
+  void updateInvoiceMethodShouldThrowIllegalArgumentExceptionForNullAsInvoice() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.updateInvoice(null));
   }
 
   @Test
-  void deleteInvoiceByIdMethodShouldThrowExceptionForNullAsId() {
+  void deleteInvoiceByIdMethodShouldThrowIllegalArgumentExceptionForNullAsId() {
     assertThrows(IllegalArgumentException.class, () -> invoiceService.deleteInvoiceById(null));
+  }
+
+  @Test
+  void invoiceExistsByIdMethodShouldThrowIllegalArgumentExceptionForNullAsId() {
+    assertThrows(IllegalArgumentException.class, () -> invoiceService.invoiceExistsById(null));
   }
 
   @Test
@@ -284,5 +315,15 @@ class InvoiceServiceTest {
 
     //Then
     assertThrows(ServiceOperationException.class, () -> invoiceService.deleteAll());
+  }
+
+  @Test
+  void invoiceExistsByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+    //Given
+    long id = 1L;
+    doThrow(DatabaseOperationException.class).when(invoiceDatabase).existsById(id);
+
+    //Then
+    assertThrows(ServiceOperationException.class, () -> invoiceService.invoiceExistsById(id));
   }
 }

@@ -8,7 +8,7 @@ public class ContactDetails {
   private String website;
   private Address address;
 
-  public ContactDetails() {
+  protected ContactDetails() {
   }
 
   public ContactDetails(String email, String phoneNumber, String website, Address address) {

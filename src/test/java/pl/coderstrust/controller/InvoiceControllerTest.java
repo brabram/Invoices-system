@@ -1,7 +1,6 @@
-package pl.coderstrust.rest;
+package pl.coderstrust.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -10,7 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -48,9 +46,8 @@ class InvoiceControllerTest {
   @MockBean
   private InvoiceService invoiceService;
 
-
   @Test
-  void getAllInvoicesMethodShouldReturnOkStatusWhenAnyInvoiceExist() throws Exception {
+  void getAllMethodShouldReturnOkStatusWhenAnyInvoiceExist() throws Exception {
     //Given
     List<Invoice> expectedInvoices = new ArrayList<>();
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
@@ -69,9 +66,8 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getAllInvoicesMethodShouldReturnNotFoundStatusWhenThereAreNoInvoicesInTheDatabase() throws Exception {
+  void getAllMethodShouldReturnOkStatusWhenThereAreNoInvoicesInTheDatabase() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Not found any invoices.");
     when(invoiceService.getAllInvoices()).thenReturn(Optional.empty());
 
     //When
@@ -79,18 +75,16 @@ class InvoiceControllerTest {
         .perform(get(urlAddressTemplate).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
-    ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
 
     //Then
-    assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
-    assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    assertEquals(HttpStatus.OK.value(), actualHttpStatus);
     verify(invoiceService).getAllInvoices();
   }
 
   @Test
-  void getAllInvoicesMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+  void getAllMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while getting invoices.");
     doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
 
     //When
@@ -106,7 +100,7 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByIdMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
+  void getByIdMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
@@ -124,10 +118,10 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByIdMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificIdDoesNotExist() throws Exception {
+  void getByIdMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificIdDoesNotExist() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Invoice not found.");
     long id = 1L;
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed id: %d", id));
     when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
 
     //When
@@ -144,10 +138,10 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByIdMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+  void getByIdMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
     long id = 1L;
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by id: %d", id));
     doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
 
     //When
@@ -164,7 +158,7 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByNumberMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
+  void getByNumberMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     List<Invoice> invoicesList = new ArrayList<>();
@@ -184,17 +178,18 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByNumberMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificNumberDoesNotExist() throws Exception {
+  void getByNumberMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificNumberDoesNotExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     List<Invoice> invoicesList = new ArrayList<>();
     invoicesList.add(invoice);
+    String number = "1";
     when(invoiceService.getAllInvoices()).thenReturn(Optional.of(invoicesList));
-    ErrorMessage expectedResponse = new ErrorMessage("Invoice not found.");
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed number: %s", number));
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%snumber/%s", urlAddressTemplate, "1")).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%snumber/%s", urlAddressTemplate, number)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
@@ -206,14 +201,15 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByNumberMethodShouldReturnNotFoundStatusWhenThereAreNoInvoicesInTheDatabase() throws Exception {
+  void getByNumberMethodShouldReturnNotFoundStatusWhenThereAreNoInvoicesInTheDatabase() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Invoice not found.");
+    String number = "1";
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed number: %s", number));
     when(invoiceService.getAllInvoices()).thenReturn(Optional.empty());
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%snumber/%s", urlAddressTemplate, "1")).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%snumber/%s", urlAddressTemplate, number)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
@@ -225,14 +221,15 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void getInvoiceByNumberMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+  void getByNumberMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
+    String number = "1";
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by number: %s", number));
     doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%snumber/%s", urlAddressTemplate, 1)).accept(MediaType.APPLICATION_JSON_UTF8))
+        .perform(get(String.format("%snumber/%s", urlAddressTemplate, number)).accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
@@ -244,13 +241,13 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void addInvoiceMethodShouldReturnCreatedStatusWhenInvoiceDoesNotExist() throws Exception {
+  void addMethodShouldReturnCreatedStatusWhenInvoiceDoesNotExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     Long id = invoice.getId();
-    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
+    when(invoiceService.invoiceExistsById(id)).thenReturn(false);
 
     //When
     MvcResult result = mockMvc
@@ -263,15 +260,15 @@ class InvoiceControllerTest {
 
     //Then
     assertEquals(HttpStatus.CREATED.value(), actualHttpStatus);
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
   }
 
   @Test
-  void addInvoiceMethodShouldReturnConflictStatusWhenInvoiceExist() throws Exception {
+  void addMethodShouldReturnConflictStatusWhenInvoiceExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
-    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.of(invoice));
+    when(invoiceService.invoiceExistsById(id)).thenReturn(true);
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     ErrorMessage expectedResponse = new ErrorMessage("Invoice already exist.");
@@ -289,11 +286,11 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.CONFLICT.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
   }
 
   @Test
-  void addInvoiceMethodShouldReturnBadRequestStatusWhenInvoiceIsNull() throws Exception {
+  void addMethodShouldReturnBadRequestStatusWhenInvoiceIsNull() throws Exception {
     //Given
     ErrorMessage expectedResponse = new ErrorMessage("Invoice cannot be null.");
 
@@ -303,7 +300,6 @@ class InvoiceControllerTest {
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(null))
             .accept(MediaType.APPLICATION_JSON_UTF8))
-        .andDo(print())
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
     ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
@@ -315,14 +311,14 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void addInvoiceMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+  void addMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while adding invoice.");
     Long id = invoice.getId();
-    doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
+    doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
 
     //When
     MvcResult result = mockMvc
@@ -337,17 +333,17 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
     verify(invoiceService, never()).addInvoice(invoice);
   }
 
   @Test
-  void updateInvoiceMethodShouldReturnOkStatusWhenInvoiceWithSpecificIdExistAndInvoiceIdIsTheSameAsGiven() throws Exception {
+  void updateMethodShouldReturnOkStatusWhenInvoiceWithSpecificIdExistAndInvoiceIdIsTheSameAsGiven() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
     when(invoiceService.addInvoice(invoice)).thenReturn(Optional.of(invoice));
-    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.of(invoice));
+    when(invoiceService.invoiceExistsById(id)).thenReturn(true);
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
@@ -362,19 +358,44 @@ class InvoiceControllerTest {
 
     //Then
     assertEquals(HttpStatus.OK.value(), actualHttpStatus);
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
   }
 
   @Test
-  void updateInvoiceMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificIdDoesNotExist() throws Exception {
+  void updateMethodShouldReturnBadRequestStatusWhenInvoiceIdIsDiffrentThanIdInvoiceFromDatabase() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     invoice.setId(2L);
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     Long id = 1L;
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice to update has different id than %d.", id));
+
+    //When
+    MvcResult result = mockMvc
+        .perform(put(String.format("%s%d", urlAddressTemplate, id))
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(mapper.writeValueAsString(invoice))
+            .accept(MediaType.APPLICATION_JSON_UTF8))
+        .andReturn();
+    int actualHttpStatus = result.getResponse().getStatus();
+    ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
+
+    //Then
+    assertEquals(HttpStatus.BAD_REQUEST.value(), actualHttpStatus);
+    assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
+    verify(invoiceService, never()).invoiceExistsById(id);
+  }
+
+  @Test
+  void updateMethodShouldReturnNotFoundStatusWhenInvoiceWithSpecificIdExist() throws Exception {
+    //Given
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long id = invoice.getId();
+    when(invoiceService.invoiceExistsById(id)).thenReturn(false);
     ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice with %d id does not exist.", id));
-    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
 
     //When
     MvcResult result = mockMvc
@@ -389,43 +410,15 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
   }
 
   @Test
-  void updateInvoiceMethodShouldReturnBadRequestStatusWhenInvoiceWithSpecificIdExistAndInvoiceIdIsDiffrentThanIdInvoiceFromDatabase() throws Exception {
-    //Given
-    Invoice invoiceInDatabase = InvoiceGenerator.getRandomInvoice();
-    mapper.registerModule(new JavaTimeModule());
-    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    Long invoiceInDatabaseId = invoiceInDatabase.getId();
-    when(invoiceService.getInvoiceById(invoiceInDatabaseId)).thenReturn(Optional.of(invoiceInDatabase));
-    Invoice invoiceToUpdate = InvoiceGenerator.getRandomInvoice();
-    doNothing().when(invoiceService).updateInvoice(invoiceToUpdate);
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice to update has different id than %d.", invoiceInDatabaseId));
-
-    //When
-    MvcResult result = mockMvc
-        .perform(put(String.format("%s%d", urlAddressTemplate, invoiceInDatabaseId))
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .content(mapper.writeValueAsString(invoiceToUpdate))
-            .accept(MediaType.APPLICATION_JSON_UTF8))
-        .andReturn();
-    int actualHttpStatus = result.getResponse().getStatus();
-    ErrorMessage actualResponse = mapper.readValue(result.getResponse().getContentAsString(), ErrorMessage.class);
-
-    //Then
-    assertEquals(HttpStatus.BAD_REQUEST.value(), actualHttpStatus);
-    assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService).getInvoiceById(invoiceInDatabaseId);
-  }
-
-  @Test
-  void updateInvoiceMethodShouldReturnBadRequestStatusWhenInvoiceIsNull() throws Exception {
+  void updateMethodShouldReturnBadRequestStatusWhenInvoiceIsNull() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
-    ErrorMessage expectedResponse = new ErrorMessage("Updated Invoice cannot be empty.");
+    ErrorMessage expectedResponse = new ErrorMessage("Invoice to update cannot be null.");
 
     //When
     MvcResult result = mockMvc
@@ -444,14 +437,14 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void updateInvoiceMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+  void updateMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
-    doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while updating invoice.");
+    doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
 
     //When
     MvcResult result = mockMvc
@@ -466,17 +459,17 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
     verify(invoiceService, never()).updateInvoice(invoice);
   }
 
   @Test
-  void removeInvoiceByIdMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
+  void removeByIdMethodShouldReturnOkStatusWhenInvoiceExist() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
     when(invoiceService.addInvoice(invoice)).thenReturn(Optional.of(invoice));
-    when(invoiceService.getInvoiceById(invoice.getId())).thenReturn(Optional.of(invoice));
+    when(invoiceService.invoiceExistsById(id)).thenReturn(true);
 
     //When
     MvcResult result = mockMvc
@@ -487,15 +480,15 @@ class InvoiceControllerTest {
 
     //Then
     assertEquals(HttpStatus.OK.value(), actualHttpStatus);
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
   }
 
   @Test
-  void removeInvoiceByIdMethodShouldReturnNotFoundStatusWhenInvoiceDoesNotExist() throws Exception {
+  void removeByIdMethodShouldReturnNotFoundStatusWhenInvoiceDoesNotExist() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Invoice does not exist.");
     long id = 1L;
-    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice with %d id does not exist.", id));
+    when(invoiceService.invoiceExistsById(id)).thenReturn(false);
 
     //When
     MvcResult result = mockMvc
@@ -508,18 +501,18 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
   }
 
   @Test
-  void deleteInvoiceByIdMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
+  void deleteByIdMethodShouldReturnInternalServerErrorStatusWhenIsSomeError() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    ErrorMessage expectedResponse = new ErrorMessage("Internal Server Error.");
-    doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while removing invoice.");
+    doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
 
     //When
     MvcResult result = mockMvc
@@ -534,7 +527,7 @@ class InvoiceControllerTest {
     //Then
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
     assertEquals(expectedResponse.getMessage(), actualResponse.getMessage());
-    verify(invoiceService).getInvoiceById(id);
+    verify(invoiceService).invoiceExistsById(id);
     verify(invoiceService, never()).deleteInvoiceById(id);
   }
 }

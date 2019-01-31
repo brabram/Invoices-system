@@ -112,4 +112,15 @@ public class InvoiceService {
       throw new ServiceOperationException("An error while deleting invoices.", e);
     }
   }
+
+  public boolean invoiceExistsById(Long id) throws ServiceOperationException {
+    if (id == null) {
+      throw new IllegalArgumentException("Id cannot be null.");
+    }
+    try {
+      return invoiceDatabase.existsById(id);
+    } catch (DatabaseOperationException e) {
+      throw new ServiceOperationException("An error while checking if invoice exist.", e);
+    }
+  }
 }
