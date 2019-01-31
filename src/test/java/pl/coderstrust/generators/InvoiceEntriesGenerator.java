@@ -2,16 +2,17 @@ package pl.coderstrust.generators;
 
 import java.math.BigDecimal;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
 
 public class InvoiceEntriesGenerator {
   private static Random random = new Random();
+  private static AtomicLong atomicLong = new AtomicLong(1);
 
   public static InvoiceEntry getRandomInvoiceEntry() {
-    long id = ThreadLocalRandom.current().nextLong(1, 999);
+    long id = atomicLong.incrementAndGet();
     String item = WordGenerator.getRandomWord();
     Long quantity = (long) random.nextInt(10000);
     BigDecimal price = BigDecimal.valueOf(random.nextInt(2000) * quantity);
