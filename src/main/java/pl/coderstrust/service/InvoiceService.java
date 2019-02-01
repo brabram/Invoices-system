@@ -7,12 +7,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.coderstrust.database.DatabaseOperationException;
 import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.model.Invoice;
 
 @Service
 public class InvoiceService {
+
+  private static Logger log = LoggerFactory.getLogger(InvoiceService.class);
 
   private InvoiceDatabase invoiceDatabase;
 
@@ -23,9 +27,12 @@ public class InvoiceService {
 
   public Optional<List<Invoice>> getAllInvoices() throws ServiceOperationException {
     try {
+      log.info("Getting all invoices from database.");
       return invoiceDatabase.findAll();
     } catch (DatabaseOperationException e) {
-      throw new ServiceOperationException("An error while getting all invoices.", e);
+      String message = "An error while getting all invoices from database.";
+      log.error(message, e);
+      throw new ServiceOperationException(message, e);
     }
   }
 
@@ -56,8 +63,10 @@ public class InvoiceService {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
+      log.info("Getting invoice by id from database.");
       return invoiceDatabase.findById(id);
     } catch (DatabaseOperationException e) {
+
       throw new ServiceOperationException("An error while getting invoice.", e);
     }
   }

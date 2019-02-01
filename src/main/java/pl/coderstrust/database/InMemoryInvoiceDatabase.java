@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.model.Invoice;
@@ -14,6 +18,8 @@ import pl.coderstrust.model.Invoice;
 @ConditionalOnProperty(name = "pl.coderstrust.database", havingValue = "in-memory")
 @Repository
 public class InMemoryInvoiceDatabase implements InvoiceDatabase {
+
+  private static Logger log = LoggerFactory.getLogger(InMemoryInvoiceDatabase.class);
 
   private Map<Long, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
   private AtomicLong counter = new AtomicLong();
