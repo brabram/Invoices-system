@@ -2,6 +2,7 @@ package pl.coderstrust.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ErrorMessage {
 
@@ -35,5 +36,23 @@ public class ErrorMessage {
 
   public void setDetails(List<String> details) {
     this.details = details;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ErrorMessage that = (ErrorMessage) o;
+    return Objects.equals(message, that.message)
+        && Objects.equals(details, that.details);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(message, details);
   }
 }
