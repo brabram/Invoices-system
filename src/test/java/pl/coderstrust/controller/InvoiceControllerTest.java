@@ -103,8 +103,8 @@ class InvoiceControllerTest {
   @Test
   void shouldReturnInternalServerErrorDuringGettingAllInvoicesWhenSomethingWentWrongOnServer() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while getting invoices.");
     doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while getting invoices.");
 
     //When
     MvcResult result = mockMvc
@@ -147,8 +147,8 @@ class InvoiceControllerTest {
   void shouldReturnNotFoundStatusDuringGettingInvoiceWhenInvoiceWithSpecificIdDoesNotExist() throws Exception {
     //Given
     long id = 1L;
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed id: %d", id));
     when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed id: %d", id));
 
     //When
     MvcResult result = mockMvc
@@ -169,8 +169,8 @@ class InvoiceControllerTest {
   void shouldReturnInternalServerErrorDuringGettingInvoiceWhenSomethingWentWrongOnServer() throws Exception {
     //Given
     long id = 1L;
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by id: %d", id));
     doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by id: %d", id));
 
     //When
     MvcResult result = mockMvc
@@ -240,8 +240,8 @@ class InvoiceControllerTest {
   void shouldReturnNotFoundStatusDuringGettingInvoiceWhenThereAreNoInvoicesInTheDatabase() throws Exception {
     //Given
     String number = "1";
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed number: %s", number));
     when(invoiceService.getAllInvoices()).thenReturn(Optional.empty());
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed number: %s", number));
 
     //When
     MvcResult result = mockMvc
@@ -262,8 +262,8 @@ class InvoiceControllerTest {
   void shouldReturnInternalServerErrorDuringGettingInvoiceWithSpecificNumberWhenSomethingWentWrongOnServer() throws Exception {
     //Given
     String number = "1";
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by number: %s", number));
     doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by number: %s", number));
 
     //When
     MvcResult result = mockMvc
@@ -358,9 +358,9 @@ class InvoiceControllerTest {
   void shouldReturnInternalServerErrorDuringAddingInvoiceWhenSomethingWentWrongOnServer() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while adding invoice.");
     Long id = invoice.getId();
     doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while adding invoice.");
 
     //When
     MvcResult result = mockMvc
@@ -484,8 +484,8 @@ class InvoiceControllerTest {
     Long id = invoice.getId();
     mapper.registerModule(new JavaTimeModule());
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while updating invoice.");
     doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while updating invoice.");
 
     //When
     MvcResult result = mockMvc
@@ -529,8 +529,8 @@ class InvoiceControllerTest {
   void shouldReturnNotFoundStatusWhileRemoingInvoiceWhenInvoiceDoesNotExist() throws Exception {
     //Given
     long id = 1L;
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice with %d id does not exist.", id));
     when(invoiceService.invoiceExistsById(id)).thenReturn(false);
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice with %d id does not exist.", id));
 
     //When
     MvcResult result = mockMvc
@@ -552,8 +552,8 @@ class InvoiceControllerTest {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while removing invoice.");
     doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while removing invoice.");
 
     //When
     MvcResult result = mockMvc
