@@ -290,9 +290,9 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void addMethodShouldReturnBadRequestStatusWhenInvoiceIsNull() throws Exception {
+  void addMethodShouldReturnBadRequestStatusWhenInvoiceIsInvalid() throws Exception {
     //Given
-    ErrorMessage expectedResponse = new ErrorMessage("Invoice cannot be null.");
+    ErrorMessage expectedResponse = new ErrorMessage("Passed invoice is invalid.");
 
     //When
     MvcResult result = mockMvc
@@ -414,11 +414,11 @@ class InvoiceControllerTest {
   }
 
   @Test
-  void updateMethodShouldReturnBadRequestStatusWhenInvoiceIsNull() throws Exception {
+  void updateMethodShouldReturnBadRequestStatusWhenInvoiceIsInvalid() throws Exception {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
-    ErrorMessage expectedResponse = new ErrorMessage("Invoice to update cannot be null.");
+    ErrorMessage expectedResponse = new ErrorMessage("Passed invoice is invalid.");
 
     //When
     MvcResult result = mockMvc

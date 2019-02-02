@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.model.validators.InvoiceValidator;
 import pl.coderstrust.service.InvoiceService;
 
 @RestController
@@ -84,11 +85,13 @@ public class InvoiceController {
 
   @PostMapping
   public ResponseEntity<?> add(@RequestBody(required = false) Invoice invoice) {
-    if (invoice == null) {
-      return new ResponseEntity<>(new ErrorMessage("Invoice cannot be null."), HttpStatus.BAD_REQUEST);
-    }
     try {
-      if (!invoiceService.invoiceExistsById(invoice.getId())) {
+      List<String> resultOfValidation = InvoiceValidator.validate(invoice, false);
+      if (resultOfValidation.size() > 0) {
+        return new ResponseEntity<>(new ErrorMessage("Passed invoice is invalid.", resultOfValidation), HttpStatus.BAD_REQUEST);
+      }
+
+      if (invoice.getId() == null || !invoiceService.invoiceExistsById(invoice.getId())) {
         Optional<Invoice> addedInvoice = invoiceService.addInvoice(invoice);
         HttpHeaders responseHeaders = new HttpHeaders();
         if (addedInvoice.isPresent()) {
@@ -104,10 +107,13 @@ public class InvoiceController {
 
   @PutMapping("{id}")
   public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody(required = false) Invoice invoice) {
-    if (invoice == null) {
-      return new ResponseEntity<>(new ErrorMessage("Invoice to update cannot be null."), HttpStatus.BAD_REQUEST);
-    }
     try {
+      List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
+
+      if (resultOfValidation.size() > 0) {
+        return new ResponseEntity<>(new ErrorMessage("Passed invoice is invalid.", resultOfValidation), HttpStatus.BAD_REQUEST);
+      }
+
       if (!id.equals(invoice.getId())) {
         return new ResponseEntity<>(new ErrorMessage(String.format("Invoice to update has different id than %d.", id)), HttpStatus.BAD_REQUEST);
       }
