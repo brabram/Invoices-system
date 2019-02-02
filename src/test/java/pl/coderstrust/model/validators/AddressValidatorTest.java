@@ -101,7 +101,8 @@ class AddressValidatorTest {
         Arguments.of(null, Collections.singletonList("Number cannot be null")),
         Arguments.of("", Collections.singletonList("Number cannot be empty")),
         Arguments.of("sdf34535", Collections.singletonList("Incorrect address number")),
-        Arguments.of("5352", Collections.singletonList("Incorrect address number")),
+        Arguments.of("5352", new ArrayList<String>()),
+        Arguments.of("5", new ArrayList<String>()),
         Arguments.of("4363/35654", Collections.singletonList("Incorrect address number")),
         Arguments.of("63/55", new ArrayList<String>())
     );
