@@ -96,8 +96,9 @@ public class InvoiceController {
         HttpHeaders responseHeaders = new HttpHeaders();
         if (addedInvoice.isPresent()) {
           responseHeaders.setLocation(URI.create(String.format("/invoices/%d", addedInvoice.get().getId())));
+          return new ResponseEntity<>(addedInvoice.get(), responseHeaders, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(new ErrorMessage("Internal server error while adding invoice."), HttpStatus.INTERNAL_SERVER_ERROR);
       }
       return new ResponseEntity<>(new ErrorMessage("Invoice already exist."), HttpStatus.CONFLICT);
     } catch (Exception e) {
