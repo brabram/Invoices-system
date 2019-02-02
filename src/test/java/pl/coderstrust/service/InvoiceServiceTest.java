@@ -229,7 +229,7 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void getAllInvoicesMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+  void getAllInvoicesMethodShouldThrowInvoiceServiceOperationExceptionWhenWhenAnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws DatabaseOperationException {
     //Given
     doThrow(DatabaseOperationException.class).when(invoiceDatabase).findAll();
 
@@ -238,7 +238,7 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void getInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+  void getInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenWhenAnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws DatabaseOperationException {
     //Given
     doThrow(DatabaseOperationException.class).when(invoiceDatabase).findById(1L);
 
@@ -247,7 +247,7 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+  void addInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenWhenAnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws DatabaseOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     doThrow(DatabaseOperationException.class).when(invoiceDatabase).save(invoice);
@@ -268,7 +268,7 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+  void updateInvoiceMethodShouldThrowInvoiceServiceOperationExceptionWhenWhenAnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws DatabaseOperationException {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     when(invoiceDatabase.existsById(invoice.getId())).thenReturn(true);
@@ -289,7 +289,7 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+  void deleteInvoiceByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenWhenAnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws DatabaseOperationException {
     //Given
     when(invoiceDatabase.existsById(1L)).thenReturn(true);
     doThrow(DatabaseOperationException.class).when(invoiceDatabase).deleteById(1L);
@@ -309,7 +309,7 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void deleteAllMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+  void deleteAllMethodShouldThrowInvoiceServiceOperationExceptionWhenWhenAnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws DatabaseOperationException {
     //Given
     doThrow(DatabaseOperationException.class).when(invoiceDatabase).deleteAll();
 
@@ -318,7 +318,7 @@ class InvoiceServiceTest {
   }
 
   @Test
-  void invoiceExistsByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenIsSomeErrorWhileGettingInvoicesFromDatabase() throws DatabaseOperationException {
+  void invoiceExistsByIdMethodShouldThrowInvoiceServiceOperationExceptionWhenWhenAnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws DatabaseOperationException {
     //Given
     long id = 1L;
     doThrow(DatabaseOperationException.class).when(invoiceDatabase).existsById(id);
