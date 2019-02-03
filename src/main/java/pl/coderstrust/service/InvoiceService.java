@@ -17,7 +17,6 @@ import pl.coderstrust.model.Invoice;
 public class InvoiceService {
 
   private static Logger log = LoggerFactory.getLogger(InvoiceService.class);
-
   private InvoiceDatabase invoiceDatabase;
 
   @Autowired
@@ -55,6 +54,7 @@ public class InvoiceService {
           .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)
           .collect(Collectors.toList());
     }
+    log.info("Getting all invoices from database in the specified range.");
     return Optional.of(invoicesInDataRange);
   }
 
@@ -66,8 +66,9 @@ public class InvoiceService {
       log.info("Getting invoice by id from database.");
       return invoiceDatabase.findById(id);
     } catch (DatabaseOperationException e) {
-
-      throw new ServiceOperationException("An error while getting invoice.", e);
+      String message = "An error while getting invoice.";
+      log.error(message, e);
+      throw new ServiceOperationException(message, e);
     }
   }
 
@@ -80,9 +81,12 @@ public class InvoiceService {
       if (id != null && invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s already exists", id));
       }
+      log.info("Invoice was added in database.");
       return invoiceDatabase.save(invoice);
     } catch (DatabaseOperationException e) {
-      throw new ServiceOperationException("An error while adding invoice.", e);
+      String message = "An error while adding invoice.";
+      log.error(message, e);
+      throw new ServiceOperationException(message, e);
     }
   }
 
@@ -95,9 +99,12 @@ public class InvoiceService {
       if (id == null || !invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s does not exist", id));
       }
+      log.info("Invoice was updated");
       invoiceDatabase.save(invoice);
     } catch (DatabaseOperationException e) {
-      throw new ServiceOperationException("An error while updating invoice.", e);
+      String message = "An error while updating invoice.";
+      log.error(message, e);
+      throw new ServiceOperationException(message, e);
     }
   }
 
@@ -109,17 +116,23 @@ public class InvoiceService {
       if (!invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s does not exist", id));
       }
+      log.info("Invoice was deleted");
       invoiceDatabase.deleteById(id);
     } catch (DatabaseOperationException e) {
-      throw new ServiceOperationException("An error while deleting invoice.", e);
+      String message = "An error while deleting invoice.";
+      log.error(message, e);
+      throw new ServiceOperationException(message, e);
     }
   }
 
   public void deleteAll() throws ServiceOperationException {
     try {
+      log.info("Invoices was deleted");
       invoiceDatabase.deleteAll();
     } catch (DatabaseOperationException e) {
-      throw new ServiceOperationException("An error while deleting invoices.", e);
+      String message = "An error while deleting invoices.";
+      log.error(message, e);
+      throw new ServiceOperationException(message, e);
     }
   }
 

@@ -7,7 +7,6 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
 
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.slf4j.Logger;
@@ -23,6 +22,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     }
     File file = new File(filePath);
     if (!file.exists()) {
+      log.info("Creating new file");
       file.createNewFile();
     }
   }
@@ -33,6 +33,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     }
     File file = new File(filePath);
     if (file.exists()) {
+      log.info("Deleting file");
       file.delete();
     }
   }
@@ -41,6 +42,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
+    log.info("Checking if file exists");
     return new File(filePath).exists();
   }
 
@@ -52,6 +54,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (!file.exists()) {
       throw new FileNotFoundException("Cannot find file");
     }
+    log.info("Checking if file is empty");
     return file.length() == 0;
   }
 
@@ -59,6 +62,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
+    log.info("Clearing file");
     FileUtils.write(new File(filePath), "", ENCODING);
   }
 
@@ -69,6 +73,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (line == null) {
       throw new IllegalArgumentException("line cannot be null.");
     }
+    log.info("Writing lines in file");
     FileUtils.writeLines(new File(filePath), ENCODING, Collections.singleton(line), true);
   }
 
@@ -76,6 +81,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
+    log.info("Reading lines from file");
     return FileUtils.readLines(new File(filePath), ENCODING);
   }
 
@@ -85,6 +91,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     }
     try (ReversedLinesFileReader reversedLinesReader = new ReversedLinesFileReader(
         new File(filePath), Charset.defaultCharset())) {
+      log.info("Reading last line from file");
       return reversedLinesReader.readLine();
     }
   }
@@ -96,7 +103,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (lines == null) {
       throw new IllegalArgumentException("lines cannot be null.");
     }
-    log.info("Write lines to file");
+    log.info("Writing lines to file");
     FileUtils.writeLines(new File(filePath), ENCODING, lines, true);
   }
 
@@ -107,6 +114,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (lineNumber <= 0) {
       throw new IllegalArgumentException("lineNumber cannot be less or equal to zero.");
     }
+    log.info("Removing lines from file");
     File file = new File(filePath);
     List<String> lines = readLines(file.getPath());
     lines.remove(lineNumber - 1);
