@@ -37,9 +37,6 @@ public class Invoice {
   protected Invoice() {
   }
 
-  protected Invoice() {
-  }
-
   public Invoice(Long id, String number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
     this.id = id;
     this.number = number;
