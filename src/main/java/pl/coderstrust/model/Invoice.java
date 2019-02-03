@@ -13,9 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import net.bytebuddy.dynamic.scaffold.TypeInitializer;
-
-
 @Entity
 public class Invoice {
 
