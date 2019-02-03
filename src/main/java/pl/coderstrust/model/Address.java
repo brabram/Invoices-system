@@ -1,10 +1,10 @@
 package pl.coderstrust.model;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class Address {
@@ -87,12 +87,12 @@ public class Address {
       return false;
     }
     Address address = (Address) o;
-    return Objects.equals(id, address.id) &&
-        Objects.equals(street, address.street) &&
-        Objects.equals(number, address.number) &&
-        Objects.equals(postalCode, address.postalCode) &&
-        Objects.equals(city, address.city) &&
-        Objects.equals(country, address.country);
+    return Objects.equals(id, address.id)
+        && Objects.equals(street, address.street)
+        && Objects.equals(number, address.number)
+        && Objects.equals(postalCode, address.postalCode)
+        && Objects.equals(city, address.city)
+        && Objects.equals(country, address.country);
   }
 
   @Override

@@ -59,7 +59,7 @@ class HibernateInvoiceDatabaseTest {
     //given
     Invoice invoice = (InvoiceGenerator.getRandomInvoice());
     Long id = invoice.getId();
-    when(hibernateInvoiceRepository.findById(id)).thenReturn(Optional.ofNullable(invoice));
+    when(hibernateInvoiceRepository.findById(id)).thenReturn(Optional.of(invoice));
 
     //When
     Optional<Invoice> actualInvoice = invoiceDatabase.findById(id);
@@ -73,28 +73,29 @@ class HibernateInvoiceDatabaseTest {
   @Test
   void shouldReturnTrueIfInvoiceExistsInDatabase() throws DatabaseOperationException {
     //given
-    Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    when(hibernateInvoiceRepository.existsById(invoice.getId())).thenReturn(true);
+    Long id = 1L;
+    when(hibernateInvoiceRepository.existsById(id)).thenReturn(true);
 
     //when
-    boolean isInvoiceExists = invoiceDatabase.existsById(invoice.getId());
+    boolean isInvoiceExists = invoiceDatabase.existsById(id);
 
     //then
     Assert.assertTrue(isInvoiceExists);
-    verify(hibernateInvoiceRepository).existsById(invoice.getId());
+    verify(hibernateInvoiceRepository).existsById(id);
   }
 
   @Test
   void shouldReturnFalseIfInvoiceExistsInDatabase() throws DatabaseOperationException {
     //given
-    when(hibernateInvoiceRepository.existsById(1L)).thenReturn(false);
+    Long id = 1L;
+    when(hibernateInvoiceRepository.existsById(id)).thenReturn(false);
 
     //when
-    boolean isInvoiceExists = invoiceDatabase.existsById(1L);
+    boolean isInvoiceExists = invoiceDatabase.existsById(id);
 
     //then
     Assert.assertFalse(isInvoiceExists);
-    verify(hibernateInvoiceRepository).existsById(1L);
+    verify(hibernateInvoiceRepository).existsById(id);
   }
 
   @Test
@@ -118,7 +119,7 @@ class HibernateInvoiceDatabaseTest {
   void shouldReturnNumberOfInvoices() throws DatabaseOperationException {
     //given
     long numberOfInvoices = 3L;
-    when(hibernateInvoiceRepository.count()).thenReturn(numberOfInvoices );
+    when(hibernateInvoiceRepository.count()).thenReturn(numberOfInvoices);
 
     //when
     long actualNumberOfInvoices = invoiceDatabase.count();

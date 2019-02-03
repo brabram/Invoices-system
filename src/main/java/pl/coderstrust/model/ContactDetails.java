@@ -81,11 +81,11 @@ public class ContactDetails {
       return false;
     }
     ContactDetails that = (ContactDetails) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(email, that.email) &&
-        Objects.equals(phoneNumber, that.phoneNumber) &&
-        Objects.equals(website, that.website) &&
-        Objects.equals(address, that.address);
+    return Objects.equals(id, that.id)
+        && Objects.equals(email, that.email)
+        && Objects.equals(phoneNumber, that.phoneNumber)
+        && Objects.equals(website, that.website)
+        && Objects.equals(address, that.address);
   }
 
   @Override

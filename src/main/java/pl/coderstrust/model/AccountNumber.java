@@ -57,9 +57,9 @@ public class AccountNumber {
       return false;
     }
     AccountNumber that = (AccountNumber) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(ibanNumber, that.ibanNumber) &&
-        Objects.equals(localNumber, that.localNumber);
+    return Objects.equals(id, that.id)
+        && Objects.equals(ibanNumber, that.ibanNumber)
+        && Objects.equals(localNumber, that.localNumber);
   }
 
   @Override
