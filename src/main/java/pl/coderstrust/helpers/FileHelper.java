@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class FileHelper {
-Logger logger = LoggerFactory.getLogger(FileHelper.class);
+Logger log = LoggerFactory.getLogger(FileHelper.class);
   private static final String ENCODING = "UTF-8";
 
   void create(String filePath) throws IOException {
@@ -96,7 +96,7 @@ Logger logger = LoggerFactory.getLogger(FileHelper.class);
     if (lines == null) {
       throw new IllegalArgumentException("lines cannot be null.");
     }
-    log.info("Write lines to file")
+    log.info("Write lines to file");
     FileUtils.writeLines(new File(filePath), ENCODING, lines, true);
   }
 
