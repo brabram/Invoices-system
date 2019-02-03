@@ -11,7 +11,7 @@ public class ContactDetailsGenerator {
   private static Random random = new Random();
 
   public static ContactDetails getRandomContactDetails() {
-    long id = IdGenerator.getRandomId();
+    long id = IdGenerator.getNextId();
     String email = String.format("%s@gmail.com", getRandomWord());
     String phoneNumber = String.format("+48%09d", random.nextInt(999999999));
     String webSite = String.format("www.%s.com", getRandomWord());

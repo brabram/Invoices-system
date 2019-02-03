@@ -41,29 +41,32 @@ class HibernateInvoiceDatabaseTest {
   @Test
   void shouldSaveInvoice() throws DatabaseOperationException {
     //given
-    Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    when(hibernateInvoiceRepository.save(invoice)).thenReturn(invoice);
+    Invoice invoice1 = InvoiceGenerator.getRandomInvoice();
+    Invoice invoice2 = InvoiceGenerator.getRandomInvoice();
+    when(hibernateInvoiceRepository.save(invoice1)).thenReturn(invoice2);
 
     //when
-    Optional<Invoice> actualInvoice = invoiceDatabase.save(invoice);
+    Optional<Invoice> savedInvoice = invoiceDatabase.save(invoice1);
 
     //then
-    assertEquals(Optional.of(invoice), actualInvoice);
-    verify(hibernateInvoiceRepository).save(invoice);
+    assertTrue(savedInvoice.isPresent());
+    assertEquals(invoice2, savedInvoice.get());
+    verify(hibernateInvoiceRepository).save(invoice1);
   }
 
   @Test
   void shouldFindOneInvoice() throws DatabaseOperationException {
     //given
-    Optional<Invoice> invoice = Optional.of(InvoiceGenerator.getRandomInvoice());
-    Long id = invoice.get().getId();
-    when(hibernateInvoiceRepository.findById(id)).thenReturn(invoice);
+    Invoice invoice = (InvoiceGenerator.getRandomInvoice());
+    Long id = invoice.getId();
+    when(hibernateInvoiceRepository.findById(id)).thenReturn(Optional.ofNullable(invoice));
 
     //When
     Optional<Invoice> actualInvoice = invoiceDatabase.findById(id);
 
     //Then
-    assertEquals(invoice, actualInvoice);
+    assertTrue(actualInvoice.isPresent());
+    assertEquals(invoice, actualInvoice.get());
     verify(hibernateInvoiceRepository).findById(id);
   }
 
@@ -71,27 +74,35 @@ class HibernateInvoiceDatabaseTest {
   void shouldReturnTrueIfInvoiceExistsInDatabase() throws DatabaseOperationException {
     //given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    when(hibernateInvoiceRepository.save(invoice)).thenReturn(invoice);
     when(hibernateInvoiceRepository.existsById(invoice.getId())).thenReturn(true);
 
     //when
-    invoiceDatabase.save(invoice);
     boolean isInvoiceExists = invoiceDatabase.existsById(invoice.getId());
 
     //then
     Assert.assertTrue(isInvoiceExists);
-    verify(hibernateInvoiceRepository).save(invoice);
     verify(hibernateInvoiceRepository).existsById(invoice.getId());
+  }
+
+  @Test
+  void shouldReturnFalseIfInvoiceExistsInDatabase() throws DatabaseOperationException {
+    //given
+    when(hibernateInvoiceRepository.existsById(1L)).thenReturn(false);
+
+    //when
+    boolean isInvoiceExists = invoiceDatabase.existsById(1L);
+
+    //then
+    Assert.assertFalse(isInvoiceExists);
+    verify(hibernateInvoiceRepository).existsById(1L);
   }
 
   @Test
   void shouldFindAllInvoices() throws DatabaseOperationException {
     //given
     List<Invoice> expectedInvoices = new ArrayList<>();
-    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    expectedInvoices.add(invoiceToSave1);
-    expectedInvoices.add(invoiceToSave2);
+    expectedInvoices.add(InvoiceGenerator.getRandomInvoice());
+    expectedInvoices.add(InvoiceGenerator.getRandomInvoice());
     when(hibernateInvoiceRepository.findAll()).thenReturn(expectedInvoices);
 
     //When
@@ -106,41 +117,27 @@ class HibernateInvoiceDatabaseTest {
   @Test
   void shouldReturnNumberOfInvoices() throws DatabaseOperationException {
     //given
-    Invoice invoiceToSave1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceToSave2 = InvoiceGenerator.getRandomInvoice();
-    Invoice savedInvoice1 = hibernateInvoiceRepository.save(invoiceToSave1);
-    Invoice savedInvoice2 = hibernateInvoiceRepository.save(invoiceToSave2);
-    List<Invoice> tableOfInvoices = new ArrayList<>();
-    tableOfInvoices.add(savedInvoice1);
-    tableOfInvoices.add(savedInvoice2);
-    when(hibernateInvoiceRepository.findAll()).thenReturn(tableOfInvoices);
-    long expectedInvoicesCount = (long) tableOfInvoices.size();
-    when(hibernateInvoiceRepository.count()).thenReturn(expectedInvoicesCount);
+    long numberOfInvoices = 3L;
+    when(hibernateInvoiceRepository.count()).thenReturn(numberOfInvoices );
 
     //when
-    invoiceDatabase.findAll();
-    long actualInvoicesCount = invoiceDatabase.count();
+    long actualNumberOfInvoices = invoiceDatabase.count();
 
     //then
-    Assert.assertEquals(expectedInvoicesCount, actualInvoicesCount);
-    verify(hibernateInvoiceRepository).findAll();
+    Assert.assertEquals(numberOfInvoices, actualNumberOfInvoices);
     verify(hibernateInvoiceRepository).count();
   }
 
   @Test
   void shouldDeleteById() throws DatabaseOperationException {
     //given
-    Invoice invoice = InvoiceGenerator.getRandomInvoice();
-    Long id = invoice.getId();
-    when(hibernateInvoiceRepository.existsById(id)).thenReturn(true);
-    assertTrue(hibernateInvoiceRepository.existsById(id));
+    Long id = 1L;
     doNothing().when(hibernateInvoiceRepository).deleteById(id);
 
     //when
     invoiceDatabase.deleteById(id);
 
     //then
-    verify(hibernateInvoiceRepository).existsById(id);
     verify(hibernateInvoiceRepository).deleteById(id);
   }
 
@@ -192,7 +189,7 @@ class HibernateInvoiceDatabaseTest {
   }
 
   @Test
-  void saveInvoiceMethodShouldThrowExceptionIfGetSomeError() {
+  void saveInvoiceMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
     NonTransientDataAccessException mockedException = Mockito.mock(NonTransientDataAccessException.class);
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
@@ -200,68 +197,75 @@ class HibernateInvoiceDatabaseTest {
 
     //Then
     assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.save(invoice));
+    verify(hibernateInvoiceRepository).save(invoice);
   }
 
   @Test
-  void deleteInvoiceByIdMethodShouldThrowExceptionIfGetSomeError() {
+  void deleteInvoiceByIdMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
-    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long id = 1L;
     EmptyResultDataAccessException mockedException = Mockito.mock(EmptyResultDataAccessException.class);
-    doThrow(mockedException).when(hibernateInvoiceRepository).deleteById(invoice.getId());
+    doThrow(mockedException).when(hibernateInvoiceRepository).deleteById(id);
 
     //Then
-    assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.deleteById(invoice.getId()));
+    assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.deleteById(id));
+    verify(hibernateInvoiceRepository).deleteById(id);
   }
 
   @Test
-  void deleteAllMethodShouldThrowExceptionIfGetSomeError() {
+  void deleteAllMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
     NonTransientDataAccessException mockedException = Mockito.mock(NonTransientDataAccessException.class);
     doThrow(mockedException).when(hibernateInvoiceRepository).deleteAll();
 
     //Then
     assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.deleteAll());
+    verify(hibernateInvoiceRepository).deleteAll();
   }
 
   @Test
-  void countMethodShouldThrowExceptionIfGetSomeError() {
+  void countMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
     NonTransientDataAccessException mockedException = Mockito.mock(NonTransientDataAccessException.class);
     doThrow(mockedException).when(hibernateInvoiceRepository).count();
 
     //Then
     assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.count());
+    verify(hibernateInvoiceRepository).count();
   }
 
   @Test
-  void findInvoiceByIdMethodShouldThrowExceptionIfGetSomeError() {
+  void findInvoiceByIdMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
-    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long id = 1L;
     NoSuchElementException mockedException = Mockito.mock(NoSuchElementException.class);
-    doThrow(mockedException).when(hibernateInvoiceRepository).findById(invoice.getId());
+    doThrow(mockedException).when(hibernateInvoiceRepository).findById(id);
 
     //Then
-    assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.findById(invoice.getId()));
+    assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.findById(id));
+    verify(hibernateInvoiceRepository).findById(id);
   }
 
   @Test
-  void existInvoiceByIdMethodShouldThrowExceptionIfGetSomeError() {
+  void existInvoiceByIdMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
-    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long id = 1L;
     NonTransientDataAccessException mockedException = Mockito.mock(NonTransientDataAccessException.class);
-    doThrow(mockedException).when(hibernateInvoiceRepository).existsById(invoice.getId());
+    doThrow(mockedException).when(hibernateInvoiceRepository).existsById(id);
 
     //Then
-    assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.existsById(invoice.getId()));
+    assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.existsById(id));
+    verify(hibernateInvoiceRepository).existsById(id);
   }
 
   @Test
-  void findAllInvoiceByIdMethodShouldThrowExceptionIfGetSomeError() {
+  void findAllInvoiceByIdMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
     NonTransientDataAccessException mockedException = Mockito.mock(NonTransientDataAccessException.class);
     doThrow(mockedException).when(hibernateInvoiceRepository).findAll();
 
     //Then
     assertThrows(DatabaseOperationException.class, () -> invoiceDatabase.findAll());
+    verify(hibernateInvoiceRepository).findAll();
   }
 }

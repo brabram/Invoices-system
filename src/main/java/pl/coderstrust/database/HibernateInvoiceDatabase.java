@@ -28,7 +28,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     try {
       return Optional.of(hibernateInvoiceRepository.save(invoice));
     } catch (NonTransientDataAccessException e) {
-      throw new DatabaseOperationException("Error while save invoice", e);
+      throw new DatabaseOperationException("An error while saving invoice.", e);
     }
   }
 
@@ -43,7 +43,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     try {
       return hibernateInvoiceRepository.findById(id);
     } catch (NoSuchElementException e) {
-      throw new DatabaseOperationException("Error while find invoice by id", e);
+      throw new DatabaseOperationException("An error while searching for invoice.", e);
     }
   }
 
@@ -58,7 +58,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     try {
       return hibernateInvoiceRepository.existsById(id);
     } catch (NonTransientDataAccessException e) {
-      throw new DatabaseOperationException("Error while check invoice exist by id", e);
+      throw new DatabaseOperationException("An error while looking for invoice.", e);
     }
   }
 
@@ -67,7 +67,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     try {
       return Optional.of(hibernateInvoiceRepository.findAll());
     } catch (NonTransientDataAccessException e) {
-      throw new DatabaseOperationException("Error while find all invoices", e);
+      throw new DatabaseOperationException("An error while searching for invoices.", e);
     }
   }
 
@@ -76,7 +76,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     try {
       return hibernateInvoiceRepository.count();
     } catch (NonTransientDataAccessException e) {
-      throw new DatabaseOperationException("Error while getting count of invoices", e);
+      throw new DatabaseOperationException("An error while counting invoices.", e);
     }
   }
 
@@ -91,7 +91,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     try {
       hibernateInvoiceRepository.deleteById(id);
     } catch (EmptyResultDataAccessException e) {
-      throw new DatabaseOperationException("Error while deleting by id", e);
+      throw new DatabaseOperationException("There was no invoice in database.", e);
     }
   }
 
@@ -100,7 +100,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     try {
       hibernateInvoiceRepository.deleteAll();
     } catch (NonTransientDataAccessException e) {
-      throw new DatabaseOperationException("Error while deleting all invoices", e);
+      throw new DatabaseOperationException("An error while deleting all invoices.", e);
     }
   }
 }

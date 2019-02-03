@@ -218,7 +218,6 @@
                   <excludes>
                     <exclude>pl.coderstrust.database.DatabaseOperationException</exclude>
                     <exclude>pl.coderstrust.service.ServiceOperationException</exclude>
-
                   </excludes>
                 </rule>
               </rules>

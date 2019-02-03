@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import net.bytebuddy.dynamic.scaffold.TypeInitializer;
+
 
 @Entity
 public class Invoice {
@@ -35,6 +37,8 @@ public class Invoice {
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private List<InvoiceEntry> entries;
 
+  protected Invoice() {
+  }
 
   protected Invoice() {
   }
