@@ -122,7 +122,7 @@ public class InvoiceController {
         return new ResponseEntity<>(new ErrorMessage(String.format("Invoice with %d id does not exist.", id)), HttpStatus.NOT_FOUND);
       }
       invoiceService.updateInvoice(invoice);
-      return new ResponseEntity<>(HttpStatus.OK);
+      return new ResponseEntity<>(invoice, HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(new ErrorMessage("Internal server error while updating invoice."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
