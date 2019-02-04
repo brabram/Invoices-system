@@ -34,7 +34,7 @@ public class AddressValidator extends Validator {
     if (street.trim().isEmpty()) {
       return "Street cannot be empty";
     }
-    Matcher matcher = RegExpPatterns.geographicalNamePattern.matcher(street);
+    Matcher matcher = RegExpPatterns.streetNamePattern.matcher(street);
     if (!matcher.matches()) {
       return "Incorrect street name";
     }

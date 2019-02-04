@@ -17,6 +17,7 @@ import pl.coderstrust.generators.InvoiceEntriesGenerator;
 import pl.coderstrust.model.InvoiceEntry;
 
 class InvoiceEntryValidatorTest {
+
   private InvoiceEntry invoiceEntry;
 
   @BeforeEach
@@ -36,8 +37,8 @@ class InvoiceEntryValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Item cannot be null")),
         Arguments.of("", Collections.singletonList("Item cannot be empty")),
-        Arguments.of("sdf35", Collections.singletonList("Incorrect item")),
-        Arguments.of("35fewf", Collections.singletonList("Incorrect item")),
+        Arguments.of("sdf35", new ArrayList<String>()),
+        Arguments.of("35fewf", new ArrayList<String>()),
         Arguments.of("-535", Collections.singletonList("Incorrect item")),
         Arguments.of("Something", new ArrayList<String>()),
         Arguments.of("something", new ArrayList<String>()),
@@ -78,7 +79,7 @@ class InvoiceEntryValidatorTest {
         Arguments.of(null, Collections.singletonList("Price cannot be null")),
         Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Price cannot be less than or equal to 0")),
         Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Price cannot be less than or equal to 0")),
-        Arguments.of(BigDecimal.valueOf(30), new ArrayList<String>())
+        Arguments.of(BigDecimal.valueOf(30.09), new ArrayList<String>())
     );
   }
 
@@ -95,7 +96,7 @@ class InvoiceEntryValidatorTest {
         Arguments.of(null, Collections.singletonList("Gross value cannot be null")),
         Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Gross value cannot be less than or equal to 0")),
         Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Gross value cannot be less than or equal to 0")),
-        Arguments.of(BigDecimal.valueOf(30), new ArrayList<String>())
+        Arguments.of(BigDecimal.valueOf(30.09), new ArrayList<String>())
     );
   }
 
@@ -112,7 +113,7 @@ class InvoiceEntryValidatorTest {
         Arguments.of(null, Collections.singletonList("Vat value cannot be null")),
         Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Vat value cannot be less than or equal to 0")),
         Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Vat value cannot be less than or equal to 0")),
-        Arguments.of(BigDecimal.valueOf(30), new ArrayList<String>())
+        Arguments.of(BigDecimal.valueOf(30.09), new ArrayList<String>())
     );
   }
 

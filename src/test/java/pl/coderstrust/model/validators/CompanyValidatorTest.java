@@ -37,7 +37,7 @@ class CompanyValidatorTest {
         Arguments.of("", Collections.singletonList("Name cannot be empty")),
         Arguments.of("fewf%^$", Collections.singletonList("Incorrect name")),
         Arguments.of("3M", new ArrayList<String>()),
-        Arguments.of("Aferf", new ArrayList<String>())
+        Arguments.of("Afer - fer  & bny, uyt", new ArrayList<String>())
     );
   }
 

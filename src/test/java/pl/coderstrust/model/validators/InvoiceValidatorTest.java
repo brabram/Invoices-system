@@ -64,7 +64,7 @@ class InvoiceValidatorTest {
         Arguments.of("", Collections.singletonList("Number cannot be empty")),
         Arguments.of("-erfer", Collections.singletonList("Incorrect number")),
         Arguments.of("535", new ArrayList<String>()),
-        Arguments.of("sdf35", new ArrayList<String>()),
+        Arguments.of("sdf35/", new ArrayList<String>()),
         Arguments.of("35fewf", new ArrayList<String>()),
         Arguments.of("Werw34 Fdfd efe43", new ArrayList<String>()),
         Arguments.of("werw34-fdfd-efe43", new ArrayList<String>())
@@ -121,7 +121,7 @@ class InvoiceValidatorTest {
         Arguments.of(null, Collections.singletonList("Total gross value cannot be null")),
         Arguments.of(BigDecimal.valueOf(-55), Collections.singletonList("Total gross value cannot be less than or equal to 0")),
         Arguments.of(BigDecimal.valueOf(0), Collections.singletonList("Total gross value cannot be less than or equal to 0")),
-        Arguments.of(BigDecimal.valueOf(30), new ArrayList<String>())
+        Arguments.of(BigDecimal.valueOf(30.09), new ArrayList<String>())
     );
   }
 
