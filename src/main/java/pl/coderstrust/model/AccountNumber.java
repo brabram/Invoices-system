@@ -17,7 +17,7 @@ public class AccountNumber {
   @ApiModelProperty(value = "International Bank Account Number", example = "PL19200000000120067894552302")
   private String ibanNumber;
 
-  @ApiModelProperty(value = "account number without spaces", example = "19200000000120067894")
+  @ApiModelProperty(value = "account number without spaces", example = "19200000000120067894552302")
   private String localNumber;
 
   protected AccountNumber() {
