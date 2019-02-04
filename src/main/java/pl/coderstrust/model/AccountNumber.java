@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,11 @@ public class AccountNumber {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  @ApiModelProperty(value = "International Bank Account Number", example = "PL19200000000120067894552302")
   private String ibanNumber;
+
+  @ApiModelProperty(value = "account number without spaces", example = "19200000000120067894")
   private String localNumber;
 
   protected AccountNumber() {

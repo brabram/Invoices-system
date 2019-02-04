@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,8 +15,14 @@ public class ContactDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  @ApiModelProperty(value = "email address", example = "poczta@onet.pl")
   private String email;
+
+  @ApiModelProperty(value = "phone number, acceptable use of the '+' sign at the beginning", example = "+48786345298")
   private String phoneNumber;
+
+  @ApiModelProperty(value = "web site address", example = "www.company.net.eu")
   private String website;
 
   @OneToOne(cascade = CascadeType.ALL)

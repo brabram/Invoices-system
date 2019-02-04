@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -13,11 +14,23 @@ public class InvoiceEntry {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  @ApiModelProperty(value = "item name", example = "10w40 Castrol engine oil")
   private String item;
+
+  @ApiModelProperty(value = "item quantity, only digits", example = "10")
   private Long quantity;
+
+  @ApiModelProperty(value = "price of single item without VAT value, only digits and dot ('.') as a separator acceptable", example = "100.00")
   private BigDecimal price;
+
+  @ApiModelProperty(value = "value of VAT, only digits and dot ('.') as a separator acceptable", example = "23.00")
   private BigDecimal vatValue;
+
+  @ApiModelProperty(value = "value of all items with VAT value, only digits and dot ('.') as a separator acceptable", example = "1230.00")
   private BigDecimal grossValue;
+
+  @ApiModelProperty(value = "VAT value, in format VAT_23", example = "VAT_23")
   private Vat vatRate;
 
   protected InvoiceEntry() {

@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,7 +15,11 @@ public class Company {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  @ApiModelProperty(value = "company name", example = "Jan Kowalski - Transport & Logistics Services")
   private String name;
+
+  @ApiModelProperty(value = "tax identification number, 10 digits without spaces", example = "2541278654")
   private String taxIdentificationNumber;
 
   @OneToOne(cascade = CascadeType.ALL)

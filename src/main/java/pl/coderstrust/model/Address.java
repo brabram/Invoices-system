@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,10 +13,20 @@ public class Address {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
+  @ApiModelProperty(value = "street name", example = "Warszawska")
   private String street;
+
+  @ApiModelProperty(value = "number of house, building", example = "15a/1")
   private String number;
+
+  @ApiModelProperty(value = "postalCode without special sign '-'", example = "00810")
   private String postalCode;
+
+  @ApiModelProperty(value = "city name", example = "Warsaw")
   private String city;
+
+  @ApiModelProperty(value = "country name", example = "Poland")
   private String country;
 
   protected Address() {
