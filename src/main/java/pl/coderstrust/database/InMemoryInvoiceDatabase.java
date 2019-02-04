@@ -19,7 +19,6 @@ import pl.coderstrust.model.Invoice;
 @Repository
 public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   private static Logger log = LoggerFactory.getLogger(InMemoryInvoiceDatabase.class);
-
   private Map<Long, Invoice> invoices = Collections.synchronizedMap(new HashMap<>());
   private AtomicLong counter = new AtomicLong();
   private final Object lock = new Object();

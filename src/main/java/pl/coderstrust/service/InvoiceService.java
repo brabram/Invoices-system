@@ -15,7 +15,6 @@ import pl.coderstrust.model.Invoice;
 
 @Service
 public class InvoiceService {
-
   private static Logger log = LoggerFactory.getLogger(InvoiceService.class);
   private InvoiceDatabase invoiceDatabase;
 
