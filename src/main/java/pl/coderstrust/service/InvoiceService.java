@@ -140,9 +140,12 @@ public class InvoiceService {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
+      log.info("Checked if invoice exist by id", id);
       return invoiceDatabase.existsById(id);
     } catch (DatabaseOperationException e) {
-      throw new ServiceOperationException("An error while checking if invoice exist.", e);
+      String message = "An error while checking if invoice exist.";
+      log.error(message, e);
+      throw new ServiceOperationException(message, e);
     }
   }
 }
