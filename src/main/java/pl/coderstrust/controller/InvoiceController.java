@@ -3,6 +3,9 @@ package pl.coderstrust.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.validators.InvoiceValidator;
 import pl.coderstrust.service.InvoiceService;
 
+@Api(value = "/invoices/", description = "Operations in invoicing system  ")
 @RestController
 @RequestMapping("/invoices/")
 public class InvoiceController {
@@ -37,6 +41,7 @@ public class InvoiceController {
     mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
   }
 
+  @ApiOperation(value = "Find all invoices", response = Invoice.class, responseContainer = "List")
   @GetMapping
   public ResponseEntity<?> getAll() {
     try {
@@ -50,6 +55,8 @@ public class InvoiceController {
     }
   }
 
+  @ApiOperation(value = "Find invoice with given id", response = Invoice.class, responseContainer = "Single Object")
+  @ApiImplicitParam(name = "id", value = "only digits possible, e.g. 7865")
   @GetMapping("{id}")
   public ResponseEntity<?> getById(@PathVariable("id") Long id) {
     try {
@@ -63,6 +70,8 @@ public class InvoiceController {
     }
   }
 
+  @ApiOperation(value = "Find invoice with given number", response = Invoice.class, responseContainer = "Single object")
+  @ApiImplicitParam(name = "number", value = "possible letters, numbers and sign /, e.g. FV / 789006a")
   @GetMapping("number/{number}")
   public ResponseEntity<?> getByNumber(@PathVariable("number") String number) {
     try {
@@ -83,6 +92,7 @@ public class InvoiceController {
     }
   }
 
+  @ApiOperation(value = "Save new invoice with given values", response = Invoice.class, responseContainer = "Single Object")
   @PostMapping
   public ResponseEntity<?> add(@RequestBody(required = false) Invoice invoice) {
     try {
@@ -106,6 +116,8 @@ public class InvoiceController {
     }
   }
 
+  @ApiOperation(value = "Save existing invoice with given values", response = Invoice.class, responseContainer = "Single Object")
+  @ApiImplicitParam(name = "id", value = "only digits possible, e.g. 7865")
   @PutMapping("{id}")
   public ResponseEntity<?> update(@PathVariable("id") Long id, @RequestBody(required = false) Invoice invoice) {
     try {
@@ -128,6 +140,8 @@ public class InvoiceController {
     }
   }
 
+  @ApiOperation(value = "Remove existing invoice with given id", response = Invoice.class)
+  @ApiImplicitParam(name = "id", value = "only digits possible, e.g. 7865")
   @DeleteMapping("{id}")
   public ResponseEntity<?> remove(@PathVariable("id") Long id) {
     try {
