@@ -12,21 +12,22 @@ public class Address {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @ApiModelProperty(value = "The id of address.", position = -1)
   private Long id;
 
-  @ApiModelProperty(value = "street name", example = "Warszawska")
+  @ApiModelProperty(value = "Street name", example = "Warszawska")
   private String street;
 
-  @ApiModelProperty(value = "number of house, building", example = "15a/1")
+  @ApiModelProperty(value = "Number of house, building", example = "15a/1")
   private String number;
 
-  @ApiModelProperty(value = "postalCode without special sign '-'", example = "00810")
+  @ApiModelProperty(value = "PostalCode without special sign '-'", example = "00810")
   private String postalCode;
 
-  @ApiModelProperty(value = "city name", example = "Warsaw")
+  @ApiModelProperty(value = "City name", example = "Warsaw")
   private String city;
 
-  @ApiModelProperty(value = "country name", example = "Poland")
+  @ApiModelProperty(value = "Country name", example = "Poland")
   private String country;
 
   protected Address() {
