@@ -85,7 +85,7 @@ public class InvoiceController {
     }
   }
 
-  @GetMapping("/byNumber/number={number}")
+  @GetMapping("/byNumber?number={number}")
   @ApiOperation(
       value = "Get invoice by number.",
       response = Invoice.class)
