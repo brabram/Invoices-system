@@ -44,7 +44,7 @@ import pl.coderstrust.service.ServiceOperationException;
 @AutoConfigureMockMvc
 class InvoiceControllerTest {
 
-  private final String urlAddressTemplate = "/invoices/";
+  private final String urlAddressTemplate = "/invoices";
   private ObjectMapper mapper = new ObjectMapper();
 
   @Autowired
@@ -132,7 +132,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s%d", urlAddressTemplate, id))
+        .perform(get(String.format("%s/%d", urlAddressTemplate, id))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -154,7 +154,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s%d", urlAddressTemplate, 1))
+        .perform(get(String.format("%s/%d", urlAddressTemplate, 1))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -176,7 +176,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s%d", urlAddressTemplate, 1))
+        .perform(get(String.format("%s/%d", urlAddressTemplate, 1))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -199,7 +199,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/number/%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -223,7 +223,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%snumber/%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -245,7 +245,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%snumber/%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -267,7 +267,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%snumber/%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -393,7 +393,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(put(String.format("%s%d", urlAddressTemplate, id))
+        .perform(put(String.format("%s/%d", urlAddressTemplate, id))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(invoiceToUpdate))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -418,7 +418,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(put(String.format("%s%d", urlAddressTemplate, id))
+        .perform(put(String.format("%s/%d", urlAddressTemplate, id))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(invoice))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -444,7 +444,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(put(String.format("%s%d", urlAddressTemplate, id))
+        .perform(put(String.format("%s/%d", urlAddressTemplate, id))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(invoice))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -470,7 +470,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(put(String.format("%s%d", urlAddressTemplate, id))
+        .perform(put(String.format("%s/%d", urlAddressTemplate, id))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(null))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -496,7 +496,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(put(String.format("%s%d", urlAddressTemplate, id))
+        .perform(put(String.format("%s/%d", urlAddressTemplate, id))
             .contentType(MediaType.APPLICATION_JSON_UTF8)
             .content(mapper.writeValueAsString(invoice))
             .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -521,7 +521,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(delete(String.format("%s%d", urlAddressTemplate, id))
+        .perform(delete(String.format("%s/%d", urlAddressTemplate, id))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -541,7 +541,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(delete(String.format("%s%d", urlAddressTemplate, id))
+        .perform(delete(String.format("%s/%d", urlAddressTemplate, id))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -564,7 +564,7 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(delete(String.format("%s%d", urlAddressTemplate, id))
+        .perform(delete(String.format("%s/%d", urlAddressTemplate, id))
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
