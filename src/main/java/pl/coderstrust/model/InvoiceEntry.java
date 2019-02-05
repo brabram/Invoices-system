@@ -13,24 +13,25 @@ public class InvoiceEntry {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @ApiModelProperty(value = "The id of invoice entry.", position = -1)
   private Long id;
 
-  @ApiModelProperty(value = "item name", example = "10w40 Castrol engine oil")
+  @ApiModelProperty(value = "Name of the item", example = "10w40 Castrol engine oil")
   private String item;
 
-  @ApiModelProperty(value = "item quantity, only digits", example = "10")
+  @ApiModelProperty(value = "Total quantity of items", example = "10")
   private Long quantity;
 
-  @ApiModelProperty(value = "price of single item without VAT value, only digits and dot ('.') as a separator acceptable", example = "100.00")
+  @ApiModelProperty(value = "Price of single item without VAT value, only digits and dot ('.') as a separator acceptable", example = "100.00")
   private BigDecimal price;
 
-  @ApiModelProperty(value = "value of VAT, only digits and dot ('.') as a separator acceptable", example = "23.00")
+  @ApiModelProperty(value = "Value of VAT, only digits and dot ('.') as a separator acceptable", example = "23.00")
   private BigDecimal vatValue;
 
-  @ApiModelProperty(value = "value of all items with VAT value, only digits and dot ('.') as a separator acceptable", example = "1230.00")
+  @ApiModelProperty(value = "Value of all items with VAT value, only digits and dot ('.') as a separator acceptable", example = "1230.00")
   private BigDecimal grossValue;
 
-  @ApiModelProperty(value = "VAT value, in format VAT_23", example = "VAT_23")
+  @ApiModelProperty(value = "Tax amount", example = "VAT_23")
   private Vat vatRate;
 
   protected InvoiceEntry() {
