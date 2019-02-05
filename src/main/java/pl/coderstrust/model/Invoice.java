@@ -19,22 +19,22 @@ public class Invoice {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @ApiModelProperty(value = "id", example = "1234")
+  @ApiModelProperty(value = "The id of invoice.", example = "'1234'", position = -1)
   private Long id;
 
-  @ApiModelProperty(value = "invoice number", example = "FV/1234a")
+  @ApiModelProperty(value = "Invoice number", example = "FV/1234a")
   private String number;
 
-  @ApiModelProperty(value = "issue date", example = "2019-02-04")
+  @ApiModelProperty(value = "Issue date of invoice", example = "2019-02-04")
   private LocalDate issueDate;
 
-  @ApiModelProperty(value = "due date", example = "2019-02-18")
+  @ApiModelProperty(value = "Due date of invoice", example = "2019-02-18")
   private LocalDate dueDate;
 
-  @ApiModelProperty(value = "total net value with dot ('.') as a separator", example = "1000.00")
+  @ApiModelProperty(value = "Total net value with dot ('.') as a separator", example = "1000.00")
   private BigDecimal totalNetValue;
 
-  @ApiModelProperty(value = "total gross value with dot ('.') as a separator", example = "1023.00")
+  @ApiModelProperty(value = "Total gross value with dot ('.') as a separator", example = "1023.00")
   private BigDecimal totalGrossValue;
 
   @ManyToOne(cascade = CascadeType.ALL)
