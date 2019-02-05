@@ -14,15 +14,16 @@ public class ContactDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @ApiModelProperty(value = "The id of contact details.", position = -1)
   private Long id;
 
-  @ApiModelProperty(value = "email address", example = "poczta@onet.pl")
+  @ApiModelProperty(value = "Email address", example = "poczta@onet.pl")
   private String email;
 
-  @ApiModelProperty(value = "phone number, acceptable use of the '+' sign at the beginning", example = "+48786345298")
+  @ApiModelProperty(value = "Phone number, acceptable use of the '+' sign at the beginning", example = "+48786345298")
   private String phoneNumber;
 
-  @ApiModelProperty(value = "web site address", example = "www.company.net.eu")
+  @ApiModelProperty(value = "Web site address", example = "www.company.net.eu")
   private String website;
 
   @OneToOne(cascade = CascadeType.ALL)
