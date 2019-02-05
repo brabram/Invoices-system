@@ -14,12 +14,13 @@ public class Company {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @ApiModelProperty(value = "The id of company.", position = -1)
   private Long id;
 
-  @ApiModelProperty(value = "company name", example = "Jan Kowalski - Transport & Logistics Services")
+  @ApiModelProperty(value = "Name of the company", example = "Jan Kowalski - Transport & Logistics Services")
   private String name;
 
-  @ApiModelProperty(value = "tax identification number, 10 digits without spaces", example = "2541278654")
+  @ApiModelProperty(value = "Tax identification number, 10 digits without spaces", example = "2541278654")
   private String taxIdentificationNumber;
 
   @OneToOne(cascade = CascadeType.ALL)
