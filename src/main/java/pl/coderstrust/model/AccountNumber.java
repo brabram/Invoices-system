@@ -12,12 +12,13 @@ public class AccountNumber {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @ApiModelProperty(value = "The id of account number.", position = -1)
   private Long id;
 
-  @ApiModelProperty(value = "International Bank Account Number", example = "PL19200000000120067894552302")
+  @ApiModelProperty(value = "26 digit account number with country code", example = "PL19200000000120067894552302")
   private String ibanNumber;
 
-  @ApiModelProperty(value = "account number without spaces", example = "'19200000000120067894552302'")
+  @ApiModelProperty(value = "26 digit account number", example = "'19200000000120067894552302'")
   private String localNumber;
 
   protected AccountNumber() {
