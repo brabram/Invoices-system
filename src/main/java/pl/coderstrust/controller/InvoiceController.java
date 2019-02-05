@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.model.Invoice;
@@ -85,7 +86,7 @@ public class InvoiceController {
     }
   }
 
-  @GetMapping("/byNumber?number={number}")
+  @GetMapping("/byNumber={number}")
   @ApiOperation(
       value = "Get invoice by number.",
       response = Invoice.class)
@@ -94,7 +95,7 @@ public class InvoiceController {
       @ApiResponse(code = 200, message = "OK", response = Invoice.class),
       @ApiResponse(code = 404, message = "Invoice not found for passed number.", response = ErrorMessage.class),
       @ApiResponse(code = 500, message = "Internal server error.", response = ErrorMessage.class)})
-  public ResponseEntity<?> getByNumber(@PathVariable("number") String number) {
+  public ResponseEntity<?> getByNumber(@RequestParam("number") String number) {
     try {
       Optional<List<Invoice>> optionalInvoicesList = invoiceService.getAllInvoices();
       if (optionalInvoicesList.isPresent()) {
