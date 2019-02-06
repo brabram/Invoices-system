@@ -19,7 +19,7 @@ public class Invoice {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @ApiModelProperty(value = "The id of invoice.", example = "'1234'", position = -1)
+  @ApiModelProperty(value = "The id of invoice.", example = "1234", dataType = "Long", position = -1)
   private Long id;
 
   @ApiModelProperty(value = "Invoice number", example = "FV/1234a")

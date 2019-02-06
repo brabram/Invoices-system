@@ -14,7 +14,7 @@ public class ContactDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @ApiModelProperty(value = "The id of contact details.", position = -1)
+  @ApiModelProperty(value = "The id of contact details.", dataType = "Long", position = -1)
   private Long id;
 
   @ApiModelProperty(value = "Email address", example = "poczta@onet.pl")

@@ -13,7 +13,7 @@ public class InvoiceEntry {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @ApiModelProperty(value = "The id of invoice entry.", position = -1)
+  @ApiModelProperty(value = "The id of invoice entry.", dataType = "Long", position = -1)
   private Long id;
 
   @ApiModelProperty(value = "Name of the item", example = "10w40 Castrol engine oil")

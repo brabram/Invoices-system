@@ -12,7 +12,7 @@ public class Address {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @ApiModelProperty(value = "The id of address.", position = -1)
+  @ApiModelProperty(value = "The id of address.", dataType = "Long", position = -1)
   private Long id;
 
   @ApiModelProperty(value = "Street name", example = "Warszawska")
