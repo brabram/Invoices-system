@@ -199,7 +199,8 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber", urlAddressTemplate))
+            .param("number", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -223,7 +224,8 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber", urlAddressTemplate))
+            .param("number", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -245,7 +247,8 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber", urlAddressTemplate))
+            .param("number", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -267,7 +270,8 @@ class InvoiceControllerTest {
 
     //When
     MvcResult result = mockMvc
-        .perform(get(String.format("%s/byNumber/number=%s", urlAddressTemplate, number))
+        .perform(get(String.format("%s/byNumber", urlAddressTemplate))
+            .param("number", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -515,8 +519,9 @@ class InvoiceControllerTest {
   @Test
   void shouldRemoveInvoice() throws Exception {
     //Given
-    Long id = 1L;
-    when(invoiceService.invoiceExistsById(id)).thenReturn(true);
+    Invoice invoice = InvoiceGenerator.getRandomInvoice();
+    Long id = invoice.getId();
+    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.of(invoice));
     doNothing().when(invoiceService).deleteInvoiceById(id);
 
     //When
@@ -528,7 +533,7 @@ class InvoiceControllerTest {
 
     //Then
     assertEquals(HttpStatus.OK.value(), actualHttpStatus);
-    verify(invoiceService).invoiceExistsById(id);
+    verify(invoiceService).getInvoiceById(id);
     verify(invoiceService).deleteInvoiceById(id);
   }
 
@@ -536,7 +541,7 @@ class InvoiceControllerTest {
   void shouldReturnNotFoundStatusDuringRemovingNonExistingInvoice() throws Exception {
     //Given
     Long id = 1L;
-    when(invoiceService.invoiceExistsById(id)).thenReturn(false);
+    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
     ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice with %d id does not exist.", id));
 
     //When
@@ -551,7 +556,7 @@ class InvoiceControllerTest {
     assertEquals(HttpStatus.NOT_FOUND.value(), actualHttpStatus);
     assertNotNull(actualResponse);
     assertEquals(expectedResponse, actualResponse);
-    verify(invoiceService).invoiceExistsById(id);
+    verify(invoiceService).getInvoiceById(id);
     verify(invoiceService, never()).deleteInvoiceById(id);
   }
 
@@ -559,7 +564,7 @@ class InvoiceControllerTest {
   void shouldReturnInternalServerErrorStatusDuringRemovingInvoiceWhenSomethingWentWrongOnServer() throws Exception {
     //Given
     Long id = 1L;
-    doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
+    doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
     ErrorMessage expectedResponse = new ErrorMessage("Internal server error while removing invoice.");
 
     //When
@@ -574,7 +579,7 @@ class InvoiceControllerTest {
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), actualHttpStatus);
     assertNotNull(actualResponse);
     assertEquals(expectedResponse, actualResponse);
-    verify(invoiceService).invoiceExistsById(id);
+    verify(invoiceService).getInvoiceById(id);
     verify(invoiceService, never()).deleteInvoiceById(id);
   }
 }
