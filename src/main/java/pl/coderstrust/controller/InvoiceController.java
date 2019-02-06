@@ -86,7 +86,7 @@ public class InvoiceController {
     }
   }
 
-  @GetMapping("/byNumber={number}")
+  @GetMapping("/byNumber")
   @ApiOperation(
       value = "Get invoice by number.",
       response = Invoice.class)
@@ -122,7 +122,7 @@ public class InvoiceController {
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Created", response = Invoice.class),
       @ApiResponse(code = 400, message = "Passed invoice is invalid", response = ErrorMessage.class),
-      @ApiResponse(code = 409, message = "Conflict", response = ErrorMessage.class),
+      @ApiResponse(code = 409, message = "Invoice already exists", response = ErrorMessage.class),
       @ApiResponse(code = 500, message = "Internal server error.", response = ErrorMessage.class)})
   public ResponseEntity<?> add(@RequestBody(required = false) Invoice invoice) {
     try {
@@ -188,7 +188,8 @@ public class InvoiceController {
       @ApiResponse(code = 500, message = "Internal server error.", response = ErrorMessage.class)})
   public ResponseEntity<?> remove(@PathVariable("id") Long id) {
     try {
-      if (!invoiceService.invoiceExistsById(id)) {
+      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
+      if (!optionalInvoice.isPresent()) {
         return new ResponseEntity<>(new ErrorMessage(String.format("Invoice with %d id does not exist.", id)), HttpStatus.NOT_FOUND);
       }
       invoiceService.deleteInvoiceById(id);
