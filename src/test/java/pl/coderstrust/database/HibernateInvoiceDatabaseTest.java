@@ -165,28 +165,13 @@ class HibernateInvoiceDatabaseTest {
   }
 
   @Test
-  void findByIdMethodShouldThrowExceptionWhenIdIsLessThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.findById(-1L));
-  }
-
-  @Test
   void existByIdMethodShouldThrowExceptionWhenIdIsNull() {
     assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.existsById(null));
   }
 
   @Test
-  void existByIdMethodShouldThrowExceptionWhenIdIsLessThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.existsById(-1L));
-  }
-
-  @Test
   void deleteByIdMethodShouldThrowExceptionWhenIdIsNull() {
     assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.deleteById(null));
-  }
-
-  @Test
-  void deleteByIdMethodShouldThrowExceptionWhenIdIsLessThanZero() {
-    assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.deleteById(-1L));
   }
 
   @Test
