@@ -41,9 +41,6 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
       }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be lower than zero");
-      }
       return Optional.ofNullable(invoices.get(id));
     }
   }
@@ -53,9 +50,6 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
-      }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be lower than zero");
       }
       return isInvoiceExist(id);
     }
@@ -80,9 +74,6 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
     synchronized (lock) {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
-      }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be lower than zero");
       }
       if (!isInvoiceExist(id)) {
         throw new DatabaseOperationException("Invoice does not exist");
