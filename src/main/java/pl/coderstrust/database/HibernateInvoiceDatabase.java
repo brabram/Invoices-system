@@ -35,9 +35,6 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
     }
-    if (id < 0) {
-      throw new IllegalArgumentException("Id cannot be less than 0");
-    }
     try {
       return hibernateInvoiceRepository.findById(id);
     } catch (NoSuchElementException e) {
@@ -49,9 +46,6 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   public boolean existsById(Long id) throws DatabaseOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
-    }
-    if (id < 0) {
-      throw new IllegalArgumentException("Id cannot be less than 0");
     }
     try {
       return hibernateInvoiceRepository.existsById(id);
@@ -82,9 +76,6 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   public void deleteById(Long id) throws DatabaseOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
-    }
-    if (id < 0) {
-      throw new IllegalArgumentException("Id cannot be less than 0");
     }
     try {
       hibernateInvoiceRepository.deleteById(id);
