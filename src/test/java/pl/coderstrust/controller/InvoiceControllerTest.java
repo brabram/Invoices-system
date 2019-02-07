@@ -15,14 +15,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +32,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.coderstrust.generators.InvoiceGenerator;
+import pl.coderstrust.helpers.ObjectMapperProvider;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
 import pl.coderstrust.service.ServiceOperationException;
@@ -45,19 +43,13 @@ import pl.coderstrust.service.ServiceOperationException;
 class InvoiceControllerTest {
 
   private final String urlAddressTemplate = "/invoices";
-  private ObjectMapper mapper = new ObjectMapper();
+  private ObjectMapper mapper = new ObjectMapperProvider().connfigureObjectMapper();
 
   @Autowired
   private MockMvc mockMvc;
 
   @MockBean
   private InvoiceService invoiceService;
-
-  @BeforeEach
-  void objectMapperConfiguration() {
-    mapper.registerModule(new JavaTimeModule());
-    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-  }
 
   @Test
   void shouldReturnAllInvoices() throws Exception {
