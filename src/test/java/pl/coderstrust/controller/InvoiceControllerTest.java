@@ -43,8 +43,6 @@ import pl.coderstrust.service.ServiceOperationException;
 class InvoiceControllerTest {
 
   private final String urlAddressTemplate = "/invoices";
-
-  @Autowired
   private ObjectMapper mapper = ApplicationConfiguration.getObjectMapper();
 
   @Autowired
