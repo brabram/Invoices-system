@@ -1,8 +1,5 @@
 package pl.coderstrust.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -40,10 +37,7 @@ public class InvoiceController {
   @Autowired
   public InvoiceController(InvoiceService invoiceService) {
     this.invoiceService = invoiceService;
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new JavaTimeModule());
-    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-  }
+}
 
   @GetMapping
   @ApiOperation(
