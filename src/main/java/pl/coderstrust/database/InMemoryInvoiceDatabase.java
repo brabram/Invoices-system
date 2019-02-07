@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
-
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.model.Invoice;
 
+@ConditionalOnProperty(name = "database", havingValue = "inMemoryInvoiceDatabase")
 @Repository
 public class InMemoryInvoiceDatabase implements InvoiceDatabase {
 
