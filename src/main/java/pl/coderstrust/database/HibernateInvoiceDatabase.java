@@ -10,7 +10,7 @@ import org.springframework.dao.NonTransientDataAccessException;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.model.Invoice;
 
-@ConditionalOnProperty(name = "database", havingValue = "hibernateInvoiceDatabase")
+@ConditionalOnProperty(name = "pl.coderstrust.database", havingValue = "hibernate")
 @Repository
 public class HibernateInvoiceDatabase implements InvoiceDatabase {
 

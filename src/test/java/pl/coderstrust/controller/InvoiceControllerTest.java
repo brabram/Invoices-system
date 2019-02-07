@@ -32,7 +32,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.coderstrust.generators.InvoiceGenerator;
-import pl.coderstrust.helpers.ObjectMapperProvider;
+import pl.coderstrust.configuration.ApplicationConfiguration;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.InvoiceService;
 import pl.coderstrust.service.ServiceOperationException;
@@ -43,7 +43,9 @@ import pl.coderstrust.service.ServiceOperationException;
 class InvoiceControllerTest {
 
   private final String urlAddressTemplate = "/invoices";
-  private ObjectMapper mapper = new ObjectMapperProvider().connfigureObjectMapper();
+
+  @Autowired
+  private ObjectMapper mapper = ApplicationConfiguration.getObjectMapper();
 
   @Autowired
   private MockMvc mockMvc;

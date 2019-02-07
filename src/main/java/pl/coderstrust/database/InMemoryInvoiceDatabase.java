@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.model.Invoice;
 
-@ConditionalOnProperty(name = "database", havingValue = "inMemoryInvoiceDatabase")
+@ConditionalOnProperty(name = "pl.coderstrust.database", havingValue = "in-memory")
 @Repository
 public class InMemoryInvoiceDatabase implements InvoiceDatabase {
 
