@@ -22,6 +22,8 @@ import pl.coderstrust.database.DatabaseOperationException;
 import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.service.InvoiceService;
+import pl.coderstrust.service.ServiceOperationException;
 
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {
