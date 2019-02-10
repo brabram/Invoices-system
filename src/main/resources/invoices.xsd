@@ -6,12 +6,12 @@
   <xs:element name="getAllInvoicesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="allInvoices" type="tns:invoice" maxOccurs="unbounded"/>
+        <xs:element name="invoicesList" type="tns:invoice" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="getInvoicesRequest">
+  <xs:element name="getInvoiceByIdRequest">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="id" type="xs:long"/>
@@ -19,7 +19,23 @@
     </xs:complexType>
   </xs:element>
 
-  <xs:element name="getInvoicesResponse">
+  <xs:element name="getInvoiceByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="invoice" type="tns:invoice"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getInvoiceByNumberRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="number" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="getInvoiceByNumberResponse">
     <xs:complexType>
       <xs:sequence>
         <xs:element name="invoice" type="tns:invoice"/>
