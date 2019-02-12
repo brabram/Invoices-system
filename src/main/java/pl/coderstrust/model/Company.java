@@ -103,7 +103,7 @@ public class Company {
 
   @Override
   public String toString() {
-    return String.format("id: %s, name: %s, taxIdentificationNumber: %s, accountNumber: %s, contactDetails: %s",
+    return String.format("id: %d, name: %s, taxIdentificationNumber: %s, accountNumber: %s, contactDetails: %s",
         id, name, taxIdentificationNumber, accountNumber, contactDetails);
   }
 }

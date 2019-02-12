@@ -103,7 +103,7 @@ public class ContactDetails {
 
   @Override
   public String toString() {
-    return String.format("id: %s, email: %s, phoneNumber: %s, website: %s, address: %s",
-        email, phoneNumber, website, address);
+    return String.format("id: %d, email: %s, phoneNumber: %s, website: %s, address: %s",
+        id, email, phoneNumber, website, address);
   }
 }
