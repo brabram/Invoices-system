@@ -39,7 +39,7 @@ public class InvoiceToXmlConverter {
     invoiceXml.setDueDate(convertLocalDateToXml(invoice.getDueDate()));
     invoiceXml.setIssueDate(convertLocalDateToXml(invoice.getIssueDate()));
     invoiceXml.setTotalNetValue(invoice.getTotalNetValue());
-    invoiceXml.setTotalGrossValue(invoiceXml.getTotalGrossValue());
+    invoiceXml.setTotalGrossValue(invoice.getTotalGrossValue());
     invoiceXml.setSeller(convertCompanyToXml(invoice.getSeller()));
     invoiceXml.setBuyer(convertCompanyToXml(invoice.getBuyer()));
     invoiceXml.setEntries(convertEntriesToXml(invoice.getEntries()));
@@ -72,7 +72,7 @@ public class InvoiceToXmlConverter {
 
   }
 
-  public CompanyXml convertCompanyToXml(Company company) {
+  private CompanyXml convertCompanyToXml(Company company) {
     CompanyXml companyXml = objectFactory.createCompanyXml();
     companyXml.setId(company.getId());
     companyXml.setName(company.getName());
@@ -82,7 +82,7 @@ public class InvoiceToXmlConverter {
     return companyXml;
   }
 
-  public AccountNumberXml convertAccountNumberToXml(AccountNumber accountNumber) {
+  private AccountNumberXml convertAccountNumberToXml(AccountNumber accountNumber) {
     AccountNumberXml accountNumberXml = objectFactory.createAccountNumberXml();
     accountNumberXml.setId(accountNumber.getId());
     accountNumberXml.setIbanNumber(accountNumber.getIbanNumber());
@@ -90,7 +90,7 @@ public class InvoiceToXmlConverter {
     return accountNumberXml;
   }
 
-  public ContactDetailsXml convertContactDetailsToXml(ContactDetails contactDetails) {
+  private ContactDetailsXml convertContactDetailsToXml(ContactDetails contactDetails) {
     ContactDetailsXml contactDetailsXml = objectFactory.createContactDetailsXml();
     contactDetailsXml.setId(contactDetails.getId());
     contactDetailsXml.setAddress(convertAddressToXml(contactDetails.getAddress()));
