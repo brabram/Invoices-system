@@ -1,3 +1,5 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://spring.io/guides/gs-producing-web-service"
   targetNamespace="http://spring.io/guides/gs-producing-web-service" elementFormDefault="qualified">
 
@@ -6,7 +8,7 @@
   <xs:element name="getAllInvoicesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoicesList" type="tns:invoice" maxOccurs="unbounded"/>
+        <xs:element name="invoicesList" type="tns:invoiceXml" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -22,7 +24,7 @@
   <xs:element name="getInvoiceByIdResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="invoice" type="tns:invoiceXml"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -38,7 +40,7 @@
   <xs:element name="getInvoiceByNumberResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="invoice" type="tns:invoiceXml"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -46,7 +48,7 @@
   <xs:element name="addInvoiceRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="invoice" type="tns:invoiceXml"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -54,7 +56,7 @@
   <xs:element name="addInvoiceResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="invoice" type="tns:invoiceXml"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -63,7 +65,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element name="id" type="xs:long"/>
-        <xs:element name="invoice" type="tns:invoice"/>
+        <xs:element name="invoice" type="tns:invoiceXml"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -80,7 +82,7 @@
 
   <xs:element name="deleteInvoiceResponse"/>
 
-  <xs:complexType name="invoice">
+  <xs:complexType name="invoiceXml">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="number" type="xs:string"/>
@@ -88,13 +90,13 @@
       <xs:element name="dueDate" type="xs:date"/>
       <xs:element name="totalNetValue" type="xs:decimal"/>
       <xs:element name="totalGrossValue" type="xs:decimal"/>
-      <xs:element name="seller" type="tns:company"/>
-      <xs:element name="buyer" type="tns:company"/>
-      <xs:element name="entries" type="tns:invoice" maxOccurs="unbounded"/>
+      <xs:element name="seller" type="tns:companyXml"/>
+      <xs:element name="buyer" type="tns:companyXml"/>
+      <xs:element name="entries" type="tns:invoiceEntryXml" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="invoiceEntry">
+  <xs:complexType name="invoiceEntryXml">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="item" type="xs:string"/>
@@ -102,31 +104,31 @@
       <xs:element name="price" type="xs:decimal"/>
       <xs:element name="vatValue" type="xs:decimal"/>
       <xs:element name="grossValue" type="xs:decimal"/>
-      <xs:element name="vatRate" type="tns:vat"/>
+      <xs:element name="vatRate" type="tns:vatXml"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="company">
+  <xs:complexType name="companyXml">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="name" type="xs:string"/>
       <xs:element name="taxIdentificationNumber" type="xs:string"/>
-      <xs:element name="accountNumber" type="tns:accountNumber"/>
-      <xs:element name="contactDetails" type="tns:contactDetails"/>
+      <xs:element name="accountNumber" type="tns:accountNumberXml"/>
+      <xs:element name="contactDetails" type="tns:contactDetailsXml"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="contactDetails">
+  <xs:complexType name="contactDetailsXml">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="email" type="xs:string"/>
       <xs:element name="phoneNumber" type="xs:string"/>
       <xs:element name="website" type="xs:string"/>
-      <xs:element name="address" type="tns:address"/>
+      <xs:element name="address" type="tns:addressXml"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="address">
+  <xs:complexType name="addressXml">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="street" type="xs:string"/>
@@ -137,7 +139,7 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="accountNumber">
+  <xs:complexType name="accountNumberXml">
     <xs:sequence>
       <xs:element name="id" type="xs:long"/>
       <xs:element name="ibanNumber" type="xs:string"/>
@@ -145,7 +147,16 @@
     </xs:sequence>
   </xs:complexType>
 
-  <xs:simpleType name="vat">
+  <!--<xs:simpleType name="vatXml">-->
+    <!--<xs:restriction base="xs:float">-->
+      <!--<xs:enumeration value="0.00f" id="VAT_0"/>-->
+      <!--<xs:enumeration value="0.05f" id="VAT_5"/>-->
+      <!--<xs:enumeration value="0.08f" id="VAT_8"/>-->
+      <!--<xs:enumeration value="0.23f" id="VAT_23"/>-->
+    <!--</xs:restriction>-->
+  <!--</xs:simpleType>-->
+
+  <xs:simpleType name="vatXml">
     <xs:restriction base="xs:string">
       <xs:enumeration value="VAT_0"/>
       <xs:enumeration value="VAT_5"/>
@@ -154,3 +165,4 @@
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
+
