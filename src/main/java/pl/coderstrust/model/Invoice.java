@@ -160,7 +160,7 @@ public class Invoice {
 
   @Override
   public String toString() {
-    return String.format("id: %d, number: %s, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
+    return String.format("id: %s, number: %s, issueDate: %s, dueDate: %s, seller: %s, buyer: %s, entries: %s, totalNetValue: %s, totalGrossValue: %s",
         id, number, issueDate, dueDate, seller, buyer, entries, totalNetValue, totalGrossValue);
   }
 }

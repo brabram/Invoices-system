@@ -75,6 +75,6 @@ public class AccountNumber {
 
   @Override
   public String toString() {
-    return String.format("id: %d, ibanNumber: %s, localNumber: %s", id, ibanNumber, localNumber);
+    return String.format("id: %s, ibanNumber: %s, localNumber: %s", id, ibanNumber, localNumber);
   }
 }

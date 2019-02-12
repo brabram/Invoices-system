@@ -55,4 +55,9 @@ public class ErrorMessage {
   public int hashCode() {
     return Objects.hash(message, details);
   }
+
+  @Override
+  public String toString() {
+    return String.format("message : %s, details : %s", message, details);
+  }
 }
