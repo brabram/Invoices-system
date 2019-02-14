@@ -1,13 +1,5 @@
-package pl.coderstrust.soap;
+package pl.coderstrust.service.soap;
 
-import io.spring.guides.gs_producing_web_service.AccountNumberXml;
-import io.spring.guides.gs_producing_web_service.AddressXml;
-import io.spring.guides.gs_producing_web_service.CompanyXml;
-import io.spring.guides.gs_producing_web_service.ContactDetailsXml;
-import io.spring.guides.gs_producing_web_service.InvoiceEntryXml;
-import io.spring.guides.gs_producing_web_service.InvoiceXml;
-import io.spring.guides.gs_producing_web_service.ObjectFactory;
-import io.spring.guides.gs_producing_web_service.VatXml;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -24,16 +16,17 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
 
+
 public class InvoiceToXmlConverter {
 
-  private ObjectFactory objectFactory;
+  private static pl.coderstrust.service.soap.domainclasses.ObjectFactory objectFactory;
 
-  public InvoiceToXmlConverter(ObjectFactory objectFactory) {
-    this.objectFactory = objectFactory;
+  public InvoiceToXmlConverter(pl.coderstrust.service.soap.domainclasses.ObjectFactory objectFactory) {
+    InvoiceToXmlConverter.objectFactory = objectFactory;
   }
 
-  public InvoiceXml convertInvoiceToXml(Invoice invoice) throws DatatypeConfigurationException {
-    InvoiceXml invoiceXml = objectFactory.createInvoiceXml();
+  public static pl.coderstrust.service.soap.domainclasses.Invoice convertInvoiceToXml(Invoice invoice) throws DatatypeConfigurationException {
+    pl.coderstrust.service.soap.domainclasses.Invoice invoiceXml = objectFactory.createInvoice();
     invoiceXml.setId(invoice.getId());
     invoiceXml.setNumber(invoice.getNumber());
     invoiceXml.setDueDate(convertLocalDateToXml(invoice.getDueDate()));
@@ -46,14 +39,14 @@ public class InvoiceToXmlConverter {
     return invoiceXml;
   }
 
-  private XMLGregorianCalendar convertLocalDateToXml(LocalDate localDate) throws DatatypeConfigurationException {
+  private static XMLGregorianCalendar convertLocalDateToXml(LocalDate localDate) throws DatatypeConfigurationException {
     GregorianCalendar dateXml = GregorianCalendar.from(localDate.atStartOfDay(ZoneId.systemDefault()));
     return DatatypeFactory.newInstance().newXMLGregorianCalendar(dateXml);
   }
 
-  private List<InvoiceEntryXml> convertEntriesToXml(List<InvoiceEntry> entries) {
-    InvoiceEntryXml invoiceEntryXml = objectFactory.createInvoiceEntryXml();
-    List<InvoiceEntryXml> entriesXml = new ArrayList<>();
+  private static List<pl.coderstrust.service.soap.domainclasses.InvoiceEntry> convertEntriesToXml(List<InvoiceEntry> entries) {
+    pl.coderstrust.service.soap.domainclasses.InvoiceEntry invoiceEntryXml = objectFactory.createInvoiceEntry();
+    List<pl.coderstrust.service.soap.domainclasses.InvoiceEntry> entriesXml = new ArrayList<>();
     for (InvoiceEntry invoiceEntry : entries) {
       invoiceEntryXml.setId(invoiceEntry.getId());
       invoiceEntryXml.setItem(invoiceEntry.getItem());
@@ -67,13 +60,13 @@ public class InvoiceToXmlConverter {
     return entriesXml;
   }
 
-  private VatXml convertVatRateToXml(Vat vatRate) {
-    return VatXml.fromValue(String.valueOf(vatRate.getValue()));
+  private static pl.coderstrust.service.soap.domainclasses.Vat convertVatRateToXml(Vat vatRate) {
+    return pl.coderstrust.service.soap.domainclasses.Vat.fromValue(vatRate.toString());
 
   }
 
-  private CompanyXml convertCompanyToXml(Company company) {
-    CompanyXml companyXml = objectFactory.createCompanyXml();
+  private static pl.coderstrust.service.soap.domainclasses.Company convertCompanyToXml(Company company) {
+    pl.coderstrust.service.soap.domainclasses.Company companyXml = objectFactory.createCompany();
     companyXml.setId(company.getId());
     companyXml.setName(company.getName());
     companyXml.setTaxIdentificationNumber(company.getTaxIdentificationNumber());
@@ -82,16 +75,16 @@ public class InvoiceToXmlConverter {
     return companyXml;
   }
 
-  private AccountNumberXml convertAccountNumberToXml(AccountNumber accountNumber) {
-    AccountNumberXml accountNumberXml = objectFactory.createAccountNumberXml();
+  private static pl.coderstrust.service.soap.domainclasses.AccountNumber convertAccountNumberToXml(AccountNumber accountNumber) {
+    pl.coderstrust.service.soap.domainclasses.AccountNumber accountNumberXml = objectFactory.createAccountNumber();
     accountNumberXml.setId(accountNumber.getId());
     accountNumberXml.setIbanNumber(accountNumber.getIbanNumber());
     accountNumberXml.setLocalNumber(accountNumber.getLocalNumber());
     return accountNumberXml;
   }
 
-  private ContactDetailsXml convertContactDetailsToXml(ContactDetails contactDetails) {
-    ContactDetailsXml contactDetailsXml = objectFactory.createContactDetailsXml();
+  private static pl.coderstrust.service.soap.domainclasses.ContactDetails convertContactDetailsToXml(ContactDetails contactDetails) {
+    pl.coderstrust.service.soap.domainclasses.ContactDetails contactDetailsXml = objectFactory.createContactDetails();
     contactDetailsXml.setId(contactDetails.getId());
     contactDetailsXml.setAddress(convertAddressToXml(contactDetails.getAddress()));
     contactDetailsXml.setEmail(contactDetails.getEmail());
@@ -100,8 +93,8 @@ public class InvoiceToXmlConverter {
     return contactDetailsXml;
   }
 
-  private AddressXml convertAddressToXml(Address address) {
-    AddressXml addressXml = objectFactory.createAddressXml();
+  private static pl.coderstrust.service.soap.domainclasses.Address convertAddressToXml(Address address) {
+    pl.coderstrust.service.soap.domainclasses.Address addressXml = objectFactory.createAddress();
     addressXml.setId(address.getId());
     addressXml.setStreet(address.getStreet());
     addressXml.setNumber(address.getNumber());
