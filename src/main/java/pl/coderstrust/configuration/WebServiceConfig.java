@@ -1,4 +1,4 @@
-package pl.coderstrust.soap;
+package pl.coderstrust.configuration;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
@@ -21,21 +21,21 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     MessageDispatcherServlet servlet = new MessageDispatcherServlet();
     servlet.setApplicationContext(applicationContext);
     servlet.setTransformWsdlLocations(true);
-    return new ServletRegistrationBean(servlet, "/inoices/*");
+    return new ServletRegistrationBean(servlet, "/soap/invoices/*");
   }
 
   @Bean(name = "invoices")
-  public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema countriesSchema) {
+  public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema invoicesSchema) {
     DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
     wsdl11Definition.setPortTypeName("InvoicesPort");
-    wsdl11Definition.setLocationUri("/invoices");
-    wsdl11Definition.setTargetNamespace("http://spring.io/guides/gs-producing-web-service");
-    wsdl11Definition.setSchema(countriesSchema);
+    wsdl11Definition.setLocationUri("/soap/invoices");
+    wsdl11Definition.setTargetNamespace("https://github.com/CodersTrustPL/project-8-basia-daniel-maksym");
+    wsdl11Definition.setSchema(invoicesSchema);
     return wsdl11Definition;
   }
 
   @Bean
   public XsdSchema invoicesSchema() {
-    return new SimpleXsdSchema(new ClassPathResource("src/main/invoices.xsd"));
+    return new SimpleXsdSchema(new ClassPathResource("invoicesSchema.xsd"));
   }
 }
