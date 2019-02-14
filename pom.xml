@@ -370,6 +370,24 @@
         <configuration>
           <mainClass>pl.coderstrust.Application</mainClass>
         </configuration>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <version>0.14.0</version>
+        <configuration>
+          <accessExternalSchema>all</accessExternalSchema>
+          <schemaDirectory>src/main/resources/</schemaDirectory>
+          <generatePackage>pl.coderstrust.service.soap.domainclasses</generatePackage>
+          <removeOldOutput>true</removeOldOutput>
+          <cleanPackageDirectories>true</cleanPackageDirectories>
+          <forceRegenerate>true</forceRegenerate>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
