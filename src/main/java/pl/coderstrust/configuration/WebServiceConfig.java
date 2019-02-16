@@ -29,7 +29,7 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
     wsdl11Definition.setPortTypeName("InvoicesPort");
     wsdl11Definition.setLocationUri("/soap/invoices");
-    wsdl11Definition.setTargetNamespace("https://github.com/CodersTrustPL/project-8-basia-daniel-maksym");
+    wsdl11Definition.setTargetNamespace("http://soap-invoice-service");
     wsdl11Definition.setSchema(invoicesSchema);
     return wsdl11Definition;
   }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="https://github.com/CodersTrustPL/project-8-basia-daniel-maksym"
-  targetNamespace="https://github.com/CodersTrustPL/project-8-basia-daniel-maksym" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://soap-invoice-service"
+  targetNamespace="http://soap-invoice-service" elementFormDefault="qualified">
 
   <xs:element name="getAllInvoicesRequest">
     <xs:complexType>

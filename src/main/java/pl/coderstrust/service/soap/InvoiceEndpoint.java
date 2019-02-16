@@ -20,7 +20,7 @@ import pl.coderstrust.service.soap.domainclasses.AddInvoiceResponse;
 @Endpoint
 public class InvoiceEndpoint {
 
-  private static final String NAMESPACE_URI = "https://github.com/CodersTrustPL/project-8-basia-daniel-maksym";
+  private static final String NAMESPACE_URI = "http://soap-invoice-service";
   private InvoiceService invoiceService;
 
   @Autowired
@@ -58,10 +58,36 @@ public class InvoiceEndpoint {
   @ResponsePayload
   public pl.coderstrust.service.soap.domainclasses.AddInvoiceResponse addInvoice(@RequestPayload pl.coderstrust.service.soap.domainclasses.AddInvoiceRequest request) throws ServiceOperationException, DatatypeConfigurationException {
     pl.coderstrust.service.soap.domainclasses.AddInvoiceResponse response = new AddInvoiceResponse();
-    Optional<Invoice> optionalInvoice = invoiceService.addInvoice(convertInvoiceFromXml(request.getInvoice()));
+    Invoice invoice = convertInvoiceFromXml(request.getInvoice());
+    Optional<Invoice> optionalInvoice = invoiceService.addInvoice(invoice);
     if (optionalInvoice.isPresent()) {
       response.setInvoice(convertInvoiceToXml(optionalInvoice.get()));
     }
     return response;
   }
+
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateInvoiceRequest")
+  @ResponsePayload
+  public pl.coderstrust.service.soap.domainclasses.UpdateInvoiceResponse updateInvoice(@RequestPayload pl.coderstrust.service.soap.domainclasses.UpdateInvoiceRequest request) throws ServiceOperationException, DatatypeConfigurationException {
+    pl.coderstrust.service.soap.domainclasses.UpdateInvoiceResponse response = new pl.coderstrust.service.soap.domainclasses.UpdateInvoiceResponse();
+    invoiceService.updateInvoice(convertInvoiceFromXml(request.getInvoice()));
+    Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(request.getId());
+    if (optionalInvoice.isPresent()) {
+      response.setInvoice(convertInvoiceToXml(optionalInvoice.get()));
+    }
+    return response;
+  }
+
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "deleteInvoiceRequest")
+  @ResponsePayload
+  public pl.coderstrust.service.soap.domainclasses.DeleteInvoiceResponse deleteInvoice(@RequestPayload pl.coderstrust.service.soap.domainclasses.DeleteInvoiceRequest request) throws ServiceOperationException, DatatypeConfigurationException {
+    pl.coderstrust.service.soap.domainclasses.DeleteInvoiceResponse response = new pl.coderstrust.service.soap.domainclasses.DeleteInvoiceResponse();
+    invoiceService.deleteInvoiceById(request.getId());
+    Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(request.getId());
+    if (!optionalInvoice.isPresent()) {
+      response.setStatusMessage(String.format("Invoice with %d id removed", request.getId()));
+    }
+    return response;
+  }
+
 }
