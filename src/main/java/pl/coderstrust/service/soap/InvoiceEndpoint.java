@@ -54,6 +54,23 @@ public class InvoiceEndpoint {
     return response;
   }
 
+  @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getInvoiceByNumberRequest")
+  @ResponsePayload
+  public pl.coderstrust.service.soap.domainclasses.GetInvoiceByNumberResponse getInvoiceByNumber(@RequestPayload pl.coderstrust.service.soap.domainclasses.GetInvoiceByNumberRequest request) throws ServiceOperationException, DatatypeConfigurationException {
+    pl.coderstrust.service.soap.domainclasses.GetInvoiceByNumberResponse response = new pl.coderstrust.service.soap.domainclasses.GetInvoiceByNumberResponse();
+    Optional<List<Invoice>> optionalInvoicesList = invoiceService.getAllInvoices();
+    if (optionalInvoicesList.isPresent()) {
+      Optional<Invoice> optionalInvoice = optionalInvoicesList.get()
+          .stream()
+          .filter(invoiceToGet -> invoiceToGet.getNumber().equals(request.getNumber()))
+          .findFirst();
+      if (optionalInvoice.isPresent()) {
+        response.setInvoice(convertInvoiceToXml(optionalInvoice.get()));
+      }
+    }
+    return response;
+  }
+
   @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addInvoiceRequest")
   @ResponsePayload
   public pl.coderstrust.service.soap.domainclasses.AddInvoiceResponse addInvoice(@RequestPayload pl.coderstrust.service.soap.domainclasses.AddInvoiceRequest request) throws ServiceOperationException, DatatypeConfigurationException {
