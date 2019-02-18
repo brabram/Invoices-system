@@ -26,7 +26,7 @@ public class InvoiceToXmlConverter {
   }
 
   public static pl.coderstrust.service.soap.domainclasses.Invoice convertInvoiceToXml(Invoice invoice) throws DatatypeConfigurationException {
-    pl.coderstrust.service.soap.domainclasses.Invoice invoiceXml = objectFactory.createInvoice();
+    pl.coderstrust.service.soap.domainclasses.Invoice invoiceXml = new pl.coderstrust.service.soap.domainclasses.Invoice();
     invoiceXml.setId(invoice.getId());
     invoiceXml.setNumber(invoice.getNumber());
     invoiceXml.setDueDate(convertLocalDateToXml(invoice.getDueDate()));
@@ -45,7 +45,7 @@ public class InvoiceToXmlConverter {
   }
 
   private static List<pl.coderstrust.service.soap.domainclasses.InvoiceEntry> convertEntriesToXml(List<InvoiceEntry> entries) {
-    pl.coderstrust.service.soap.domainclasses.InvoiceEntry invoiceEntryXml = objectFactory.createInvoiceEntry();
+    pl.coderstrust.service.soap.domainclasses.InvoiceEntry invoiceEntryXml = new pl.coderstrust.service.soap.domainclasses.InvoiceEntry();
     List<pl.coderstrust.service.soap.domainclasses.InvoiceEntry> entriesXml = new ArrayList<>();
     for (InvoiceEntry invoiceEntry : entries) {
       invoiceEntryXml.setId(invoiceEntry.getId());
@@ -66,7 +66,7 @@ public class InvoiceToXmlConverter {
   }
 
   private static pl.coderstrust.service.soap.domainclasses.Company convertCompanyToXml(Company company) {
-    pl.coderstrust.service.soap.domainclasses.Company companyXml = objectFactory.createCompany();
+    pl.coderstrust.service.soap.domainclasses.Company companyXml = new pl.coderstrust.service.soap.domainclasses.Company();
     companyXml.setId(company.getId());
     companyXml.setName(company.getName());
     companyXml.setTaxIdentificationNumber(company.getTaxIdentificationNumber());
@@ -76,7 +76,7 @@ public class InvoiceToXmlConverter {
   }
 
   private static pl.coderstrust.service.soap.domainclasses.AccountNumber convertAccountNumberToXml(AccountNumber accountNumber) {
-    pl.coderstrust.service.soap.domainclasses.AccountNumber accountNumberXml = objectFactory.createAccountNumber();
+    pl.coderstrust.service.soap.domainclasses.AccountNumber accountNumberXml = new pl.coderstrust.service.soap.domainclasses.AccountNumber();
     accountNumberXml.setId(accountNumber.getId());
     accountNumberXml.setIbanNumber(accountNumber.getIbanNumber());
     accountNumberXml.setLocalNumber(accountNumber.getLocalNumber());
@@ -84,7 +84,7 @@ public class InvoiceToXmlConverter {
   }
 
   private static pl.coderstrust.service.soap.domainclasses.ContactDetails convertContactDetailsToXml(ContactDetails contactDetails) {
-    pl.coderstrust.service.soap.domainclasses.ContactDetails contactDetailsXml = objectFactory.createContactDetails();
+    pl.coderstrust.service.soap.domainclasses.ContactDetails contactDetailsXml = new pl.coderstrust.service.soap.domainclasses.ContactDetails();
     contactDetailsXml.setId(contactDetails.getId());
     contactDetailsXml.setAddress(convertAddressToXml(contactDetails.getAddress()));
     contactDetailsXml.setEmail(contactDetails.getEmail());
@@ -94,7 +94,7 @@ public class InvoiceToXmlConverter {
   }
 
   private static pl.coderstrust.service.soap.domainclasses.Address convertAddressToXml(Address address) {
-    pl.coderstrust.service.soap.domainclasses.Address addressXml = objectFactory.createAddress();
+    pl.coderstrust.service.soap.domainclasses.Address addressXml = new pl.coderstrust.service.soap.domainclasses.Address();
     addressXml.setId(address.getId());
     addressXml.setStreet(address.getStreet());
     addressXml.setNumber(address.getNumber());
