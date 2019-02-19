@@ -381,7 +381,7 @@
         <configuration>
           <accessExternalSchema>all</accessExternalSchema>
           <schemaDirectory>src/main/resources/</schemaDirectory>
-          <generatePackage>pl.coderstrust.service.soap.domainclasses</generatePackage>
+          <generatePackage>pl.coderstrust.soap.domainclasses</generatePackage>
           <removeOldOutput>true</removeOldOutput>
           <cleanPackageDirectories>true</cleanPackageDirectories>
           <forceRegenerate>true</forceRegenerate>
