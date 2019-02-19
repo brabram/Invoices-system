@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,11 +26,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.validators.InvoiceValidator;
+import pl.coderstrust.pdfsevice.PdfService;
 import pl.coderstrust.service.InvoiceService;
 
 @Api(value = "/invoices", description = "Available operations for invoice application", tags = {"Invoices"})
@@ -38,10 +41,12 @@ import pl.coderstrust.service.InvoiceService;
 public class InvoiceController {
   private static Logger log = LoggerFactory.getLogger(InvoiceController.class);
   private InvoiceService invoiceService;
+  private PdfService pdfService;
 
   @Autowired
-  public InvoiceController(InvoiceService invoiceService) {
+  public InvoiceController(InvoiceService invoiceService, PdfService pdfService) {
     this.invoiceService = invoiceService;
+    this.pdfService = pdfService;
   }
 
   @GetMapping
@@ -210,6 +215,30 @@ public class InvoiceController {
       String message = String.format("Internal server error while removing invoice. id: %d", id);
       log.error(message, e);
       return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @GetMapping("/pdf/{id}")
+  @ApiOperation(
+      value = "Get invoice by id.",
+      response = Invoice.class)
+  @ApiImplicitParam(name = "id", value = "Only digits possible, e.g. 7865", example = "7865", dataType = "Long")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "OK", response = Invoice.class),
+      @ApiResponse(code = 404, message = "Invoice not found for passed id.", response = ErrorMessage.class),
+      @ApiResponse(code = 500, message = "Internal server error.", response = ErrorMessage.class)})
+  public ResponseEntity<?> createPdf(@PathVariable("id") Long id) {
+    try {
+      Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
+      if (optionalInvoice.isPresent()) {
+        byte[] invoiceAsPdf = pdfService.createPdf(optionalInvoice.get());
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_PDF);
+        return new ResponseEntity<>(invoiceAsPdf, responseHeaders, HttpStatus.OK);
+      }
+      return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed id: %d", id)), HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+      return new ResponseEntity<>(new ErrorMessage(String.format("Internal server error while getting invoice by id: %d", id)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
