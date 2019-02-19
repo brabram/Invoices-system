@@ -2,7 +2,6 @@ package pl.coderstrust.service.soap;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -15,12 +14,13 @@ import pl.coderstrust.model.ContactDetails;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
+import pl.coderstrust.soap.domainclasses.InvoiceEntries;
 
 
 public class InvoiceToXmlConverter {
 
-  public static pl.coderstrust.service.soap.domainclasses.Invoice convertInvoiceToXml(Invoice invoice) throws DatatypeConfigurationException {
-    pl.coderstrust.service.soap.domainclasses.Invoice invoiceXml = new pl.coderstrust.service.soap.domainclasses.Invoice();
+  public static pl.coderstrust.soap.domainclasses.Invoice convertInvoiceToXml(Invoice invoice) throws DatatypeConfigurationException {
+    pl.coderstrust.soap.domainclasses.Invoice invoiceXml = new pl.coderstrust.soap.domainclasses.Invoice();
     invoiceXml.setId(invoice.getId());
     invoiceXml.setNumber(invoice.getNumber());
     invoiceXml.setDueDate(convertLocalDateToXml(invoice.getDueDate()));
@@ -29,7 +29,7 @@ public class InvoiceToXmlConverter {
     invoiceXml.setTotalGrossValue(invoice.getTotalGrossValue());
     invoiceXml.setSeller(convertCompanyToXml(invoice.getSeller()));
     invoiceXml.setBuyer(convertCompanyToXml(invoice.getBuyer()));
-    invoiceXml.setEntries(convertEntriesToXml(invoice.getEntries()));
+    invoiceXml.setInvoiceEntries(convertEntriesToXml(invoice.getEntries()));
     return invoiceXml;
   }
 
@@ -38,9 +38,9 @@ public class InvoiceToXmlConverter {
     return DatatypeFactory.newInstance().newXMLGregorianCalendar(dateXml);
   }
 
-  private static List<pl.coderstrust.service.soap.domainclasses.InvoiceEntry> convertEntriesToXml(List<InvoiceEntry> entries) {
-    pl.coderstrust.service.soap.domainclasses.InvoiceEntry invoiceEntryXml = new pl.coderstrust.service.soap.domainclasses.InvoiceEntry();
-    List<pl.coderstrust.service.soap.domainclasses.InvoiceEntry> entriesXml = new ArrayList<>();
+  private static InvoiceEntries convertEntriesToXml(List<InvoiceEntry> entries) {
+    InvoiceEntries invoiceEntriesXml = new InvoiceEntries();
+    pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml = new pl.coderstrust.soap.domainclasses.InvoiceEntry();
     for (InvoiceEntry invoiceEntry : entries) {
       invoiceEntryXml.setId(invoiceEntry.getId());
       invoiceEntryXml.setItem(invoiceEntry.getItem());
@@ -49,18 +49,18 @@ public class InvoiceToXmlConverter {
       invoiceEntryXml.setVatRate(convertVatRateToXml(invoiceEntry.getVatRate()));
       invoiceEntryXml.setVatValue(invoiceEntry.getVatValue());
       invoiceEntryXml.setGrossValue(invoiceEntry.getGrossValue());
-      entriesXml.add(invoiceEntryXml);
+      invoiceEntriesXml.getInvoiceEntry().add(invoiceEntryXml);
     }
-    return entriesXml;
+    return invoiceEntriesXml;
   }
 
-  private static pl.coderstrust.service.soap.domainclasses.Vat convertVatRateToXml(Vat vatRate) {
-    return pl.coderstrust.service.soap.domainclasses.Vat.fromValue(String.valueOf(vatRate.name()));
+  private static pl.coderstrust.soap.domainclasses.Vat convertVatRateToXml(Vat vatRate) {
+    return pl.coderstrust.soap.domainclasses.Vat.fromValue(String.valueOf(vatRate.name()));
 
   }
 
-  private static pl.coderstrust.service.soap.domainclasses.Company convertCompanyToXml(Company company) {
-    pl.coderstrust.service.soap.domainclasses.Company companyXml = new pl.coderstrust.service.soap.domainclasses.Company();
+  private static pl.coderstrust.soap.domainclasses.Company convertCompanyToXml(Company company) {
+    pl.coderstrust.soap.domainclasses.Company companyXml = new pl.coderstrust.soap.domainclasses.Company();
     companyXml.setId(company.getId());
     companyXml.setName(company.getName());
     companyXml.setTaxIdentificationNumber(company.getTaxIdentificationNumber());
@@ -69,16 +69,16 @@ public class InvoiceToXmlConverter {
     return companyXml;
   }
 
-  private static pl.coderstrust.service.soap.domainclasses.AccountNumber convertAccountNumberToXml(AccountNumber accountNumber) {
-    pl.coderstrust.service.soap.domainclasses.AccountNumber accountNumberXml = new pl.coderstrust.service.soap.domainclasses.AccountNumber();
+  private static pl.coderstrust.soap.domainclasses.AccountNumber convertAccountNumberToXml(AccountNumber accountNumber) {
+    pl.coderstrust.soap.domainclasses.AccountNumber accountNumberXml = new pl.coderstrust.soap.domainclasses.AccountNumber();
     accountNumberXml.setId(accountNumber.getId());
     accountNumberXml.setIbanNumber(accountNumber.getIbanNumber());
     accountNumberXml.setLocalNumber(accountNumber.getLocalNumber());
     return accountNumberXml;
   }
 
-  private static pl.coderstrust.service.soap.domainclasses.ContactDetails convertContactDetailsToXml(ContactDetails contactDetails) {
-    pl.coderstrust.service.soap.domainclasses.ContactDetails contactDetailsXml = new pl.coderstrust.service.soap.domainclasses.ContactDetails();
+  private static pl.coderstrust.soap.domainclasses.ContactDetails convertContactDetailsToXml(ContactDetails contactDetails) {
+    pl.coderstrust.soap.domainclasses.ContactDetails contactDetailsXml = new pl.coderstrust.soap.domainclasses.ContactDetails();
     contactDetailsXml.setId(contactDetails.getId());
     contactDetailsXml.setAddress(convertAddressToXml(contactDetails.getAddress()));
     contactDetailsXml.setEmail(contactDetails.getEmail());
@@ -87,8 +87,8 @@ public class InvoiceToXmlConverter {
     return contactDetailsXml;
   }
 
-  private static pl.coderstrust.service.soap.domainclasses.Address convertAddressToXml(Address address) {
-    pl.coderstrust.service.soap.domainclasses.Address addressXml = new pl.coderstrust.service.soap.domainclasses.Address();
+  private static pl.coderstrust.soap.domainclasses.Address convertAddressToXml(Address address) {
+    pl.coderstrust.soap.domainclasses.Address addressXml = new pl.coderstrust.soap.domainclasses.Address();
     addressXml.setId(address.getId());
     addressXml.setStreet(address.getStreet());
     addressXml.setNumber(address.getNumber());

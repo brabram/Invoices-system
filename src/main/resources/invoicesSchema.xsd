@@ -11,7 +11,7 @@
   <xs:element name="getAllInvoicesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="invoicesList" type="tns:invoice" maxOccurs="unbounded"/>
+        <xs:element name="invoicesList" type="tns:invoicesList"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -76,6 +76,7 @@
   <xs:element name="updateInvoiceResponse">
     <xs:complexType>
       <xs:sequence>
+        <xs:element name="status" type="tns:status"/>
         <xs:element name="invoice" type="tns:invoice"/>
       </xs:sequence>
     </xs:complexType>
@@ -107,7 +108,13 @@
       <xs:element name="totalGrossValue" type="xs:decimal"/>
       <xs:element name="seller" type="tns:company"/>
       <xs:element name="buyer" type="tns:company"/>
-      <xs:element name="entries" type="tns:invoiceEntry" maxOccurs="unbounded"/>
+      <xs:element name="invoiceEntries" type="tns:invoiceEntries"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="invoiceEntries">
+    <xs:sequence>
+      <xs:element name="invoiceEntry" type="tns:invoiceEntry" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -170,4 +177,17 @@
       <xs:enumeration value="VAT_23"/>
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:simpleType name="status">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Success"/>
+      <xs:enumeration value="Error"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="invoicesList">
+    <xs:sequence>
+      <xs:element name="invoice" type="tns:invoice" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
 </xs:schema>

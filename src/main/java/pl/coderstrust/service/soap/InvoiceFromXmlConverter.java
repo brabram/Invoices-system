@@ -12,10 +12,11 @@ import pl.coderstrust.model.ContactDetails;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
+import pl.coderstrust.soap.domainclasses.InvoiceEntries;
 
 public class InvoiceFromXmlConverter {
 
-  public static Invoice convertInvoiceFromXml(pl.coderstrust.service.soap.domainclasses.Invoice invoiceXml) throws DatatypeConfigurationException {
+  public static Invoice convertInvoiceFromXml(pl.coderstrust.soap.domainclasses.Invoice invoiceXml) throws DatatypeConfigurationException {
     return new Invoice(
         invoiceXml.getId(),
         invoiceXml.getNumber(),
@@ -23,7 +24,7 @@ public class InvoiceFromXmlConverter {
         convertXmlToLocalDate(invoiceXml.getIssueDate()),
         convertCompanyFromXml(invoiceXml.getSeller()),
         convertCompanyFromXml(invoiceXml.getBuyer()),
-        convertEntriesFromXml(invoiceXml.getEntries()),
+        convertEntriesFromXml(invoiceXml.getInvoiceEntries()),
         invoiceXml.getTotalNetValue(),
         invoiceXml.getTotalGrossValue());
   }
@@ -32,16 +33,16 @@ public class InvoiceFromXmlConverter {
     return xmlGregorianCalendar.toGregorianCalendar().toZonedDateTime().toLocalDate();
   }
 
-
-  private static List<InvoiceEntry> convertEntriesFromXml(List<pl.coderstrust.service.soap.domainclasses.InvoiceEntry> entriesXml) {
-    List<InvoiceEntry> entries = new ArrayList<>();
-    for (pl.coderstrust.service.soap.domainclasses.InvoiceEntry invoiceEntryXml : entriesXml) {
-      entries.add(convertInvoiceEntryFromXml(invoiceEntryXml));
+  private static List<InvoiceEntry> convertEntriesFromXml(InvoiceEntries entriesXml) {
+    List<InvoiceEntry> invoiceEntries = new ArrayList<>();
+    List<pl.coderstrust.soap.domainclasses.InvoiceEntry> invoiceEntriesXml = entriesXml.getInvoiceEntry();
+    for (pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml: invoiceEntriesXml){
+      invoiceEntries.add(convertInvoiceEntryFromXml(invoiceEntryXml));
     }
-    return entries;
+    return invoiceEntries;
   }
 
-  private static InvoiceEntry convertInvoiceEntryFromXml(pl.coderstrust.service.soap.domainclasses.InvoiceEntry invoiceEntryXml) {
+  private static InvoiceEntry convertInvoiceEntryFromXml(pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml) {
     return new InvoiceEntry(
         invoiceEntryXml.getId(),
         invoiceEntryXml.getItem(),
@@ -52,11 +53,11 @@ public class InvoiceFromXmlConverter {
         convertVatRateFromXml(invoiceEntryXml.getVatRate()));
   }
 
-  private static Vat convertVatRateFromXml(pl.coderstrust.service.soap.domainclasses.Vat vatRateXml) {
+  private static Vat convertVatRateFromXml(pl.coderstrust.soap.domainclasses.Vat vatRateXml) {
     return Vat.valueOf(vatRateXml.value());
   }
 
-  private static Company convertCompanyFromXml(pl.coderstrust.service.soap.domainclasses.Company companyXml) {
+  private static Company convertCompanyFromXml(pl.coderstrust.soap.domainclasses.Company companyXml) {
     return new Company(
         companyXml.getId(),
         companyXml.getName(),
@@ -65,14 +66,14 @@ public class InvoiceFromXmlConverter {
         convertContactDetailsFromXml(companyXml.getContactDetails()));
   }
 
-  private static AccountNumber convertAccountNumberFromXml(pl.coderstrust.service.soap.domainclasses.AccountNumber accountNumberXml) {
+  private static AccountNumber convertAccountNumberFromXml(pl.coderstrust.soap.domainclasses.AccountNumber accountNumberXml) {
     return new AccountNumber(
         accountNumberXml.getId(),
         accountNumberXml.getIbanNumber(),
         accountNumberXml.getLocalNumber());
   }
 
-  private static ContactDetails convertContactDetailsFromXml(pl.coderstrust.service.soap.domainclasses.ContactDetails contactDetailsXml) {
+  private static ContactDetails convertContactDetailsFromXml(pl.coderstrust.soap.domainclasses.ContactDetails contactDetailsXml) {
     return new ContactDetails(
         contactDetailsXml.getId(),
         contactDetailsXml.getEmail(),
@@ -81,7 +82,7 @@ public class InvoiceFromXmlConverter {
         convertAddressFromXml(contactDetailsXml.getAddress()));
   }
 
-  private static Address convertAddressFromXml(pl.coderstrust.service.soap.domainclasses.Address addressXml) {
+  private static Address convertAddressFromXml(pl.coderstrust.soap.domainclasses.Address addressXml) {
     return new Address(
         addressXml.getId(),
         addressXml.getStreet(),
