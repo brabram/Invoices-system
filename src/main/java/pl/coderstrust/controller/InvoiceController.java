@@ -31,7 +31,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.validators.InvoiceValidator;
 import pl.coderstrust.service.InvoiceEmailService;
 import pl.coderstrust.service.InvoicePdfService;
-import pl.coderstrust.service.InvoiceService;
+import pl.coderstrust.service.rest.InvoiceService;
 
 @Api(value = "/invoices", description = "Available operations for invoice application", tags = {"Invoices"})
 @RestController
