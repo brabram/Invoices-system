@@ -39,7 +39,7 @@ class InvoiceEndpointTest {
   }
 
   @Test
-  void shouldAddInvoiceResponse() throws IOException {
+  void shouldAddInvoice() throws IOException {
     //Given
     String filePathRequest = "src/test/resources/soap/addInvoiceRequest.xml";
     String filePathResponse = "src/test/resources/soap/addInvoiceResponse.xml";
@@ -59,10 +59,90 @@ class InvoiceEndpointTest {
   }
 
   @Test
-  void shouldGetAllInvoiceResponse() throws IOException {
+  void shouldGetAllInvoices() throws IOException {
     //Given
     String filePathRequest = "src/test/resources/soap/getAllInvoicesRequest.xml";
     String filePathResponse = "src/test/resources/soap/getAllInvoicesResponse.xml";
+    String request = Files.lines(Paths.get(filePathRequest)).collect(Collectors.joining("\n"));
+    String response = Files.lines(Paths.get(filePathResponse)).collect(Collectors.joining("\n"));
+    Source requestPayload = new StringSource(request);
+    Source responsePayload = new StringSource(response);
+
+    //When
+    mockWebServiceClient
+        .sendRequest(withPayload(requestPayload))
+        //Then
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+
+  }
+
+  @Test
+  void shouldGetInvoiceById() throws IOException {
+    //Given
+    String filePathRequest = "src/test/resources/soap/getInvoiceByIdRequest.xml";
+    String filePathResponse = "src/test/resources/soap/getInvoiceByIdResponse.xml";
+    String request = Files.lines(Paths.get(filePathRequest)).collect(Collectors.joining("\n"));
+    String response = Files.lines(Paths.get(filePathResponse)).collect(Collectors.joining("\n"));
+    Source requestPayload = new StringSource(request);
+    Source responsePayload = new StringSource(response);
+
+    //When
+    mockWebServiceClient
+        .sendRequest(withPayload(requestPayload))
+        //Then
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+
+  }
+
+  @Test
+  void shouldGetInvoiceByNumber() throws IOException {
+    //Given
+    String filePathRequest = "src/test/resources/soap/getInvoiceByNumberRequest.xml";
+    String filePathResponse = "src/test/resources/soap/getInvoiceByNumberResponse.xml";
+    String request = Files.lines(Paths.get(filePathRequest)).collect(Collectors.joining("\n"));
+    String response = Files.lines(Paths.get(filePathResponse)).collect(Collectors.joining("\n"));
+    Source requestPayload = new StringSource(request);
+    Source responsePayload = new StringSource(response);
+
+    //When
+    mockWebServiceClient
+        .sendRequest(withPayload(requestPayload))
+        //Then
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+
+  }
+
+  @Test
+  void shouldUpdateInvoice() throws IOException {
+    //Given
+    String filePathRequest = "src/test/resources/soap/updateInvoiceRequest.xml";
+    String filePathResponse = "src/test/resources/soap/updateInvoiceResponse.xml";
+    String request = Files.lines(Paths.get(filePathRequest)).collect(Collectors.joining("\n"));
+    String response = Files.lines(Paths.get(filePathResponse)).collect(Collectors.joining("\n"));
+    Source requestPayload = new StringSource(request);
+    Source responsePayload = new StringSource(response);
+
+    //When
+    mockWebServiceClient
+        .sendRequest(withPayload(requestPayload))
+        //Then
+        .andExpect(noFault())
+        .andExpect(payload(responsePayload))
+        .andExpect(validPayload(xsdSchema));
+
+  }
+
+  @Test
+  void shouldDeleteInvoice() throws IOException {
+    //Given
+    String filePathRequest = "src/test/resources/soap/deleteInvoiceRequest.xml";
+    String filePathResponse = "src/test/resources/soap/deleteInvoiceResponse.xml";
     String request = Files.lines(Paths.get(filePathRequest)).collect(Collectors.joining("\n"));
     String response = Files.lines(Paths.get(filePathResponse)).collect(Collectors.joining("\n"));
     Source requestPayload = new StringSource(request);

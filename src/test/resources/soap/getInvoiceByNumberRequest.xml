@@ -1,0 +1,3 @@
+<gs:getInvoiceByNumberRequest xmlns:gs="http://soap-invoice-service">
+  <gs:number>fv1</gs:number>
+</gs:getInvoiceByNumberRequest>

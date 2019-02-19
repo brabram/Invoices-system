@@ -1,0 +1,3 @@
+<gs:getInvoiceByIdRequest xmlns:gs="http://soap-invoice-service">
+  <gs:id>9</gs:id>
+</gs:getInvoiceByIdRequest>
