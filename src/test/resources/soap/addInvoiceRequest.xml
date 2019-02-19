@@ -1,27 +1,22 @@
 <soap:addInvoiceRequest xmlns:soap="http://soap-invoice-service">
   <soap:invoice>
-    <soap:id>1</soap:id>
     <soap:number>fv1</soap:number>
     <soap:issueDate>2019-02-02</soap:issueDate>
     <soap:dueDate>2019-03-03</soap:dueDate>
     <soap:totalNetValue>100.00</soap:totalNetValue>
     <soap:totalGrossValue>100.00</soap:totalGrossValue>
     <soap:seller>
-      <soap:id>1</soap:id>
       <soap:name>Seller</soap:name>
       <soap:taxIdentificationNumber>1234567890</soap:taxIdentificationNumber>
       <soap:accountNumber>
-        <soap:id>1</soap:id>
         <soap:ibanNumber>PL09876543211234567890</soap:ibanNumber>
         <soap:localNumber>09876543211234567890</soap:localNumber>
       </soap:accountNumber>
       <soap:contactDetails>
-        <soap:id>1</soap:id>
         <soap:email>email@gmail.com</soap:email>
         <soap:phoneNumber>789654123</soap:phoneNumber>
         <soap:website>www.website.com</soap:website>
         <soap:address>
-          <soap:id>1</soap:id>
           <soap:street>Street</soap:street>
           <soap:number>1</soap:number>
           <soap:postalCode>90180</soap:postalCode>
@@ -31,19 +26,17 @@
       </soap:contactDetails>
     </soap:seller>
     <soap:buyer>
+      <soap:name>Buyer</soap:name>
       <soap:taxIdentificationNumber>1234567890</soap:taxIdentificationNumber>
       <soap:accountNumber>
-        <soap:id>1</soap:id>
         <soap:ibanNumber>PL09876543211234567890</soap:ibanNumber>
         <soap:localNumber>09876543211234567890</soap:localNumber>
       </soap:accountNumber>
       <soap:contactDetails>
-        <soap:id>1</soap:id>
         <soap:email>email@gmail.com</soap:email>
         <soap:phoneNumber>789654123</soap:phoneNumber>
         <soap:website>www.website.com</soap:website>
         <soap:address>
-          <soap:id>1</soap:id>
           <soap:street>Street</soap:street>
           <soap:number>1</soap:number>
           <soap:postalCode>90180</soap:postalCode>
@@ -53,7 +46,6 @@
       </soap:contactDetails>
     </soap:buyer>
     <soap:entries>
-      <soap:id>1</soap:id>
       <soap:item>Item</soap:item>
       <soap:quantity>1</soap:quantity>
       <soap:price>100.00</soap:price>

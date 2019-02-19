@@ -19,12 +19,6 @@ import pl.coderstrust.model.Vat;
 
 public class InvoiceToXmlConverter {
 
-  private static pl.coderstrust.service.soap.domainclasses.ObjectFactory objectFactory;
-
-  public InvoiceToXmlConverter(pl.coderstrust.service.soap.domainclasses.ObjectFactory objectFactory) {
-    InvoiceToXmlConverter.objectFactory = objectFactory;
-  }
-
   public static pl.coderstrust.service.soap.domainclasses.Invoice convertInvoiceToXml(Invoice invoice) throws DatatypeConfigurationException {
     pl.coderstrust.service.soap.domainclasses.Invoice invoiceXml = new pl.coderstrust.service.soap.domainclasses.Invoice();
     invoiceXml.setId(invoice.getId());
@@ -61,7 +55,7 @@ public class InvoiceToXmlConverter {
   }
 
   private static pl.coderstrust.service.soap.domainclasses.Vat convertVatRateToXml(Vat vatRate) {
-    return pl.coderstrust.service.soap.domainclasses.Vat.fromValue(vatRate.toString());
+    return pl.coderstrust.service.soap.domainclasses.Vat.fromValue(String.valueOf(vatRate.name()));
 
   }
 
