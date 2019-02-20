@@ -87,8 +87,8 @@ public class InvoiceFromXmlConverter {
         addressXml.getId(),
         addressXml.getStreet(),
         addressXml.getNumber(),
-        addressXml.getCity(),
         addressXml.getPostalCode(),
+        addressXml.getCity(),
         addressXml.getCountry());
   }
 }

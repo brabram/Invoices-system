@@ -60,12 +60,12 @@ public class InvoiceEndpoint {
       Optional<Invoice> invoiceOptional = invoiceService.getInvoiceById(id);
       if (invoiceOptional.isPresent()) {
         response.setStatus(Status.SUCCESS);
-        response.setStatusMessage(String.format("Invoice with id %d were downloaded", id));
+        response.setStatusMessage(String.format("Invoice with id %d were downloaded.", id));
         response.setInvoice(convertInvoiceToXml(invoiceOptional.get()));
         return response;
       }
       response.setStatus(Status.ERROR);
-      response.setStatusMessage(String.format("Not found invoice with id %d", id));
+      response.setStatusMessage(String.format("Not found invoice with id %d.", id));
       return response;
     } catch (Exception e) {
       response.setStatus(Status.ERROR);
@@ -88,12 +88,12 @@ public class InvoiceEndpoint {
             .findFirst();
         if (optionalInvoice.isPresent()) {
           response.setStatus(Status.SUCCESS);
-          response.setStatusMessage(String.format("Invoice with number %s were downloaded", number));
+          response.setStatusMessage(String.format("Invoice with number %s were downloaded.", number));
           response.setInvoice(convertInvoiceToXml(optionalInvoice.get()));
           return response;
         }
         response.setStatus(Status.ERROR);
-        response.setStatusMessage(String.format("Not found invoice with number %s", number));
+        response.setStatusMessage(String.format("Not found invoice with number %s.", number));
         return response;
       }
     } catch (Exception e) {
@@ -112,7 +112,7 @@ public class InvoiceEndpoint {
       List<String> resultOfValidation = InvoiceValidator.validate(invoice, false);
       if (resultOfValidation.size() > 0) {
         response.setStatus(Status.ERROR);
-        response.setStatusMessage(String.format("Passed invoice is invalid. %s", resultOfValidation.toString()));
+        response.setStatusMessage(String.format("Passed invoice is invalid. %s.", resultOfValidation.toString()));
         return response;
       }
       if (invoice.getId() == null || !invoiceService.invoiceExistsById(invoice.getId())) {
@@ -124,7 +124,7 @@ public class InvoiceEndpoint {
           return response;
         }
         response.setStatus(Status.ERROR);
-        response.setStatusMessage("An error while adding invoice ");
+        response.setStatusMessage("An error while adding invoice. ");
         return response;
       }
       response.setStatus(Status.ERROR);
@@ -132,7 +132,7 @@ public class InvoiceEndpoint {
       return response;
     } catch (Exception e) {
       response.setStatus(Status.ERROR);
-      response.setStatusMessage("An error while adding invoice ");
+      response.setStatusMessage("An error while adding invoice.");
     }
     return response;
   }
@@ -147,7 +147,7 @@ public class InvoiceEndpoint {
       List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
       if (resultOfValidation.size() > 0) {
         response.setStatus(Status.ERROR);
-        response.setStatusMessage(String.format("Passed invoice is invalid. %s", resultOfValidation.toString()));
+        response.setStatusMessage(String.format("Passed invoice is invalid. %s.", resultOfValidation.toString()));
         return response;
       }
       if (id != invoice.getId()) {
@@ -157,16 +157,17 @@ public class InvoiceEndpoint {
       }
       if (!invoiceService.invoiceExistsById(id)) {
         response.setStatus(Status.ERROR);
-        response.setStatusMessage(String.format("Not found invoice with id %d", id));
+        response.setStatusMessage(String.format("Not found invoice with id %d.", id));
         return response;
       }
       invoiceService.updateInvoice(invoice);
       response.setStatus(Status.SUCCESS);
+      response.setStatusMessage(String.format("Invoice with id %d was updated.", id));
       response.setInvoice(convertInvoiceToXml(invoice));
       return response;
     } catch (Exception e) {
       response.setStatus(Status.ERROR);
-      response.setStatusMessage("An error while updating invoice ");
+      response.setStatusMessage("An error while updating invoice.");
     }
     return response;
   }
@@ -181,7 +182,7 @@ public class InvoiceEndpoint {
       if (optionalInvoice.isPresent()) {
         invoiceService.deleteInvoiceById(id);
         response.setStatus(Status.SUCCESS);
-        response.setStatusMessage(String.format("Invoice with id %d was removed", id));
+        response.setStatusMessage(String.format("Invoice with id %d was removed.", id));
         return response;
       }
       response.setStatus(Status.ERROR);
@@ -189,7 +190,7 @@ public class InvoiceEndpoint {
       return response;
     } catch (Exception e) {
       response.setStatus(Status.ERROR);
-      response.setStatusMessage("An error while deleting invoice ");
+      response.setStatusMessage("An error while deleting invoice.");
     }
     return response;
   }

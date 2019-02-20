@@ -80,10 +80,10 @@ public class InvoiceToXmlConverter {
   private static pl.coderstrust.soap.domainclasses.ContactDetails convertContactDetailsToXml(ContactDetails contactDetails) {
     pl.coderstrust.soap.domainclasses.ContactDetails contactDetailsXml = new pl.coderstrust.soap.domainclasses.ContactDetails();
     contactDetailsXml.setId(contactDetails.getId());
-    contactDetailsXml.setAddress(convertAddressToXml(contactDetails.getAddress()));
     contactDetailsXml.setEmail(contactDetails.getEmail());
     contactDetailsXml.setPhoneNumber(contactDetails.getPhoneNumber());
     contactDetailsXml.setWebsite(contactDetails.getWebsite());
+    contactDetailsXml.setAddress(convertAddressToXml(contactDetails.getAddress()));
     return contactDetailsXml;
   }
 
@@ -92,8 +92,8 @@ public class InvoiceToXmlConverter {
     addressXml.setId(address.getId());
     addressXml.setStreet(address.getStreet());
     addressXml.setNumber(address.getNumber());
-    addressXml.setCity(address.getCity());
     addressXml.setPostalCode(address.getPostalCode());
+    addressXml.setCity(address.getCity());
     addressXml.setCountry(address.getCountry());
     return addressXml;
   }
