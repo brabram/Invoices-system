@@ -1,67 +1,71 @@
 <ns2:getInvoiceByIdResponse xmlns:ns2="http://soap-invoice-service">
+  <ns2:status>Success</ns2:status>
+  <ns2:statusMessage>Invoice with id 9 were downloaded.</ns2:statusMessage>
   <ns2:invoice>
     <ns2:id>9</ns2:id>
     <ns2:number>fv1</ns2:number>
-    <ns2:issueDate>2019-03-03+01:00</ns2:issueDate>
-    <ns2:dueDate>2019-02-02+01:00</ns2:dueDate>
+    <ns2:issueDate>2019-02-16+01:00</ns2:issueDate>
+    <ns2:dueDate>2019-02-16+01:00</ns2:dueDate>
     <ns2:totalNetValue>100.00</ns2:totalNetValue>
     <ns2:totalGrossValue>100.00</ns2:totalGrossValue>
     <ns2:seller>
       <ns2:id>8</ns2:id>
-      <ns2:name>Seller</ns2:name>
+      <ns2:name>company</ns2:name>
       <ns2:taxIdentificationNumber>1234567890</ns2:taxIdentificationNumber>
       <ns2:accountNumber>
         <ns2:id>5</ns2:id>
-        <ns2:ibanNumber>PL09876543211234567890</ns2:ibanNumber>
-        <ns2:localNumber>09876543211234567890</ns2:localNumber>
+        <ns2:ibanNumber>PL1234567890</ns2:ibanNumber>
+        <ns2:localNumber>1234567890</ns2:localNumber>
       </ns2:accountNumber>
       <ns2:contactDetails>
         <ns2:id>7</ns2:id>
-        <ns2:email>email@gmail.com</ns2:email>
-        <ns2:phoneNumber>789654123</ns2:phoneNumber>
-        <ns2:website>www.website.com</ns2:website>
+        <ns2:email>seller@gmail.com</ns2:email>
+        <ns2:phoneNumber>123456789</ns2:phoneNumber>
+        <ns2:website>www.seller.com</ns2:website>
         <ns2:address>
           <ns2:id>6</ns2:id>
-          <ns2:street>Street</ns2:street>
+          <ns2:street>street</ns2:street>
           <ns2:number>1</ns2:number>
-          <ns2:postalCode>City</ns2:postalCode>
-          <ns2:city>90180</ns2:city>
+          <ns2:postalCode>12323</ns2:postalCode>
+          <ns2:city>City</ns2:city>
           <ns2:country>Country</ns2:country>
         </ns2:address>
       </ns2:contactDetails>
     </ns2:seller>
     <ns2:buyer>
       <ns2:id>4</ns2:id>
-      <ns2:name>Buyer</ns2:name>
+      <ns2:name>company</ns2:name>
       <ns2:taxIdentificationNumber>1234567890</ns2:taxIdentificationNumber>
       <ns2:accountNumber>
         <ns2:id>1</ns2:id>
-        <ns2:ibanNumber>PL09876543211234567890</ns2:ibanNumber>
-        <ns2:localNumber>09876543211234567890</ns2:localNumber>
+        <ns2:ibanNumber>PL1234567890</ns2:ibanNumber>
+        <ns2:localNumber>1234567890</ns2:localNumber>
       </ns2:accountNumber>
       <ns2:contactDetails>
         <ns2:id>3</ns2:id>
-        <ns2:email>email@gmail.com</ns2:email>
-        <ns2:phoneNumber>789654123</ns2:phoneNumber>
-        <ns2:website>www.website.com</ns2:website>
+        <ns2:email>buyer@gmail.com</ns2:email>
+        <ns2:phoneNumber>123456789</ns2:phoneNumber>
+        <ns2:website>www.buyer.com</ns2:website>
         <ns2:address>
           <ns2:id>2</ns2:id>
-          <ns2:street>Street</ns2:street>
+          <ns2:street>street</ns2:street>
           <ns2:number>1</ns2:number>
-          <ns2:postalCode>City</ns2:postalCode>
-          <ns2:city>90180</ns2:city>
+          <ns2:postalCode>12323</ns2:postalCode>
+          <ns2:city>City</ns2:city>
           <ns2:country>Country</ns2:country>
         </ns2:address>
       </ns2:contactDetails>
     </ns2:buyer>
-    <ns2:entries>
-      <ns2:id>10</ns2:id>
-      <ns2:item>Item</ns2:item>
-      <ns2:quantity>1</ns2:quantity>
-      <ns2:price>100.00</ns2:price>
-      <ns2:vatValue>23.00</ns2:vatValue>
-      <ns2:grossValue>123.00</ns2:grossValue>
-      <ns2:vatRate>VAT_23</ns2:vatRate>
-    </ns2:entries>
+    <ns2:invoiceEntries>
+      <ns2:invoiceEntry>
+        <ns2:id>10</ns2:id>
+        <ns2:item>item</ns2:item>
+        <ns2:quantity>1</ns2:quantity>
+        <ns2:price>100.00</ns2:price>
+        <ns2:vatValue>23.00</ns2:vatValue>
+        <ns2:grossValue>123.00</ns2:grossValue>
+        <ns2:vatRate>VAT_23</ns2:vatRate>
+      </ns2:invoiceEntry>
+    </ns2:invoiceEntries>
   </ns2:invoice>
 </ns2:getInvoiceByIdResponse>
