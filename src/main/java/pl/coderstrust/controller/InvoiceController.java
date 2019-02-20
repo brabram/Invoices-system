@@ -5,10 +5,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,7 +39,7 @@ public class InvoiceController {
   @Autowired
   public InvoiceController(InvoiceService invoiceService) {
     this.invoiceService = invoiceService;
-}
+  }
 
   @GetMapping
   @ApiOperation(
