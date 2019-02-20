@@ -18,7 +18,7 @@ import javax.persistence.ManyToOne;
 public class Invoice {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of invoice.", example = "1234", dataType = "Long", position = -1)
   private Long id;
 

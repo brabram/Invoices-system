@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class Address {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of address.", dataType = "Long", position = -1)
   private Long id;
 

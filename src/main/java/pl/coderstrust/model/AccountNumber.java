@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class AccountNumber {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of account number.", position = -1)
   private Long id;
 

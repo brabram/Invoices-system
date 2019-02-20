@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class InvoiceEntry {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of invoice entry.", dataType = "Long", position = -1)
   private Long id;
 

@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 public class Company {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of company.", dataType = "Long", position = -1)
   private Long id;
 
