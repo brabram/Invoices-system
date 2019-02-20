@@ -1,6 +1,7 @@
 package pl.coderstrust.pdfsevice;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -25,7 +26,7 @@ public class PdfService {
     paragraph.add(invoice.getNumber());
     paragraph.add(String.valueOf(invoice.getIssueDate()));
     paragraph.add(String.valueOf(invoice.getDueDate()));
-//    paragraph.add(invoiceEntries((InvoiceEntry) invoice.getEntries()));
+    paragraph.add(invoiceEntries((InvoiceEntry) invoice.getEntries()).;
    // paragraph.add(String.valueOf(invoice.getBuyer()));
   //  paragraph.add(String.valueOf(invoice.getEntries()));
     paragraph.add(String.valueOf(invoice.getTotalNetValue()));
