@@ -36,7 +36,7 @@ public class InvoiceFromXmlConverter {
   private static List<InvoiceEntry> convertEntriesFromXml(InvoiceEntries entriesXml) {
     List<InvoiceEntry> invoiceEntries = new ArrayList<>();
     List<pl.coderstrust.soap.domainclasses.InvoiceEntry> invoiceEntriesXml = entriesXml.getInvoiceEntry();
-    for (pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml: invoiceEntriesXml){
+    for (pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml : invoiceEntriesXml) {
       invoiceEntries.add(convertInvoiceEntryFromXml(invoiceEntryXml));
     }
     return invoiceEntries;
