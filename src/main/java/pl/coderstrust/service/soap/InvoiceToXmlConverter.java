@@ -56,7 +56,6 @@ public class InvoiceToXmlConverter {
 
   private static pl.coderstrust.soap.domainclasses.Vat convertVatRateToXml(Vat vatRate) {
     return pl.coderstrust.soap.domainclasses.Vat.fromValue(String.valueOf(vatRate.name()));
-
   }
 
   private static pl.coderstrust.soap.domainclasses.Company convertCompanyToXml(Company company) {
