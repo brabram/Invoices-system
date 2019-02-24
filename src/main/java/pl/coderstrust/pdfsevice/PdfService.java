@@ -2,6 +2,8 @@ package pl.coderstrust.pdfsevice;
 
 import static com.itextpdf.text.DocWriter.NEWLINE;
 import static com.itextpdf.text.PageSize.A4;
+
+import com.google.common.collect.Table;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -42,9 +44,6 @@ public class PdfService {
     issueDate.setAlignment(issueDate.ALIGN_RIGHT);
     document.add(title);
     document.add(issueDate);
-    Paragraph companySeller = new Paragraph(companySeller(invoice.getSeller()));
-    companySeller.setIndentationLeft(10);
-    companySeller.setSpacingBefore(20);
     PdfPTable table = new PdfPTable(2);
     PdfPCell seller = new PdfPCell();
     seller.addElement(companySeller(invoice.getSeller()));
@@ -58,24 +57,68 @@ public class PdfService {
     table.addCell(buyer);
     document.add(table);
     paragraph.add(String.valueOf(invoice.getTotalGrossValue()));
+    document.add(listInvoiceEntries(invoice.getEntries()));
     document.close();
     return stream.toByteArray();
   }
 
-  public PdfPTable listInvoiceEntries(List<InvoiceEntry> invoiceEntries) throws DocumentException {
+  private PdfPTable listInvoiceEntries(List<InvoiceEntry> invoiceEntries) throws DocumentException {
     PdfPTable table = new PdfPTable(7);
     table.setSpacingBefore(25);
     table.setSpacingAfter(25);
+    table.setWidthPercentage(100);
     for (InvoiceEntry invoiceEntry : invoiceEntries) {
-      table.addCell(String.valueOf(invoiceEntry.getId()));
-      table.addCell(invoiceEntry.getItem());
-      table.addCell(String.valueOf(invoiceEntry.getQuantity()));
-      table.addCell(String.valueOf(invoiceEntry.getPrice()));
-      table.addCell(String.valueOf(invoiceEntry.getVatValue()));
-      table.addCell(String.valueOf(invoiceEntry.getGrossValue()));
-      table.addCell(String.valueOf(invoiceEntry.getVatRate()));
+      PdfPCell id = new PdfPCell(new Paragraph(invoiceEntry.getId()));
+    PdfPCell item = new PdfPCell(new Paragraph(invoiceEntry.getItem()));
+    PdfPCell quantity = new PdfPCell(new Paragraph(invoiceEntry.getQuantity()));
+    PdfPCell price = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getPrice())));
+    PdfPCell vatValue = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getVatValue())));
+    PdfPCell grossValue = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getGrossValue())));
+    PdfPCell vatRate = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getVatRate())));
+      table.addCell(id);
+      table.addCell(item);
+      table.addCell(quantity);
+      table.addCell(price);
+      table.addCell(vatValue);
+      table.addCell(grossValue);
+      table.addCell(vatRate);
+      table.addCell(invoiceEntry(invoiceEntry));
     }
     return table;
+  }
+  private Paragraph invoiceEntry(InvoiceEntry invoiceEntry){
+//     PdfPCell cell = new PdfPCell();
+//    PdfPCell id = new PdfPCell(new Paragraph(invoiceEntry.getId()));
+//    PdfPCell item = new PdfPCell(new Paragraph(invoiceEntry.getItem()));
+//    PdfPCell quantity = new PdfPCell(new Paragraph(invoiceEntry.getQuantity()));
+//    PdfPCell price = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getPrice())));
+//    PdfPCell vatValue = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getVatValue())));
+//    PdfPCell grossValue = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getGrossValue())));
+//    PdfPCell vatRate = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getVatRate())));
+//    cell.addElement(id);
+//    cell.addElement(item);
+//    cell.addElement(quantity);
+//    cell.addElement(price);
+//    cell.addElement(vatValue);
+//    cell.addElement(grossValue);
+//    cell.addElement(vatRate);
+
+    Paragraph id = new Paragraph(invoiceEntry.getId());
+    Paragraph item = new Paragraph(invoiceEntry.getItem());
+    Paragraph quantity = new Paragraph(invoiceEntry.getQuantity());
+    Paragraph price = new Paragraph(String.valueOf(invoiceEntry.getPrice()));
+    Paragraph vatValue = new Paragraph(String.valueOf(invoiceEntry.getVatValue()));
+    Paragraph grossValue = new Paragraph(String.valueOf(invoiceEntry.getGrossValue()));
+    Paragraph vatRate = new Paragraph(String.valueOf(invoiceEntry.getVatRate()));
+    Paragraph paragraph = new Paragraph();
+    paragraph.add(id);
+    paragraph.add(item);
+    paragraph.add(quantity);
+    paragraph.add(price);
+    paragraph.add(vatValue);
+    paragraph.add(grossValue);
+    paragraph.add(vatRate);
+    return paragraph;
   }
 
   private Paragraph companySeller(Company company) {
@@ -116,7 +159,7 @@ public class PdfService {
     Paragraph paragraph = new Paragraph();
     Paragraph title = new Paragraph("AccountNumber: ", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12));
     Paragraph localNumber = new Paragraph("\n" + accountNumber.getLocalNumber());
-    Paragraph ibanNumber = new Paragraph(accountNumber.getIbanNumber());
+    Paragraph ibanNumber = new Paragraph("\n" + accountNumber.getIbanNumber());
     paragraph.add(title);
     paragraph.add(ibanNumber);
     paragraph.add(localNumber);
@@ -139,7 +182,7 @@ public class PdfService {
 
   private Paragraph address(Address address) {
     Paragraph paragraph = new Paragraph();
-    Paragraph addressData = new Paragraph(address.getCountry() + "/" + address.getCity() + "/" + address.getStreet() + "/" + address.getNumber());
+    Paragraph addressData = new Paragraph("\nAddress: " + address.getCountry() + "/" + address.getCity() + "/" + address.getStreet() + "/" + address.getNumber());
     Paragraph postalCOde = new Paragraph("\nPostal code: " + address.getPostalCode());
     paragraph.add(addressData);
     paragraph.add(postalCOde);
