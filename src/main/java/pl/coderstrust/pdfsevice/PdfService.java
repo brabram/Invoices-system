@@ -1,18 +1,12 @@
 package pl.coderstrust.pdfsevice;
 
-import static com.itextpdf.text.DocWriter.NEWLINE;
-import static com.itextpdf.text.PageSize.A4;
-
-import com.google.common.collect.Table;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Element;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfChunk;
 import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfString;
-import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import java.io.ByteArrayOutputStream;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -63,29 +57,35 @@ public class PdfService {
   }
 
   private PdfPTable listInvoiceEntries(List<InvoiceEntry> invoiceEntries) throws DocumentException {
+    String[] tableHeaders = new String[]{"a", "b", "c", "d", "e", "F", "g"};
+
     PdfPTable table = new PdfPTable(7);
     table.setSpacingBefore(25);
     table.setSpacingAfter(25);
     table.setWidthPercentage(100);
+    addInvoiceEntriestableHeander(table, tableHeaders);
     for (InvoiceEntry invoiceEntry : invoiceEntries) {
-      PdfPCell id = new PdfPCell(new Paragraph(invoiceEntry.getId()));
-    PdfPCell item = new PdfPCell(new Paragraph(invoiceEntry.getItem()));
-    PdfPCell quantity = new PdfPCell(new Paragraph(invoiceEntry.getQuantity()));
-    PdfPCell price = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getPrice())));
-    PdfPCell vatValue = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getVatValue())));
-    PdfPCell grossValue = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getGrossValue())));
-    PdfPCell vatRate = new PdfPCell(new Paragraph(String.valueOf(invoiceEntry.getVatRate())));
-      table.addCell(id);
-      table.addCell(item);
-      table.addCell(quantity);
-      table.addCell(price);
-      table.addCell(vatValue);
-      table.addCell(grossValue);
-      table.addCell(vatRate);
-      table.addCell(invoiceEntry(invoiceEntry));
+      table.addCell(invoiceEntry.getId().toString());
+      table.addCell(invoiceEntry.getItem());
+      table.addCell(invoiceEntry.getPrice().toString());
+      table.addCell(invoiceEntry.getPrice().toString());
+      table.addCell(invoiceEntry.getVatValue().toString());
+      table.addCell(invoiceEntry.getGrossValue().toString());
+      table.addCell(invoiceEntry.getVatRate().toString());
     }
     return table;
   }
+
+  private void addInvoiceEntriestableHeander(PdfPTable table, String[] headers){
+    for(String heander: headers){
+      PdfPCell header = new PdfPCell();
+      header.setBackgroundColor(BaseColor.GRAY);
+      header.setBorderWidth(2);
+      header.setPhrase(new Phrase(heander));
+      table.addCell(header);
+    }
+  }
+
   private Paragraph invoiceEntry(InvoiceEntry invoiceEntry){
 //     PdfPCell cell = new PdfPCell();
 //    PdfPCell id = new PdfPCell(new Paragraph(invoiceEntry.getId()));
