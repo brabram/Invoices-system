@@ -1,4 +1,4 @@
-package pl.coderstrust.pdfsevice;
+package pl.coderstrust.service;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Font;
@@ -13,6 +13,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.util.List;
+import javax.swing.text.StyledEditorKit;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.model.AccountNumber;
 import pl.coderstrust.model.Address;
@@ -60,8 +61,10 @@ public class PdfService {
     table.addCell(buyer);
     document.add(table);
     document.add(listInvoiceEntries(invoice.getEntries()));
-    Paragraph totalNetValue = new Paragraph("Total net value: " + invoice.getTotalNetValue());
-    Paragraph totalGrossValue = new Paragraph("Total gross value: " + invoice.getTotalGrossValue());
+    Paragraph totalNetValue = new Paragraph("Total net value: " + invoice.getTotalNetValue(),
+        FontFactory.getFont(FontFactory.HELVETICA_BOLD));
+    Paragraph totalGrossValue = new Paragraph("Total gross value: " + invoice.getTotalGrossValue(),
+        FontFactory.getFont(FontFactory.HELVETICA_BOLD));
     paragraph.add(totalNetValue);
     paragraph.add(totalGrossValue);
     document.add(paragraph);
