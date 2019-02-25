@@ -39,7 +39,6 @@ class InvoiceEndpointTest {
   public void setup() {
     mockWebServiceClient = MockWebServiceClient.createClient(webApplicationContext);
   }
-
   @Test
   void shouldAddInvoice() throws IOException {
     //Given

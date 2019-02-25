@@ -3,8 +3,8 @@
     <gs:number>fv1</gs:number>
     <gs:issueDate>2019-02-16+01:00</gs:issueDate>
     <gs:dueDate>2019-02-16+01:00</gs:dueDate>
-    <gs:totalNetValue>100.00</gs:totalNetValue>
-    <gs:totalGrossValue>100.00</gs:totalGrossValue>
+    <gs:totalNetValue>100</gs:totalNetValue>
+    <gs:totalGrossValue>100</gs:totalGrossValue>
     <gs:seller>
       <gs:name>company</gs:name>
       <gs:taxIdentificationNumber>1234567890</gs:taxIdentificationNumber>
@@ -17,11 +17,11 @@
         <gs:phoneNumber>123456789</gs:phoneNumber>
         <gs:website>www.seller.com</gs:website>
         <gs:address>
-          <gs:street>street</gs:street>
+          <gs:street>Street</gs:street>
           <gs:number>1</gs:number>
-          <gs:postalCode>12323</gs:postalCode>
-          <gs:city>City</gs:city>
-          <gs:country>Country</gs:country>
+          <gs:postalCode>00200</gs:postalCode>
+          <gs:city>Warsaw</gs:city>
+          <gs:country>Poland</gs:country>
         </gs:address>
       </gs:contactDetails>
     </gs:seller>
@@ -39,9 +39,9 @@
         <gs:address>
           <gs:street>street</gs:street>
           <gs:number>1</gs:number>
-          <gs:postalCode>12323</gs:postalCode>
-          <gs:city>City</gs:city>
-          <gs:country>Country</gs:country>
+          <gs:postalCode>80890</gs:postalCode>
+          <gs:city>Warsaw</gs:city>
+          <gs:country>Poland</gs:country>
         </gs:address>
       </gs:contactDetails>
     </gs:buyer>

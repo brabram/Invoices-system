@@ -1,4 +1,4 @@
 <ns2:deleteInvoiceResponse xmlns:ns2="http://soap-invoice-service">
   <ns2:status>Success</ns2:status>
-  <ns2:statusMessage>Invoice with id 9 was removed.</ns2:statusMessage>
+  <ns2:statusMessage>Invoice with id 1 was removed.</ns2:statusMessage>
 </ns2:deleteInvoiceResponse>

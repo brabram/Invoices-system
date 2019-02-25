@@ -1,63 +1,54 @@
 <gs:updateInvoiceRequest xmlns:gs="http://soap-invoice-service">
-  <gs:id>9</gs:id>
+  <gs:id>1</gs:id>
   <gs:invoice>
-    <gs:id>9</gs:id>
+    <gs:id>1</gs:id>
     <gs:number>test</gs:number>
     <gs:issueDate>2019-02-16+01:00</gs:issueDate>
     <gs:dueDate>2019-02-16+01:00</gs:dueDate>
-    <gs:totalNetValue>100.00</gs:totalNetValue>
-    <gs:totalGrossValue>100.00</gs:totalGrossValue>
+    <gs:totalNetValue>100</gs:totalNetValue>
+    <gs:totalGrossValue>100</gs:totalGrossValue>
     <gs:seller>
-      <gs:id>8</gs:id>
       <gs:name>company</gs:name>
       <gs:taxIdentificationNumber>1234567890</gs:taxIdentificationNumber>
       <gs:accountNumber>
-        <gs:id>5</gs:id>
         <gs:ibanNumber>PL1234567890</gs:ibanNumber>
         <gs:localNumber>1234567890</gs:localNumber>
       </gs:accountNumber>
       <gs:contactDetails>
-        <gs:id>7</gs:id>
         <gs:email>seller@gmail.com</gs:email>
         <gs:phoneNumber>123456789</gs:phoneNumber>
         <gs:website>www.seller.com</gs:website>
         <gs:address>
-          <gs:id>6</gs:id>
-          <gs:street>street</gs:street>
+          <gs:street>Street</gs:street>
           <gs:number>1</gs:number>
-          <gs:postalCode>12323</gs:postalCode>
-          <gs:city>City</gs:city>
-          <gs:country>Country</gs:country>
+          <gs:postalCode>00200</gs:postalCode>
+          <gs:city>Warsaw</gs:city>
+          <gs:country>Poland</gs:country>
         </gs:address>
       </gs:contactDetails>
     </gs:seller>
     <gs:buyer>
-      <gs:id>4</gs:id>
       <gs:name>company</gs:name>
       <gs:taxIdentificationNumber>1234567890</gs:taxIdentificationNumber>
       <gs:accountNumber>
-        <gs:id>1</gs:id>
         <gs:ibanNumber>PL1234567890</gs:ibanNumber>
         <gs:localNumber>1234567890</gs:localNumber>
       </gs:accountNumber>
       <gs:contactDetails>
-        <gs:id>3</gs:id>
         <gs:email>buyer@gmail.com</gs:email>
         <gs:phoneNumber>123456789</gs:phoneNumber>
         <gs:website>www.buyer.com</gs:website>
         <gs:address>
-          <gs:id>2</gs:id>
           <gs:street>street</gs:street>
           <gs:number>1</gs:number>
-          <gs:postalCode>12323</gs:postalCode>
-          <gs:city>City</gs:city>
-          <gs:country>Country</gs:country>
+          <gs:postalCode>80890</gs:postalCode>
+          <gs:city>Warsaw</gs:city>
+          <gs:country>Poland</gs:country>
         </gs:address>
       </gs:contactDetails>
     </gs:buyer>
     <gs:invoiceEntries>
       <gs:invoiceEntry>
-        <gs:id>10</gs:id>
         <gs:item>item</gs:item>
         <gs:quantity>1</gs:quantity>
         <gs:price>100.00</gs:price>
