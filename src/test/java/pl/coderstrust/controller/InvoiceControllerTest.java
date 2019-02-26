@@ -41,7 +41,7 @@ import pl.coderstrust.service.ServiceOperationException;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(InvoiceController.class)
 @AutoConfigureMockMvc
-@WithMockUser(username="admin",roles="ADMIN")
+@WithMockUser(username = "admin", roles = "ADMIN")
 class InvoiceControllerTest {
 
   private final String urlAddressTemplate = "/invoices";
