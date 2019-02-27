@@ -36,7 +36,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       long id = counter.incrementAndGet();
       invoice.setId(id);
       invoices.put(id, invoice);
-      log.info("Saving invoice in memory database", invoice);
+      log.debug("Saving invoice in memory database: {}", invoice);
       return Optional.of(invoice);
     }
   }
@@ -50,7 +50,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (id < 0) {
         throw new IllegalArgumentException("Id cannot be lower than zero");
       }
-      log.info("Finding invoice by id in memory database", id);
+      log.debug("Finding invoice by id in memory database: {}", id);
       return Optional.ofNullable(invoices.get(id));
     }
   }
@@ -64,7 +64,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (id < 0) {
         throw new IllegalArgumentException("Id cannot be lower than zero");
       }
-      log.info("Checking if invoice exist by id in memory database", id);
+      log.debug("Checking if invoice exist by id in memory database: {}", id);
       return isInvoiceExist(id);
     }
   }
@@ -80,7 +80,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   @Override
   public synchronized long count() {
     synchronized (lock) {
-      log.info("Return number of invoices in memory database");
+      log.info("Return counting of invoices in memory database");
       return invoices.size();
     }
   }
@@ -94,7 +94,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (!isInvoiceExist(id)) {
         throw new DatabaseOperationException("Invoice does not exist");
       }
-      log.info("Deleting invoice by id from in memory database", id);
+      log.info("Deleting invoice by id from in memory database: {}", id);
       invoices.remove(id);
     }
   }
@@ -102,12 +102,13 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   @Override
   public void deleteAll() {
     synchronized (lock) {
+      log.debug("All invoices was deleted");
       invoices.clear();
     }
   }
 
   private boolean isInvoiceExist(long id) {
-    log.info("Checking is invoice exist by id in memory database", id);
+    log.info("Checking is invoice exist by id in memory database: {}", id);
     return invoices.containsKey(id);
   }
 }

@@ -30,10 +30,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
     try {
-      log.info("Saving invoice in hibernate database", invoice);
+      log.debug("Saving invoice in hibernate database: {}", invoice);
       return Optional.of(hibernateInvoiceRepository.save(invoice));
     } catch (NonTransientDataAccessException e) {
-      String message = "An error while saving invoice.";
+      String message = String.format("An error while saving invoice: %s", invoice);
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -45,10 +45,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Id cannot be null");
     }
     try {
-      log.info("Searching invoice by id from hibernate database", id);
+      log.debug("Searching invoice from hibernate database by id: {} ", id);
       return hibernateInvoiceRepository.findById(id);
     } catch (NoSuchElementException e) {
-      String message = "An error while searching for invoice.";
+      String message = String.format("An error while searching for invoice by id: %d", id);
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -60,7 +60,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Id cannot be null");
     }
     try {
-      log.info("Checking if invoice exist by id in hibernate database", id);
+      log.debug("Checking if invoice exist in hibernate database by id: {}", id);
       return hibernateInvoiceRepository.existsById(id);
     } catch (NonTransientDataAccessException e) {
       String message = "An error while looking for invoice.";
@@ -72,10 +72,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   @Override
   public Optional<List<Invoice>> findAll() throws DatabaseOperationException {
     try {
-      log.info("Searching all invoices in hibernate database");
+      log.debug("Searching all invoices in hibernate database");
       return Optional.of(hibernateInvoiceRepository.findAll());
     } catch (NonTransientDataAccessException e) {
-      String message = "An error while searching for invoices.";
+      String message = "An error while searching for all invoices.";
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -84,7 +84,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   @Override
   public long count() throws DatabaseOperationException {
     try {
-      log.info("Checking number of invoices in hibernate database");
+      log.debug("Checking number of invoices in hibernate database");
       return hibernateInvoiceRepository.count();
     } catch (NonTransientDataAccessException e) {
       String message = "An error while counting invoices.";
@@ -102,10 +102,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Id cannot be less than 0");
     }
     try {
-      log.info("Deleting invoice by id from hibernate database");
+      log.debug("Deleting invoice by id from hibernate database: {}", id);
       hibernateInvoiceRepository.deleteById(id);
     } catch (EmptyResultDataAccessException e) {
-      String message = "There was no invoice in database.";
+      String message = String.format("There was no invoice in database by id: %d", id);
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -114,7 +114,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   @Override
   public void deleteAll() throws DatabaseOperationException {
     try {
-      log.error("Deleting all invoices from hibernate database");
+      log.debug("Deleting all invoices from hibernate database");
       hibernateInvoiceRepository.deleteAll();
     } catch (NonTransientDataAccessException e) {
       String message = "An error while deleting all invoices.";

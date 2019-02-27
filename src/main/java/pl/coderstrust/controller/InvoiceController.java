@@ -1,9 +1,5 @@
 package pl.coderstrust.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -62,10 +58,10 @@ public class InvoiceController {
       if (optionalInvoicesList.isPresent()) {
         return new ResponseEntity<>(optionalInvoicesList.get(), HttpStatus.OK);
       }
-      log.info("Getting all invoices");
+      log.debug("Getting all invoices");
       return new ResponseEntity<>(new ArrayList<Invoice>(), HttpStatus.OK);
     } catch (Exception e) {
-      String message = "Internal server error while getting invoices.";
+      String message = "Internal server error while getting all invoices.";
       log.error(message, e);
       return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -84,14 +80,14 @@ public class InvoiceController {
     try {
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {
-        log.info("Getting invoice by id", id);
+        log.debug("Getting invoice by id: {}", id);
         return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);
       }
       return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed id: %d", id)), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
-      String message = "Internal server error while getting invoice by id: %d";
+      String message = String.format("Internal server error while getting invoice by id: %d", id);
       log.error(message, e);
-      return new ResponseEntity<>(new ErrorMessage(String.format(message, id)), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(new ErrorMessage (message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -115,14 +111,14 @@ public class InvoiceController {
         if (optionalInvoice.isPresent()) {
           return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);
         }
-        log.info("Getting invoice by number");
+        log.debug("Getting invoice by number: {}", number);
         return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed number: %s", number)), HttpStatus.NOT_FOUND);
       }
       return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed number: %s", number)), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
-      String message = "Internal server error while getting invoice by number: %s";
+      String message = String.format("Internal server error while getting invoice by number: %s", number);
       log.error(message, e);
-      return new ResponseEntity<>(new ErrorMessage(String.format(message, number)), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(new ErrorMessage (message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -150,12 +146,12 @@ public class InvoiceController {
           responseHeaders.setLocation(URI.create(String.format("/invoices/%d", addedInvoice.get().getId())));
           return new ResponseEntity<>(addedInvoice.get(), responseHeaders, HttpStatus.CREATED);
         }
-        log.info("Adding invoice");
+        log.debug("Adding invoice: {}", invoice);
         return new ResponseEntity<>(new ErrorMessage("Internal server error while adding invoice."), HttpStatus.INTERNAL_SERVER_ERROR);
       }
       return new ResponseEntity<>(new ErrorMessage("Invoice already exist."), HttpStatus.CONFLICT);
     } catch (Exception e) {
-      String message = "Internal server error while adding invoice.";
+      String message = String.format("Internal server error while adding invoice: %s", invoice);
       log.error(message, e);
       return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -185,11 +181,11 @@ public class InvoiceController {
       if (!invoiceService.invoiceExistsById(id)) {
         return new ResponseEntity<>(new ErrorMessage(String.format("Invoice with %d id does not exist.", id)), HttpStatus.NOT_FOUND);
       }
-      log.info("Updating invoice");
+      log.debug("Updating invoice. id: {}, invoice: {}", id, invoice);
       invoiceService.updateInvoice(invoice);
       return new ResponseEntity<>(invoice, HttpStatus.OK);
     } catch (Exception e) {
-      String message = "Internal server error while updating invoice.";
+      String message = String.format("Internal server error while updating invoice %d id, %s invoice", id, invoice);
       log.error(message, e);
       return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -210,11 +206,11 @@ public class InvoiceController {
       if (!optionalInvoice.isPresent()) {
         return new ResponseEntity<>(new ErrorMessage(String.format("Invoice with %d id does not exist.", id)), HttpStatus.NOT_FOUND);
       }
-      log.info("Removing invoice");
+      log.debug("Removing invoice. id: {}", id);
       invoiceService.deleteInvoiceById(id);
       return new ResponseEntity<>(HttpStatus.OK);
     } catch (Exception e) {
-      String message = "Internal server error while removing invoice.";
+      String message = String.format("Internal server error while removing invoice. id: %d", id);
       log.error(message, e);
       return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
