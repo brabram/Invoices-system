@@ -28,7 +28,7 @@ import org.springframework.xml.transform.StringSource;
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class InvoiceEndpointTest {
+class InvoiceEndpointIT {
 
   @Autowired
   private WebApplicationContext webApplicationContext;
