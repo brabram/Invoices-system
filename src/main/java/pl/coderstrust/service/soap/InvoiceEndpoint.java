@@ -60,7 +60,7 @@ public class InvoiceEndpoint {
       Optional<Invoice> invoiceOptional = invoiceService.getInvoiceById(id);
       if (invoiceOptional.isPresent()) {
         response.setStatus(Status.SUCCESS);
-        response.setStatusMessage(String.format("Invoice with id %d were downloaded.", id));
+        response.setStatusMessage(String.format("Invoice with id %d was downloaded.", id));
         response.setInvoice(convertInvoiceToXml(invoiceOptional.get()));
         return response;
       }
@@ -88,7 +88,7 @@ public class InvoiceEndpoint {
             .findFirst();
         if (optionalInvoice.isPresent()) {
           response.setStatus(Status.SUCCESS);
-          response.setStatusMessage(String.format("Invoice with number %s were downloaded.", number));
+          response.setStatusMessage(String.format("Invoice with number %s was downloaded.", number));
           response.setInvoice(convertInvoiceToXml(optionalInvoice.get()));
           return response;
         }

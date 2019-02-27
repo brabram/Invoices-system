@@ -20,8 +20,8 @@ public class InvoiceFromXmlConverter {
     return new Invoice(
         invoiceXml.getId(),
         invoiceXml.getNumber(),
-        convertXmlToLocalDate(invoiceXml.getDueDate()),
         convertXmlToLocalDate(invoiceXml.getIssueDate()),
+        convertXmlToLocalDate(invoiceXml.getDueDate()),
         convertCompanyFromXml(invoiceXml.getSeller()),
         convertCompanyFromXml(invoiceXml.getBuyer()),
         convertEntriesFromXml(invoiceXml.getInvoiceEntries()),
