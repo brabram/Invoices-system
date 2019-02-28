@@ -30,7 +30,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
     try {
-      log.debug("Saving invoice in hibernate database: {}", invoice);
+      log.debug("Saving invoice: {}", invoice);
       return Optional.of(hibernateInvoiceRepository.save(invoice));
     } catch (NonTransientDataAccessException e) {
       String message = String.format("An error while saving invoice: %s", invoice);
@@ -45,10 +45,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Id cannot be null");
     }
     try {
-      log.debug("Searching invoice from hibernate database by id: {} ", id);
+      log.debug("Getting invoice by id: {} ", id);
       return hibernateInvoiceRepository.findById(id);
     } catch (NoSuchElementException e) {
-      String message = String.format("An error while searching for invoice by id: %d", id);
+      String message = String.format("An error while getting invoice by id: %d", id);
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -60,10 +60,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Id cannot be null");
     }
     try {
-      log.debug("Checking if invoice exist in hibernate database by id: {}", id);
+      log.debug("Checking if invoice exists by id: {}", id);
       return hibernateInvoiceRepository.existsById(id);
     } catch (NonTransientDataAccessException e) {
-      String message = "An error while looking for invoice.";
+      String message = String.format("An error while checking if invoice exist by id: %d", id);
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -72,10 +72,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   @Override
   public Optional<List<Invoice>> findAll() throws DatabaseOperationException {
     try {
-      log.debug("Searching all invoices in hibernate database");
+      log.debug("Getting all invoices.");
       return Optional.of(hibernateInvoiceRepository.findAll());
     } catch (NonTransientDataAccessException e) {
-      String message = "An error while searching for all invoices.";
+      String message = "An error while getting all invoices.";
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -84,10 +84,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   @Override
   public long count() throws DatabaseOperationException {
     try {
-      log.debug("Checking number of invoices in hibernate database");
+      log.debug("Getting number of invoices.");
       return hibernateInvoiceRepository.count();
     } catch (NonTransientDataAccessException e) {
-      String message = "An error while counting invoices.";
+      String message = "An error while getting number of invoices.";
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }
@@ -102,7 +102,7 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("Id cannot be less than 0");
     }
     try {
-      log.debug("Deleting invoice by id from hibernate database: {}", id);
+      log.debug("Deleting invoice by id: {}", id);
       hibernateInvoiceRepository.deleteById(id);
     } catch (EmptyResultDataAccessException e) {
       String message = String.format("There was no invoice in database by id: %d", id);
@@ -114,10 +114,10 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   @Override
   public void deleteAll() throws DatabaseOperationException {
     try {
-      log.debug("Deleting all invoices from hibernate database");
+      log.debug("Removing all invoices.");
       hibernateInvoiceRepository.deleteAll();
     } catch (NonTransientDataAccessException e) {
-      String message = "An error while deleting all invoices.";
+      String message = "An error while removing  all invoices.";
       log.error(message, e);
       throw new DatabaseOperationException(message, e);
     }

@@ -20,9 +20,9 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
+    log.debug("Creating new file: {}", filePath);
     File file = new File(filePath);
     if (!file.exists()) {
-      log.info("Creating new file");
       file.createNewFile();
     }
   }
@@ -31,9 +31,9 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
+    log.debug("Deleting file: {}", filePath);
     File file = new File(filePath);
     if (file.exists()) {
-      log.info("Deleting file");
       file.delete();
     }
   }
@@ -42,7 +42,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
-    log.info("Checking if file exists");
+    log.debug("Checking if file exists: {}", filePath);
     return new File(filePath).exists();
   }
 
@@ -54,7 +54,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (!file.exists()) {
       throw new FileNotFoundException("Cannot find file");
     }
-    log.info("Checking if file is empty");
+    log.debug("Checking if file is empty: {}", filePath);
     return file.length() == 0;
   }
 
@@ -62,7 +62,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
-    log.info("Clearing file");
+    log.debug("Clearing file: {}", filePath);
     FileUtils.write(new File(filePath), "", ENCODING);
   }
 
@@ -73,7 +73,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (line == null) {
       throw new IllegalArgumentException("line cannot be null.");
     }
-    log.info("Writing lines in file");
+    log.debug("Writing lines in file: {}, line: {}", filePath, line);
     FileUtils.writeLines(new File(filePath), ENCODING, Collections.singleton(line), true);
   }
 
@@ -81,7 +81,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
-    log.info("Reading lines from file");
+    log.debug("Reading lines from file: {}", filePath);
     return FileUtils.readLines(new File(filePath), ENCODING);
   }
 
@@ -89,9 +89,9 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
+    log.debug("Reading last line from file: {}", filePath);
     try (ReversedLinesFileReader reversedLinesReader = new ReversedLinesFileReader(
         new File(filePath), Charset.defaultCharset())) {
-      log.info("Reading last line from file");
       return reversedLinesReader.readLine();
     }
   }
@@ -103,7 +103,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (lines == null) {
       throw new IllegalArgumentException("lines cannot be null.");
     }
-    log.info("Writing lines to file");
+    log.debug("Writing lines to file: {}, lines: {}", filePath, lines);
     FileUtils.writeLines(new File(filePath), ENCODING, lines, true);
   }
 
@@ -114,7 +114,7 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (lineNumber <= 0) {
       throw new IllegalArgumentException("lineNumber cannot be less or equal to zero.");
     }
-    log.info("Removing lines from file");
+    log.debug("Removing lines from file: {}, lineNumber: {}", filePath, lineNumber);
     File file = new File(filePath);
     List<String> lines = readLines(file.getPath());
     lines.remove(lineNumber - 1);

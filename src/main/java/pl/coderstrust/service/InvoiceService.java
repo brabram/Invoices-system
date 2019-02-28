@@ -25,10 +25,10 @@ public class InvoiceService {
 
   public Optional<List<Invoice>> getAllInvoices() throws ServiceOperationException {
     try {
-      log.debug("Getting all invoices from database.");
+      log.debug("Getting all invoices");
       return invoiceDatabase.findAll();
     } catch (DatabaseOperationException e) {
-      String message = "An error while getting all invoices from database.";
+      String message = "An error while getting all invoices";
       log.error(message, e);
       throw new ServiceOperationException(message, e);
     }
@@ -53,7 +53,7 @@ public class InvoiceService {
           .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)
           .collect(Collectors.toList());
     }
-    log.debug("Getting all invoices from database in the specified range: from date: {} - to date: {}", fromDate, toDate);
+    log.debug("Getting all invoices in the specified range: from: {} - to: {}", fromDate, toDate);
     return Optional.of(invoicesInDataRange);
   }
 
@@ -62,7 +62,7 @@ public class InvoiceService {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
-      log.debug("Getting invoice by id from database: {}", id);
+      log.debug("Getting invoice by id: {}", id);
       return invoiceDatabase.findById(id);
     } catch (DatabaseOperationException e) {
       String message = String.format("An error while getting invoice by id: %d", id);
@@ -80,7 +80,7 @@ public class InvoiceService {
       if (id != null && invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s already exists", id));
       }
-      log.debug("Adding invoice to database: {}", invoice);
+      log.debug("Adding invoice: {}", invoice);
       return invoiceDatabase.save(invoice);
     } catch (DatabaseOperationException e) {
       String message = String.format("An error while adding invoice: %s", invoice);
@@ -95,10 +95,10 @@ public class InvoiceService {
     }
     try {
       Long id = invoice.getId();
+      log.debug("Updating invoice. id: {}, invoice: {}", id, invoice);
       if (id == null || !invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s does not exist", id));
       }
-      log.debug("Updating invoice. id: {}, invoice: {}", id, invoice);
       invoiceDatabase.save(invoice);
     } catch (DatabaseOperationException e) {
       String message = String.format("An error while updating invoice %d id, %s invoice", invoice.getId(), invoice);
@@ -112,13 +112,13 @@ public class InvoiceService {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
+      log.debug("Removing invoice by id: {}", id);
       if (!invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s does not exist", id));
       }
-      log.debug("Removing invoice by id: {}", id);
       invoiceDatabase.deleteById(id);
     } catch (DatabaseOperationException e) {
-      String message = String.format("An error while deleting invoice by id: %d", id);
+      String message = String.format("An error while removing invoice by id: %d", id);
       log.error(message, e);
       throw new ServiceOperationException(message, e);
     }
@@ -126,10 +126,10 @@ public class InvoiceService {
 
   public void deleteAll() throws ServiceOperationException {
     try {
-      log.debug("All invoices was deleted");
+      log.debug("Removing all invoices.");
       invoiceDatabase.deleteAll();
     } catch (DatabaseOperationException e) {
-      String message = "An error while deleting all invoices.";
+      String message = "An error while removing all invoices.";
       log.error(message, e);
       throw new ServiceOperationException(message, e);
     }
@@ -140,10 +140,10 @@ public class InvoiceService {
       throw new IllegalArgumentException("Id cannot be null.");
     }
     try {
-      log.debug("Checked if invoice exist by id: {}", id);
+      log.debug("Checking if invoice exists by id: {}", id);
       return invoiceDatabase.existsById(id);
     } catch (DatabaseOperationException e) {
-      String message = String.format("An error while checking if invoice exist by id: %d", id);
+      String message = String.format("An error while checking if invoice exists by id: %d", id);
       log.error(message, e);
       throw new ServiceOperationException(message, e);
     }

@@ -29,6 +29,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (invoice == null) {
         throw new IllegalArgumentException("Invoice cannot be null");
       }
+      log.debug("Saving invoice: {}", invoice);
       if (isInvoiceExist(invoice.getId())) {
         invoices.put(invoice.getId(), invoice);
         return Optional.of(invoice);
@@ -36,7 +37,6 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       long id = counter.incrementAndGet();
       invoice.setId(id);
       invoices.put(id, invoice);
-      log.debug("Saving invoice in memory database: {}", invoice);
       return Optional.of(invoice);
     }
   }
@@ -47,10 +47,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
       }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be lower than zero");
-      }
-      log.debug("Finding invoice by id in memory database: {}", id);
+      log.debug("Searching invoice by id: {}", id);
       return Optional.ofNullable(invoices.get(id));
     }
   }
@@ -61,10 +58,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (id == null) {
         throw new IllegalArgumentException("Id cannot be null");
       }
-      if (id < 0) {
-        throw new IllegalArgumentException("Id cannot be lower than zero");
-      }
-      log.debug("Checking if invoice exist by id in memory database: {}", id);
+      log.debug("Checking if invoice exists by id: {}", id);
       return isInvoiceExist(id);
     }
   }
@@ -72,7 +66,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   @Override
   public Optional<List<Invoice>> findAll() {
     synchronized (lock) {
-      log.info("Finding all invoices in memory database");
+      log.debug("Getting all invoices.");
       return Optional.of(new ArrayList<>(invoices.values()));
     }
   }
@@ -80,7 +74,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   @Override
   public synchronized long count() {
     synchronized (lock) {
-      log.info("Return counting of invoices in memory database");
+      log.debug("Getting number of invoices.");
       return invoices.size();
     }
   }
@@ -94,7 +88,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       if (!isInvoiceExist(id)) {
         throw new DatabaseOperationException("Invoice does not exist");
       }
-      log.info("Deleting invoice by id from in memory database: {}", id);
+      log.debug("Removing invoice by id: {}", id);
       invoices.remove(id);
     }
   }
@@ -102,13 +96,13 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   @Override
   public void deleteAll() {
     synchronized (lock) {
-      log.debug("All invoices was deleted");
+      log.debug("Removing all invoices.");
       invoices.clear();
     }
   }
 
   private boolean isInvoiceExist(long id) {
-    log.info("Checking is invoice exist by id in memory database: {}", id);
+    log.info("Checking if invoice exists by id: {}", id);
     return invoices.containsKey(id);
   }
 }
