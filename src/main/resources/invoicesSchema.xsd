@@ -118,15 +118,15 @@
       <xs:element name="totalGrossValue" type="xs:decimal"/>
       <xs:element name="seller" type="tns:company"/>
       <xs:element name="buyer" type="tns:company"/>
-      <xs:element name="invoiceEntries" type="tns:invoiceEntries"/>
+      <xs:element name="invoiceEntries" type="tns:invoiceEntry" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="invoiceEntries">
-    <xs:sequence>
-      <xs:element name="invoiceEntry" type="tns:invoiceEntry" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
+  <!--<xs:complexType name="invoiceEntries">-->
+    <!--<xs:sequence>-->
+      <!--<xs:element name="invoiceEntry" type="tns:invoiceEntry" maxOccurs="unbounded"/>-->
+    <!--</xs:sequence>-->
+  <!--</xs:complexType>-->
 
   <xs:complexType name="invoiceEntry">
     <xs:sequence>
