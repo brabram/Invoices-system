@@ -2,6 +2,7 @@ package pl.coderstrust.service.soap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -62,6 +63,23 @@ public class InvoiceEndopointTest {
   }
 
   @Test
+  void getAllInvoicesMethodShouldReturnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws ServiceOperationException {
+    //Given
+    GetAllInvoicesRequest request = new GetAllInvoicesRequest();
+    doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
+    String expectedStatusMessage = "An error while getting invoices from database.";
+
+    //When
+    GetAllInvoicesResponse response = invoiceEndpoint.getAllInvoices(request);
+    Status actualStatus = response.getStatus();
+    String actualStatusMessage = response.getStatusMessage();
+
+    //Then
+    assertEquals(Status.ERROR, actualStatus);
+    assertEquals(expectedStatusMessage, actualStatusMessage);
+  }
+
+  @Test
   void shouldGetInvoiceById() throws ServiceOperationException, DatatypeConfigurationException {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
@@ -82,6 +100,46 @@ public class InvoiceEndopointTest {
     assertEquals(expectedStatusMessage, actualStatusMessage);
     assertEquals(expectedInvoice, actualInvoice);
     verify(invoiceService).getInvoiceById(id);
+  }
+
+  @Test
+  void getInvoiceByIdMethodShouldReturnErrorWhenInvoiceWithSpecificIdDoesNotExist() throws ServiceOperationException, DatatypeConfigurationException {
+    //Given
+    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
+    Long id = expectedInvoice.getId() + 1L;
+    when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
+    GetInvoiceByIdRequest request = new GetInvoiceByIdRequest();
+    request.setId(id);
+    String expectedStatusMessage = String.format("Not found invoice with id %d.", id);
+
+    //When
+    GetInvoiceByIdResponse response = invoiceEndpoint.getInvoiceById(request);
+    Status actualStatus = response.getStatus();
+    String actualStatusMessage = response.getStatusMessage();
+
+    //Then
+    assertEquals(Status.ERROR, actualStatus);
+    assertEquals(expectedStatusMessage, actualStatusMessage);
+    verify(invoiceService).getInvoiceById(id);
+  }
+
+  @Test
+  void getInvoiceByIdMethodShouldReturnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws ServiceOperationException {
+    //Given
+    GetInvoiceByIdRequest request = new GetInvoiceByIdRequest();
+    long id = 1L;
+    request.setId(id);
+    doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
+    String expectedStatusMessage = String.format("An error while getting invoice with id %d from database.", id);
+
+    //When
+    GetInvoiceByIdResponse response = invoiceEndpoint.getInvoiceById(request);
+    Status actualStatus = response.getStatus();
+    String actualStatusMessage = response.getStatusMessage();
+
+    //Then
+    assertEquals(Status.ERROR, actualStatus);
+    assertEquals(expectedStatusMessage, actualStatusMessage);
   }
 
   @Test
@@ -109,6 +167,50 @@ public class InvoiceEndopointTest {
     assertEquals(expectedStatusMessage, actualStatusMessage);
     assertEquals(expectedInvoice, actualInvoice);
     verify(invoiceService).getAllInvoices();
+  }
+
+  @Test
+  void getInvoiceByNumberMethodShouldReturnErrorWhenInvoiceWithSpecificIdDoesNotExist() throws ServiceOperationException, DatatypeConfigurationException {
+    //Given
+    Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
+    Invoice expectedInvoice2 = InvoiceGenerator.getRandomInvoice();
+    List<Invoice> expectedInvoices = new ArrayList<>();
+    expectedInvoices.add(expectedInvoice);
+    expectedInvoices.add(expectedInvoice2);
+    when(invoiceService.getAllInvoices()).thenReturn(Optional.of(expectedInvoices));
+    GetInvoiceByNumberRequest request = new GetInvoiceByNumberRequest();
+    String number = expectedInvoice.getNumber() + "test";
+    request.setNumber(number);
+    String expectedStatusMessage = String.format("Not found invoice with number %s.", number);
+
+    //When
+    GetInvoiceByNumberResponse response = invoiceEndpoint.getInvoiceByNumber(request);
+    Status actualStatus = response.getStatus();
+    String actualStatusMessage = response.getStatusMessage();
+
+    //Then
+    assertEquals(Status.ERROR, actualStatus);
+    assertEquals(expectedStatusMessage, actualStatusMessage);
+    verify(invoiceService).getAllInvoices();
+  }
+
+  @Test
+  void getInvoiceByNumberMethodShouldReturnErrorOccurDuringExecutionGettingInvoicesFromDatabase() throws ServiceOperationException {
+    //Given
+    GetInvoiceByNumberRequest request = new GetInvoiceByNumberRequest();
+    String number = "test";
+    request.setNumber(number);
+    doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
+    String expectedStatusMessage = String.format("An error while getting invoice with number %s from database.", number);
+
+    //When
+    GetInvoiceByNumberResponse response = invoiceEndpoint.getInvoiceByNumber(request);
+    Status actualStatus = response.getStatus();
+    String actualStatusMessage = response.getStatusMessage();
+
+    //Then
+    assertEquals(Status.ERROR, actualStatus);
+    assertEquals(expectedStatusMessage, actualStatusMessage);
   }
 
   @Test
