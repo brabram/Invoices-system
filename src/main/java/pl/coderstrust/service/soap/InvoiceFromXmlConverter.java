@@ -12,7 +12,6 @@ import pl.coderstrust.model.ContactDetails;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
-import pl.coderstrust.soap.domainclasses.InvoiceEntries;
 
 public class InvoiceFromXmlConverter {
 
@@ -33,13 +32,12 @@ public class InvoiceFromXmlConverter {
     return xmlGregorianCalendar.toGregorianCalendar().toZonedDateTime().toLocalDate();
   }
 
-  private static List<InvoiceEntry> convertEntriesFromXml(InvoiceEntries entriesXml) {
-    List<InvoiceEntry> invoiceEntries = new ArrayList<>();
-    List<pl.coderstrust.soap.domainclasses.InvoiceEntry> invoiceEntriesXml = entriesXml.getInvoiceEntry();
-    for (pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml : invoiceEntriesXml) {
-      invoiceEntries.add(convertInvoiceEntryFromXml(invoiceEntryXml));
+  private static List<InvoiceEntry> convertEntriesFromXml(List<pl.coderstrust.soap.domainclasses.InvoiceEntry> entriesXml) {
+    List<InvoiceEntry> entries = new ArrayList<>();
+    for (pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml : entriesXml) {
+      entries.add(convertInvoiceEntryFromXml(invoiceEntryXml));
     }
-    return invoiceEntries;
+    return entries;
   }
 
   private static InvoiceEntry convertInvoiceEntryFromXml(pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml) {

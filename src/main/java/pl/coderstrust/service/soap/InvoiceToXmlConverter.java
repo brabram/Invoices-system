@@ -3,7 +3,6 @@ package pl.coderstrust.service.soap;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
-import java.util.List;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -14,8 +13,6 @@ import pl.coderstrust.model.ContactDetails;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
-import pl.coderstrust.soap.domainclasses.InvoiceEntries;
-
 
 public class InvoiceToXmlConverter {
 
@@ -29,7 +26,9 @@ public class InvoiceToXmlConverter {
     invoiceXml.setTotalGrossValue(invoice.getTotalGrossValue());
     invoiceXml.setSeller(convertCompanyToXml(invoice.getSeller()));
     invoiceXml.setBuyer(convertCompanyToXml(invoice.getBuyer()));
-    invoiceXml.setInvoiceEntries(convertEntriesToXml(invoice.getEntries()));
+    for (InvoiceEntry invoiceEntry: invoice.getEntries()){
+      invoiceXml.getInvoiceEntries().add(convertInvoiceEntryToXml(invoiceEntry));
+    }
     return invoiceXml;
   }
 
@@ -38,20 +37,16 @@ public class InvoiceToXmlConverter {
     return DatatypeFactory.newInstance().newXMLGregorianCalendar(dateXml);
   }
 
-  private static InvoiceEntries convertEntriesToXml(List<InvoiceEntry> entries) {
-    InvoiceEntries invoiceEntriesXml = new InvoiceEntries();
+  private static pl.coderstrust.soap.domainclasses.InvoiceEntry convertInvoiceEntryToXml(InvoiceEntry invoiceEntry){
     pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml = new pl.coderstrust.soap.domainclasses.InvoiceEntry();
-    for (InvoiceEntry invoiceEntry : entries) {
-      invoiceEntryXml.setId(invoiceEntry.getId());
-      invoiceEntryXml.setItem(invoiceEntry.getItem());
-      invoiceEntryXml.setPrice(invoiceEntry.getPrice());
-      invoiceEntryXml.setQuantity(invoiceEntry.getQuantity());
-      invoiceEntryXml.setVatRate(convertVatRateToXml(invoiceEntry.getVatRate()));
-      invoiceEntryXml.setVatValue(invoiceEntry.getVatValue());
-      invoiceEntryXml.setGrossValue(invoiceEntry.getGrossValue());
-      invoiceEntriesXml.getInvoiceEntry().add(invoiceEntryXml);
-    }
-    return invoiceEntriesXml;
+    invoiceEntryXml.setId(invoiceEntry.getId());
+    invoiceEntryXml.setItem(invoiceEntry.getItem());
+    invoiceEntryXml.setPrice(invoiceEntry.getPrice());
+    invoiceEntryXml.setQuantity(invoiceEntry.getQuantity());
+    invoiceEntryXml.setVatRate(convertVatRateToXml(invoiceEntry.getVatRate()));
+    invoiceEntryXml.setVatValue(invoiceEntry.getVatValue());
+    invoiceEntryXml.setGrossValue(invoiceEntry.getGrossValue());
+    return invoiceEntryXml;
   }
 
   private static pl.coderstrust.soap.domainclasses.Vat convertVatRateToXml(Vat vatRate) {
