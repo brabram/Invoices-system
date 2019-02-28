@@ -13,10 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+  private String userName;
+  private String userPassword;
+
   @Override
   protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
     auth.inMemoryAuthentication()
-        .withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
+        .withUser(userName).password(passwordEncoder().encode(userPassword)).roles("ADMIN");
   }
 
   @Override
@@ -24,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http
         .csrf().disable()
         .authorizeRequests()
-        .antMatchers("/invoices/**").hasRole("ADMIN")
+        .anyRequest().hasRole("ADMIN")
         .anyRequest().authenticated()
         .and()
         .formLogin();
