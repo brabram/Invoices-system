@@ -116,11 +116,11 @@ public class InvoiceEndopointTest {
     //Given
     Invoice expectedInvoice = InvoiceGenerator.getRandomInvoice();
     long id = expectedInvoice.getId();
+    when(invoiceService.invoiceExistsById(id)).thenReturn(false);
+    when(invoiceService.addInvoice(expectedInvoice)).thenReturn(Optional.of(expectedInvoice));
     AddInvoiceRequest request = new AddInvoiceRequest();
     request.setInvoice(InvoiceToXmlConverter.convertInvoiceToXml(expectedInvoice));
     String expectedMessage = String.format("Added new invoice with id %d.", id);
-    when(invoiceService.invoiceExistsById(id)).thenReturn(false);
-    when(invoiceService.addInvoice(expectedInvoice)).thenReturn(Optional.of(expectedInvoice));
 
     //When
     AddInvoiceResponse response = invoiceEndpoint.addInvoice(request);
