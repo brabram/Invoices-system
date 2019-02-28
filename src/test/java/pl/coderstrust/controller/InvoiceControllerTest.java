@@ -100,7 +100,7 @@ class InvoiceControllerTest {
   void shouldReturnInternalServerErrorDuringGettingAllInvoicesWhenSomethingWentWrongOnServer() throws Exception {
     //Given
     doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while getting invoices.");
+    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while getting all invoices.");
 
     //When
     MvcResult result = mockMvc
@@ -362,7 +362,7 @@ class InvoiceControllerTest {
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
     doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while adding invoice.");
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while adding invoice: %s", invoice));
 
     //When
     MvcResult result = mockMvc
@@ -490,7 +490,7 @@ class InvoiceControllerTest {
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     Long id = invoice.getId();
     doThrow(ServiceOperationException.class).when(invoiceService).invoiceExistsById(id);
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while updating invoice.");
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while updating invoice %d id, %s invoice", id, invoice));
 
     //When
     MvcResult result = mockMvc
@@ -559,7 +559,7 @@ class InvoiceControllerTest {
     //Given
     Long id = 1L;
     doThrow(ServiceOperationException.class).when(invoiceService).getInvoiceById(id);
-    ErrorMessage expectedResponse = new ErrorMessage("Internal server error while removing invoice.");
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while removing invoice. id: %d", id));
 
     //When
     MvcResult result = mockMvc
