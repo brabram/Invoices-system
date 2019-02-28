@@ -26,7 +26,7 @@ public class InvoiceToXmlConverter {
     invoiceXml.setTotalGrossValue(invoice.getTotalGrossValue());
     invoiceXml.setSeller(convertCompanyToXml(invoice.getSeller()));
     invoiceXml.setBuyer(convertCompanyToXml(invoice.getBuyer()));
-    for (InvoiceEntry invoiceEntry: invoice.getEntries()){
+    for (InvoiceEntry invoiceEntry : invoice.getEntries()) {
       invoiceXml.getInvoiceEntries().add(convertInvoiceEntryToXml(invoiceEntry));
     }
     return invoiceXml;
@@ -37,7 +37,7 @@ public class InvoiceToXmlConverter {
     return DatatypeFactory.newInstance().newXMLGregorianCalendar(dateXml);
   }
 
-  private static pl.coderstrust.soap.domainclasses.InvoiceEntry convertInvoiceEntryToXml(InvoiceEntry invoiceEntry){
+  private static pl.coderstrust.soap.domainclasses.InvoiceEntry convertInvoiceEntryToXml(InvoiceEntry invoiceEntry) {
     pl.coderstrust.soap.domainclasses.InvoiceEntry invoiceEntryXml = new pl.coderstrust.soap.domainclasses.InvoiceEntry();
     invoiceEntryXml.setId(invoiceEntry.getId());
     invoiceEntryXml.setItem(invoiceEntry.getItem());

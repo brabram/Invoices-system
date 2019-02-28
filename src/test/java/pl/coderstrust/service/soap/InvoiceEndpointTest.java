@@ -312,9 +312,9 @@ public class InvoiceEndpointTest {
     UpdateInvoiceRequest request = new UpdateInvoiceRequest();
     request.setInvoice(InvoiceToXmlConverter.convertInvoiceToXml(expectedInvoice));
     request.setId(id);
-    String expectedMessage = String.format("Invoice with id %d was updated.", id);
     when(invoiceService.invoiceExistsById(id)).thenReturn(true);
     doNothing().when(invoiceService).updateInvoice(expectedInvoice);
+    String expectedMessage = String.format("Invoice with id %d was updated.", id);
 
     //When
     UpdateInvoiceResponse response = invoiceEndpoint.updateInvoice(request);
