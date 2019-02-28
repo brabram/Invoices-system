@@ -91,13 +91,13 @@ public class PdfService {
   }
 
   private void addInvoiceEntriestableHeander(PdfPTable table, String[] headers) {
-    for (String heander : headers) {
+    for (String header : headers) {
       PdfPCell title = new PdfPCell();
       title.setBackgroundColor(BaseColor.GRAY);
       title.setHorizontalAlignment(title.ALIGN_CENTER);
       title.setVerticalAlignment(title.ALIGN_CENTER);
       title.setBorderWidth(2);
-      title.setPhrase(new Phrase(heander));
+      title.setPhrase(new Phrase(header));
       table.addCell(title);
     }
   }
