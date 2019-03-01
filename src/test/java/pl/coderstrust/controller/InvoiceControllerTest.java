@@ -55,7 +55,7 @@ class InvoiceControllerTest {
   private InvoiceService invoiceService;
 
   @MockBean
-  private InvoicePdfService InvoicePdfService;
+  private InvoicePdfService invoicePdfService;
 
   @Test
   void shouldReturnAllInvoices() throws Exception {

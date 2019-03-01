@@ -1,16 +1,16 @@
 package pl.coderstrust.service;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
-import java.io.ByteArrayOutputStream;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.ByteArrayOutputStream;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.model.AccountNumber;
@@ -130,11 +130,11 @@ public class InvoicePdfService {
   }
 
   private PdfPTable getInvoiceEntries(Invoice invoice) {
-    String[] tableHeaders = new String[]{"Item", "Quantity", "Price", "Vat rate", "Vat Value", "Gross value",};
     PdfPTable table = new PdfPTable(6);
     table.setSpacingBefore(25);
     table.setSpacingAfter(25);
     table.setWidthPercentage(100);
+    String[] tableHeaders = new String[] {"Item", "Quantity", "Price", "Vat rate", "Vat Value", "Gross value"};
     addTableHeader(table, tableHeaders);
     for (InvoiceEntry invoiceEntry : invoice.getEntries()) {
       table.addCell(invoiceEntry.getItem());
