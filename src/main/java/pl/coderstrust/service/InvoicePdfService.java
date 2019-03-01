@@ -2,6 +2,7 @@ package pl.coderstrust.service;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
@@ -41,7 +42,7 @@ public class InvoicePdfService {
       document.close();
 
       return stream.toByteArray();
-    } catch (Exception e) {
+    } catch (DocumentException e) {
       throw new ServiceOperationException(String.format("An error occurred during creating pdf for invoice. Invoice id: %s",
           invoice.getId()), e);
     }

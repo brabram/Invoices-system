@@ -239,6 +239,7 @@
                     <exclude>pl.coderstrust.service.ServiceOperationException</exclude>
                     <exclude>pl.coderstrust.Application</exclude>
                     <exclude>pl.coderstrust.configuration.SwaggerConfig</exclude>
+                    <exclude>pl.coderstrust.configuration.SecurityConfig</exclude>
                   </excludes>
                 </rule>
               </rules>
