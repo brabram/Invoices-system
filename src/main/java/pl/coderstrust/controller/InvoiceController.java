@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.validators.InvoiceValidator;
 import pl.coderstrust.service.InvoiceService;
-import pl.coderstrust.service.PdfService;
+import pl.coderstrust.service.InvoicePdfService;
 
 @Api(value = "/invoices", description = "Available operations for invoice application", tags = {"Invoices"})
 @RestController
@@ -40,12 +40,12 @@ import pl.coderstrust.service.PdfService;
 public class InvoiceController {
   private static Logger log = LoggerFactory.getLogger(InvoiceController.class);
   private InvoiceService invoiceService;
-  private PdfService pdfService;
+  private InvoicePdfService invoicePdfService;
 
   @Autowired
-  public InvoiceController(InvoiceService invoiceService, PdfService pdfService) {
+  public InvoiceController(InvoiceService invoiceService, InvoicePdfService invoicePdfService) {
     this.invoiceService = invoiceService;
-    this.pdfService = pdfService;
+    this.invoicePdfService = invoicePdfService;
   }
 
   @GetMapping
@@ -219,18 +219,18 @@ public class InvoiceController {
 
   @GetMapping("/pdf/{id}")
   @ApiOperation(
-      value = "Get invoice by id.",
+      value = "Get invoice as PDF.",
       response = Invoice.class)
   @ApiImplicitParam(name = "id", value = "Only digits possible, e.g. 7865", example = "7865", dataType = "Long")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "OK", response = Invoice.class),
       @ApiResponse(code = 404, message = "Invoice not found for passed id.", response = ErrorMessage.class),
       @ApiResponse(code = 500, message = "Internal server error.", response = ErrorMessage.class)})
-  public ResponseEntity<?> createPdf(@PathVariable("id") Long id) {
+  public ResponseEntity<?> getPdf(@PathVariable("id") Long id) {
     try {
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {
-        byte[] invoiceAsPdf = pdfService.createPdf(optionalInvoice.get());
+        byte[] invoiceAsPdf = invoicePdfService.createPdf(optionalInvoice.get());
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_PDF);
         return new ResponseEntity<>(invoiceAsPdf, responseHeaders, HttpStatus.OK);
