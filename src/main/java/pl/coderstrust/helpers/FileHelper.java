@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class FileHelper {
-Logger log = LoggerFactory.getLogger(FileHelper.class);
+  private static Logger log = LoggerFactory.getLogger(FileHelper.class);
   private static final String ENCODING = "UTF-8";
 
   void create(String filePath) throws IOException {
@@ -50,11 +50,11 @@ Logger log = LoggerFactory.getLogger(FileHelper.class);
     if (filePath == null) {
       throw new IllegalArgumentException("filePath cannot be null.");
     }
+    log.debug("Checking if file is empty: {}", filePath);
     File file = new File(filePath);
     if (!file.exists()) {
       throw new FileNotFoundException("Cannot find file");
     }
-    log.debug("Checking if file is empty: {}", filePath);
     return file.length() == 0;
   }
 

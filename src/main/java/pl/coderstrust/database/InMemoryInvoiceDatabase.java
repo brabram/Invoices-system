@@ -86,7 +86,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
         throw new IllegalArgumentException("Id cannot be null");
       }
       if (!isInvoiceExist(id)) {
-        throw new DatabaseOperationException("Invoice does not exist");
+        throw new DatabaseOperationException(String.format("There was no invoice in database by id: %d", id));
       }
       log.debug("Removing invoice by id: {}", id);
       invoices.remove(id);

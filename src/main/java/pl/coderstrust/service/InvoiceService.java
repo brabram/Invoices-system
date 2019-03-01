@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.database.DatabaseOperationException;
 import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.model.Invoice;
@@ -44,6 +44,7 @@ public class InvoiceService {
     if (toDate.isBefore(fromDate)) {
       throw new IllegalArgumentException("toDate cannot be before fromDate.");
     }
+    log.debug("Getting all invoices in the specified range: from: {} - to: {}", fromDate, toDate);
     Optional<List<Invoice>> allInvoicesOptional = getAllInvoices();
     List<Invoice> invoicesInDataRange = new ArrayList<>();
     if (allInvoicesOptional.isPresent()) {
@@ -53,7 +54,6 @@ public class InvoiceService {
           .filter(invoice -> invoice.getIssueDate().compareTo(fromDate) >= 0 && invoice.getIssueDate().compareTo(toDate) <= 0)
           .collect(Collectors.toList());
     }
-    log.debug("Getting all invoices in the specified range: from: {} - to: {}", fromDate, toDate);
     return Optional.of(invoicesInDataRange);
   }
 
@@ -76,11 +76,11 @@ public class InvoiceService {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
+      log.debug("Adding invoice: {}", invoice);
       Long id = invoice.getId();
       if (id != null && invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s already exists", id));
       }
-      log.debug("Adding invoice: {}", invoice);
       return invoiceDatabase.save(invoice);
     } catch (DatabaseOperationException e) {
       String message = String.format("An error while adding invoice: %s", invoice);
@@ -94,14 +94,14 @@ public class InvoiceService {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
     try {
+      log.debug("Updating invoice. id: {}, invoice: {}", invoice.getId(), invoice);
       Long id = invoice.getId();
-      log.debug("Updating invoice. id: {}, invoice: {}", id, invoice);
       if (id == null || !invoiceDatabase.existsById(id)) {
         throw new ServiceOperationException(String.format("Invoice with id %s does not exist", id));
       }
       invoiceDatabase.save(invoice);
     } catch (DatabaseOperationException e) {
-      String message = String.format("An error while updating invoice %d id, %s invoice", invoice.getId(), invoice);
+      String message = String.format("An error while updating invoice id: %d, invoice: %s", invoice.getId(), invoice);
       log.error(message, e);
       throw new ServiceOperationException(message, e);
     }
@@ -114,7 +114,7 @@ public class InvoiceService {
     try {
       log.debug("Removing invoice by id: {}", id);
       if (!invoiceDatabase.existsById(id)) {
-        throw new ServiceOperationException(String.format("Invoice with id %s does not exist", id));
+        throw new ServiceOperationException(String.format("Invoice with id: %s does not exist", id));
       }
       invoiceDatabase.deleteById(id);
     } catch (DatabaseOperationException e) {

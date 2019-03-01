@@ -16,8 +16,8 @@ import pl.coderstrust.model.Invoice;
 @ConditionalOnProperty(name = "pl.coderstrust.database", havingValue = "hibernate")
 @Repository
 public class HibernateInvoiceDatabase implements InvoiceDatabase {
-  private HibernateInvoiceRepository hibernateInvoiceRepository;
   private static Logger log = LoggerFactory.getLogger(HibernateInvoiceDatabase.class);
+  private HibernateInvoiceRepository hibernateInvoiceRepository;
 
   @Autowired
   public HibernateInvoiceDatabase(HibernateInvoiceRepository hibernateInvoiceRepository) {
@@ -97,9 +97,6 @@ public class HibernateInvoiceDatabase implements InvoiceDatabase {
   public void deleteById(Long id) throws DatabaseOperationException {
     if (id == null) {
       throw new IllegalArgumentException("Id cannot be null");
-    }
-    if (id < 0) {
-      throw new IllegalArgumentException("Id cannot be less than 0");
     }
     try {
       log.debug("Deleting invoice by id: {}", id);

@@ -87,7 +87,7 @@ public class InvoiceController {
     } catch (Exception e) {
       String message = String.format("Internal server error while getting invoice by id: %d", id);
       log.error(message, e);
-      return new ResponseEntity<>(new ErrorMessage (message), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -118,7 +118,7 @@ public class InvoiceController {
     } catch (Exception e) {
       String message = String.format("Internal server error while getting invoice by number: %s", number);
       log.error(message, e);
-      return new ResponseEntity<>(new ErrorMessage (message), HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
