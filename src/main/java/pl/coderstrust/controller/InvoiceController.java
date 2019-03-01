@@ -228,6 +228,7 @@ public class InvoiceController {
       @ApiResponse(code = 500, message = "Internal server error.", response = ErrorMessage.class)})
   public ResponseEntity<?> getPdf(@PathVariable("id") Long id) {
     try {
+      log.debug("Generating invoice pdf");
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {
         byte[] invoiceAsPdf = invoicePdfService.createPdf(optionalInvoice.get());
@@ -237,7 +238,9 @@ public class InvoiceController {
       }
       return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed id: %d", id)), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
-      return new ResponseEntity<>(new ErrorMessage(String.format("Internal server error while getting invoice by id: %d", id)), HttpStatus.INTERNAL_SERVER_ERROR);
+      String message = String.format("Internal server error while getting invoice by id: %d", id);
+      log.error(message, e);
+      return new ResponseEntity<>(new ErrorMessage(String.format(message, id)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
