@@ -1,0 +1,47 @@
+<!doctype html>
+<html ng-app="demo">
+<head>
+    <title>Hello AngularJS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="hello.js"></script>
+</head>
+
+<body ng-controller="Invoices">
+
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Number</th>
+        <th>Issue date</th>
+        <th>Issue date</th>
+        <th>Due date</th>
+        <th>Company seller</th>
+        <th>Company buyer</th>
+        <th>Invoice entries</th>
+        <th>Total net value</th>
+        <th>Total gross value</th>
+    </tr>
+    <tr ng-repeat="invoice in invoices">
+        <td>{{invoice.id}}</td>
+        <td>{{invoice.number}}</td>
+        <td>{{invoice.issueDate}}</td>
+        <td>
+            <pre>{{invoice.seller | json}}</pre>
+        </td>
+        <td>
+            <pre>{{invoice.buyer | json}}</pre>
+        </td>
+        <td>
+            <ul style="list-style-type:circle">
+                <li ng-repeat="entry in invoice.entries">
+                    <pre>{{entry | json}}</pre>
+                </li>
+            </ul>
+            <pre>{{invoice.entries | json}}</pre>
+        </td>
+        <td>invoice.totalNetValue</td>
+        <td>invoice.totalGrossValue</td>
+    </tr>
+</table>
+</body>
+</html>
