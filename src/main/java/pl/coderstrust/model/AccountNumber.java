@@ -8,21 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class AccountNumber {
+public final class AccountNumber {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of account number.", position = -1)
-  private Long id;
+  private final Long id;
 
   @ApiModelProperty(value = "26 digit account number with country code", example = "PL19200000000120067894552302")
-  private String ibanNumber;
+  private final String ibanNumber;
 
   @ApiModelProperty(value = "26 digit account number", example = "'19200000000120067894552302'")
-  private String localNumber;
-
-  protected AccountNumber() {
-  }
+  private final String localNumber;
 
   public AccountNumber(Long id, String ibanNumber, String localNumber) {
     this.id = id;
@@ -34,24 +31,12 @@ public class AccountNumber {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getIbanNumber() {
     return ibanNumber;
   }
 
-  public void setIbanNumber(String ibanNumber) {
-    this.ibanNumber = ibanNumber;
-  }
-
   public String getLocalNumber() {
     return localNumber;
-  }
-
-  public void setLocalNumber(String localNumber) {
-    this.localNumber = localNumber;
   }
 
   @Override

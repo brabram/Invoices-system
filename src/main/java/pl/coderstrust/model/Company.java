@@ -10,27 +10,24 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Company {
+public final class Company {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of company.", dataType = "Long", position = -1)
-  private Long id;
+  private final Long id;
 
   @ApiModelProperty(value = "Name of the company", example = "Jan Kowalski - Transport & Logistics Services")
-  private String name;
+  private final String name;
 
   @ApiModelProperty(value = "Tax identification number, 10 digits without spaces", example = "2541278654")
-  private String taxIdentificationNumber;
+  private final String taxIdentificationNumber;
 
   @OneToOne(cascade = CascadeType.ALL)
-  private AccountNumber accountNumber;
+  private final AccountNumber accountNumber;
 
   @OneToOne(cascade = CascadeType.ALL)
-  private ContactDetails contactDetails;
-
-  protected Company() {
-  }
+  private final ContactDetails contactDetails;
 
   public Company(Long id, String name, String taxIdentificationNumber, AccountNumber accountNumber, ContactDetails contactDetails) {
     this.id = id;
@@ -44,40 +41,20 @@ public class Company {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getName() {
     return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public String getTaxIdentificationNumber() {
     return taxIdentificationNumber;
   }
 
-  public void setTaxIdentificationNumber(String taxIdentificationNumber) {
-    this.taxIdentificationNumber = taxIdentificationNumber;
-  }
-
   public AccountNumber getAccountNumber() {
     return accountNumber;
   }
 
-  public void setAccountNumber(AccountNumber accountNumber) {
-    this.accountNumber = accountNumber;
-  }
-
   public ContactDetails getContactDetails() {
     return contactDetails;
-  }
-
-  public void setContactDetails(ContactDetails contactDetails) {
-    this.contactDetails = contactDetails;
   }
 
   @Override

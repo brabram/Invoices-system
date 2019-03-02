@@ -10,27 +10,24 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class ContactDetails {
+public final class ContactDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of contact details.", dataType = "Long", position = -1)
-  private Long id;
+  private final Long id;
 
   @ApiModelProperty(value = "Email address", example = "poczta@onet.pl")
-  private String email;
+  private final String email;
 
   @ApiModelProperty(value = "Phone number, acceptable use of the '+' sign at the beginning", example = "+48786345298")
-  private String phoneNumber;
+  private final String phoneNumber;
 
   @ApiModelProperty(value = "Web site address", example = "www.company.net.eu")
-  private String website;
+  private final String website;
 
   @OneToOne(cascade = CascadeType.ALL)
-  private Address address;
-
-  protected ContactDetails() {
-  }
+  private final Address address;
 
   public ContactDetails(Long id, String email, String phoneNumber, String website, Address address) {
     this.id = id;
@@ -44,40 +41,20 @@ public class ContactDetails {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getEmail() {
     return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
   }
 
   public String getPhoneNumber() {
     return phoneNumber;
   }
 
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
   public String getWebsite() {
     return website;
   }
 
-  public void setWebsite(String website) {
-    this.website = website;
-  }
-
   public Address getAddress() {
     return address;
-  }
-
-  public void setAddress(Address address) {
-    this.address = address;
   }
 
   @Override

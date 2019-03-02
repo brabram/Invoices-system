@@ -9,33 +9,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class InvoiceEntry {
+public final class InvoiceEntry {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of invoice entry.", dataType = "Long", position = -1)
-  private Long id;
+  private final Long id;
 
   @ApiModelProperty(value = "Name of the item", example = "10w40 Castrol engine oil")
-  private String item;
+  private final String item;
 
   @ApiModelProperty(value = "Total quantity of items", example = "10")
-  private Long quantity;
+  private final Long quantity;
 
   @ApiModelProperty(value = "Price of single item without VAT value, only digits and dot ('.') as a separator acceptable", example = "100.00")
-  private BigDecimal price;
+  private final BigDecimal price;
 
   @ApiModelProperty(value = "Value of VAT, only digits and dot ('.') as a separator acceptable", example = "23.00")
-  private BigDecimal vatValue;
+  private final BigDecimal vatValue;
 
   @ApiModelProperty(value = "Value of all items with VAT value, only digits and dot ('.') as a separator acceptable", example = "1230.00")
-  private BigDecimal grossValue;
+  private final BigDecimal grossValue;
 
   @ApiModelProperty(value = "Tax amount", example = "VAT_23")
-  private Vat vatRate;
-
-  protected InvoiceEntry() {
-  }
+  private final Vat vatRate;
 
   public InvoiceEntry(Long id, String item, Long quantity, BigDecimal price, BigDecimal vatValue, BigDecimal grossValue, Vat vatRate) {
     this.id = id;
@@ -51,56 +48,28 @@ public class InvoiceEntry {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getItem() {
     return item;
-  }
-
-  public void setItem(String item) {
-    this.item = item;
   }
 
   public Long getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(Long quantity) {
-    this.quantity = quantity;
-  }
-
   public BigDecimal getPrice() {
     return price;
-  }
-
-  public void setPrice(BigDecimal price) {
-    this.price = price;
   }
 
   public BigDecimal getVatValue() {
     return vatValue;
   }
 
-  public void setVatValue(BigDecimal vatValue) {
-    this.vatValue = vatValue;
-  }
-
   public BigDecimal getGrossValue() {
     return grossValue;
   }
 
-  public void setGrossValue(BigDecimal grossValue) {
-    this.grossValue = grossValue;
-  }
-
   public Vat getVatRate() {
     return vatRate;
-  }
-
-  public void setVatRate(Vat vatRate) {
-    this.vatRate = vatRate;
   }
 
   @Override

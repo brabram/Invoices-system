@@ -8,30 +8,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Address {
+public final class Address {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of address.", dataType = "Long", position = -1)
-  private Long id;
+  private final Long id;
 
   @ApiModelProperty(value = "Street name", example = "Warszawska")
-  private String street;
+  private final String street;
 
   @ApiModelProperty(value = "Number of house, building", example = "15a/1")
-  private String number;
+  private final String number;
 
   @ApiModelProperty(value = "PostalCode without special sign '-'", example = "00810")
-  private String postalCode;
+  private final String postalCode;
 
   @ApiModelProperty(value = "City name", example = "Warsaw")
-  private String city;
+  private final String city;
 
   @ApiModelProperty(value = "Country name", example = "Poland")
-  private String country;
-
-  protected Address() {
-  }
+  private final String country;
 
   public Address(Long id, String street, String number, String postalCode, String city, String country) {
     this.id = id;
@@ -46,48 +43,24 @@ public class Address {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
   public String getStreet() {
     return street;
-  }
-
-  public void setStreet(String street) {
-    this.street = street;
   }
 
   public String getNumber() {
     return number;
   }
 
-  public void setNumber(String number) {
-    this.number = number;
-  }
-
   public String getPostalCode() {
     return postalCode;
-  }
-
-  public void setPostalCode(String postalCode) {
-    this.postalCode = postalCode;
   }
 
   public String getCity() {
     return city;
   }
 
-  public void setCity(String city) {
-    this.city = city;
-  }
-
   public String getCountry() {
     return country;
-  }
-
-  public void setCountry(String country) {
-    this.country = country;
   }
 
   @Override
