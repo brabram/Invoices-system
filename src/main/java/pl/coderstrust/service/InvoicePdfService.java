@@ -33,6 +33,7 @@ public class InvoicePdfService {
     }
 
     try {
+      log.debug("Generating PDF for invoice. Invoice id: {}", invoice.getId());
       Document document = new Document(PageSize.A4);
       ByteArrayOutputStream stream = new ByteArrayOutputStream();
       PdfWriter.getInstance(document, stream);
@@ -46,7 +47,7 @@ public class InvoicePdfService {
 
       return stream.toByteArray();
     } catch (DocumentException e) {
-      String message = String.format("An error occurred during creating pdf for invoice. Invoice id: %d", invoice.getId());
+      String message = String.format("An error occurred during creating PDF for invoice. Invoice id: %d", invoice.getId());
       log.error(message, e);
       throw new ServiceOperationException(String.format(message,
           invoice.getId()), e);
