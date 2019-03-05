@@ -26,6 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.coderstrust.configuration.ApplicationConfiguration;
+import pl.coderstrust.configuration.InFileInvoiceDatabaseProperties;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.helpers.FileHelper;
 import pl.coderstrust.model.Invoice;
@@ -39,11 +40,15 @@ class InFileInvoiceDatabaseTest {
   @Mock
   private FileHelper fileHelper;
 
+  private InFileInvoiceDatabaseProperties inFileInvoiceDatabaseProperties;
+
   private InFileInvoiceDatabase database;
 
   @BeforeEach
   void setup() throws DatabaseOperationException {
-    database = new InFileInvoiceDatabase(mapper, fileHelper, DATABASE_FILEPATH);
+    inFileInvoiceDatabaseProperties = new InFileInvoiceDatabaseProperties();
+    inFileInvoiceDatabaseProperties.setFilePath(DATABASE_FILEPATH);
+    database = new InFileInvoiceDatabase(mapper, fileHelper, inFileInvoiceDatabaseProperties);
   }
 
   @Test

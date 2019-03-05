@@ -1,8 +1,9 @@
 package pl.coderstrust.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,14 +12,30 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@PropertySource("classpath:security.properties")
+@ConfigurationProperties(prefix = "spring.security")
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Value("${spring.security.admin.name}")
   private String adminName;
 
-  @Value("${spring.security.admin.password}")
   private String adminPassword;
+
+  public String getAdminName() {
+    return adminName;
+  }
+
+  public void setAdminName(String adminName) {
+    this.adminName = adminName;
+  }
+
+  public String getAdminPassword() {
+    return adminPassword;
+  }
+
+  public void setAdminPassword(String adminPassword) {
+    this.adminPassword = adminPassword;
+  }
 
   @Override
   protected void configure(final AuthenticationManagerBuilder auth) throws Exception {

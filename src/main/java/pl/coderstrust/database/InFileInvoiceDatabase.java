@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.configuration.ApplicationConfiguration;
+import pl.coderstrust.configuration.InFileInvoiceDatabaseProperties;
 import pl.coderstrust.helpers.FileHelper;
 import pl.coderstrust.model.Invoice;
 
@@ -19,12 +20,12 @@ import pl.coderstrust.model.Invoice;
 public class InFileInvoiceDatabase implements InvoiceDatabase {
   private ObjectMapper mapper;
   private FileHelper fileHelper;
-  private String databaseFilePath;
+  private InFileInvoiceDatabaseProperties databaseFilePath;
   private long lastInvoiceId;
   private final Object lock = new Object();
 
   @Autowired
-  public InFileInvoiceDatabase(ObjectMapper mapper, FileHelper fileHelper, String databaseFilePath) throws DatabaseOperationException {
+  public InFileInvoiceDatabase(ObjectMapper mapper, FileHelper fileHelper, InFileInvoiceDatabaseProperties databaseFilePath) throws DatabaseOperationException {
     if (mapper == null) {
       throw new IllegalArgumentException("Mapper cannot be null");
     }
@@ -38,8 +39,8 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
     this.fileHelper = fileHelper;
     this.databaseFilePath = databaseFilePath;
     try {
-      if (!fileHelper.exists(databaseFilePath)) {
-        fileHelper.create(databaseFilePath);
+      if (!fileHelper.exists(databaseFilePath.getFilePath())) {
+        fileHelper.create(databaseFilePath.getFilePath());
       }
       this.lastInvoiceId = getLastInvoiceId();
     } catch (IOException e) {
@@ -61,7 +62,7 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
           invoiceToAddOrUpdate.setId(getNextInvoiceId());
         }
         String invoiceAsJson = serializeInvoiceToJson(invoiceToAddOrUpdate);
-        fileHelper.writeLine(databaseFilePath, invoiceAsJson);
+        fileHelper.writeLine(databaseFilePath.getFilePath(), invoiceAsJson);
         return Optional.of(invoiceToAddOrUpdate);
       } catch (IOException e) {
         throw new DatabaseOperationException("An error occurred during saving invoice", e);
@@ -115,7 +116,7 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
   public long count() throws DatabaseOperationException {
     synchronized (lock) {
       try {
-        if (fileHelper.isEmpty(databaseFilePath)) {
+        if (fileHelper.isEmpty(databaseFilePath.getFilePath())) {
           return 0;
         }
         return getAllInvoices().size();
@@ -143,7 +144,7 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
   public void deleteAll() throws DatabaseOperationException {
     synchronized (lock) {
       try {
-        fileHelper.clear(databaseFilePath);
+        fileHelper.clear(databaseFilePath.getFilePath());
       } catch (IOException e) {
         throw new DatabaseOperationException("Ar error occurred during deleting all id", e);
       }
@@ -163,7 +164,7 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
   }
 
   private List<Invoice> getAllInvoices() throws IOException {
-    return fileHelper.readLines(databaseFilePath).stream()
+    return fileHelper.readLines(databaseFilePath.getFilePath()).stream()
         .map(this::deserializeJsonToInvoice)
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
@@ -182,14 +183,14 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
         .filter(i -> i.getId().equals(id))
         .findFirst();
     if (invoice.isPresent()) {
-      fileHelper.removeLine(databaseFilePath, invoices.indexOf(invoice.get()) + 1);
+      fileHelper.removeLine(databaseFilePath.getFilePath(), invoices.indexOf(invoice.get()) + 1);
     } else {
       throw new DatabaseOperationException("Invoice does not exist");
     }
   }
 
   private long getLastInvoiceId() throws IOException {
-    String lastInvoiceAsJson = fileHelper.readLastLine(databaseFilePath);
+    String lastInvoiceAsJson = fileHelper.readLastLine(databaseFilePath.getFilePath());
     if (lastInvoiceAsJson == null) {
       return 0;
     }

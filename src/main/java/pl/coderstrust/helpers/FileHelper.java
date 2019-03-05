@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 
+@ConditionalOnProperty(name = "pl.coderstrust.database", havingValue = "in-file")
+@Component
 public class FileHelper {
   private static Logger log = LoggerFactory.getLogger(FileHelper.class);
   private static final String ENCODING = "UTF-8";
