@@ -1,47 +1,42 @@
 <!doctype html>
-<html ng-app="demo">
+<html lang="en" ng-app="Invoices">
 <head>
-    <title>Hello AngularJS</title>
+    <title>Invoices</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-    <script src="hello.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="invoices.js"></script>
 </head>
-
-<body ng-controller="Invoices">
-
-<table border="1">
+<body>
+<div class="jumbotron text-center">
+<h1>Invoices</h1>
+    <button type="button" class="btn btn-success btn-sm" ng-click="submit">Add Invoice</button></td>
+    <button type="button" class="btn btn-success btn-sm" ng-click="find">FindById</button>
+</div>
+<div class="container-fluid" ng-controller="InvoicesController" ng-model="empty">
+<table align="center" class="table-bordered table-hover text-center" ng-if="empty > 0">
     <tr>
-        <th>Id</th>
         <th>Number</th>
-        <th>Issue date</th>
-        <th>Issue date</th>
-        <th>Due date</th>
-        <th>Company seller</th>
-        <th>Company buyer</th>
-        <th>Invoice entries</th>
-        <th>Total net value</th>
-        <th>Total gross value</th>
+        <th>Seller</th>
+        <th>Buyer</th>
+        <th>Actions</th>
     </tr>
-    <tr ng-repeat="invoice in invoices">
-        <td>{{invoice.id}}</td>
+    <tr ng-repeat="invoice in Invoices">
         <td>{{invoice.number}}</td>
-        <td>{{invoice.issueDate}}</td>
         <td>
-            <pre>{{invoice.seller | json}}</pre>
+            <pre>{{invoice.seller.name}}</pre>
         </td>
         <td>
-            <pre>{{invoice.buyer | json}}</pre>
+            <pre>{{invoice.buyer.name}}</pre>
         </td>
-        <td>
-            <ul style="list-style-type:circle">
-                <li ng-repeat="entry in invoice.entries">
-                    <pre>{{entry | json}}</pre>
-                </li>
-            </ul>
-            <pre>{{invoice.entries | json}}</pre>
-        </td>
-        <td>invoice.totalNetValue</td>
-        <td>invoice.totalGrossValue</td>
+        <td><button type="button" class="btn btn-info btn-sm" value="invoice" ng-click="details.id">Show details</button>
+            <button type="button" class="btn btn-success btn-sm" ng-click="pdf(invoice.id)">Get PDF</button>
+            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(invoice.id)">Delete</button></td>
     </tr>
 </table>
+</div>
 </body>
 </html>
