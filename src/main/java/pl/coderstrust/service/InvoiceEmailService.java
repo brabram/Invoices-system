@@ -3,9 +3,13 @@ package pl.coderstrust.service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -14,6 +18,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.model.Invoice;
 
@@ -35,42 +40,51 @@ public class InvoiceEmailService {
   public InvoiceEmailService() throws FileNotFoundException {
   }
 
-  public void sendMail(Invoice invoice) {
+  @Async
+  public CompletableFuture<Transport> sendMail(Invoice invoice) throws NoSuchProviderException {
+    Session session = getSession();
+    try {
+      Transport transport = getTransport(invoice, session);
+      return CompletableFuture.completedFuture(transport);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return CompletableFuture.completedFuture(session.getTransport("smtp"));
+  }
 
+  private Transport getTransport(Invoice invoice, Session session) throws MessagingException, IOException, ServiceOperationException, InterruptedException {
+    Message message = new MimeMessage(session);
+    message.setFrom(new InternetAddress(username));
+    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(sendTo));
+    message.setSubject("Mail from Invoice Database");
+    String msg = "New Invoice was added";
+    MimeBodyPart mimeBodyPart = new MimeBodyPart();
+    mimeBodyPart.setContent(msg, "text/html");
+    MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+    file.createNewFile();
+    writer.write(invoicePdfService.createPdf(invoice));
+    attachmentBodyPart.attachFile(new File(filePath));
+    Multipart multipart = new MimeMultipart();
+    multipart.addBodyPart(mimeBodyPart);
+    multipart.addBodyPart(attachmentBodyPart);
+    message.setContent(multipart);
+    Transport transport = session.getTransport("smtp");
+    transport.connect(username, password);
+    Thread.sleep(100000L);
+    transport.sendMessage(message, message.getAllRecipients());
+    transport.close();
+    file.delete();
+    return transport;
+  }
+
+  private Session getSession() {
     Properties prop = new Properties();
     prop.put("mail.smtp.host", host);
     prop.put("mail.smtp.port", port);
     prop.put("mail.smtp.auth", true);
     prop.put("mail.smtp.starttls.enable", "true");
     prop.put("mail.smtp.user", username);
-
-    Session session = Session.getDefaultInstance(prop);
-
-    try {
-
-      Message message = new MimeMessage(session);
-      message.setFrom(new InternetAddress(username));
-      message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(sendTo));
-      message.setSubject("Mail from Invoice Database");
-      String msg = "New Invoice was added";
-      MimeBodyPart mimeBodyPart = new MimeBodyPart();
-      mimeBodyPart.setContent(msg, "text/html");
-      MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-      file.createNewFile();
-      writer.write(invoicePdfService.createPdf(invoice));
-      attachmentBodyPart.attachFile(new File(filePath));
-      Multipart multipart = new MimeMultipart();
-      multipart.addBodyPart(mimeBodyPart);
-      multipart.addBodyPart(attachmentBodyPart);
-      message.setContent(multipart);
-      Transport transport = session.getTransport("smtp");
-      transport.connect(username, password);
-      transport.sendMessage(message, message.getAllRecipients());
-      transport.close();
-      file.delete();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    return Session.getDefaultInstance(prop);
   }
 
   public String getHost() {
