@@ -247,30 +247,4 @@ public class InvoiceController {
       return new ResponseEntity<>(new ErrorMessage(String.format(message, id)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-//  @RequestMapping("send-mail")
-//  public String send() {
-//
-//    user.setEmailAddress("barbara.mrugalska@gmail.com");
-//
-//    try {
-//      mailService.sendEmail(user);
-//    } catch (MailException mailException) {
-//      System.out.println(mailException);
-//    }
-//    return "Congratulations! Your mail has been send to the user.";
-//  }
-//
-//  @RequestMapping("send-mail-attachment")
-//  public String sendWithAttachment() throws MessagingException {
-//
-//    user.setEmailAddress("barbara.mrugalska@gmail.com");
-//
-//    try {
-//      mailService.sendEmailWithAttachment(user);
-//    } catch (MailException mailException) {
-//      System.out.println(mailException);
-//    }
-//    return "Congratulations! Your mail has been send to the user.";
-//  }
 }
