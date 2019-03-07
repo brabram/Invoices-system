@@ -16,6 +16,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Async;
@@ -27,6 +29,7 @@ import pl.coderstrust.model.Invoice;
 @ConfigurationProperties(prefix = "spring.mail")
 public class InvoiceEmailService {
 
+  private static Logger log = LoggerFactory.getLogger(InvoiceEmailService.class);
   private String host;
   private int port;
   private String username;
@@ -44,12 +47,14 @@ public class InvoiceEmailService {
   public CompletableFuture<Transport> sendMail(Invoice invoice) throws NoSuchProviderException {
     Session session = getSession();
     try {
+      log.debug("Sending email with PDF for invoice. Invoice id: {}", invoice.getId());
       Transport transport = getTransport(invoice, session);
       return CompletableFuture.completedFuture(transport);
     } catch (Exception e) {
-      e.printStackTrace();
+      String message = String.format("An error occurred during sending email with PDF for invoice. Invoice id: %d", invoice.getId());
+      log.error(message, e);
+      throw new NoSuchProviderException(String.format(message, invoice.getId()), e);
     }
-    return CompletableFuture.completedFuture(session.getTransport("smtp"));
   }
 
   private Transport getTransport(Invoice invoice, Session session) throws MessagingException, IOException, ServiceOperationException, InterruptedException {
@@ -70,10 +75,11 @@ public class InvoiceEmailService {
     message.setContent(multipart);
     Transport transport = session.getTransport("smtp");
     transport.connect(username, password);
-    Thread.sleep(100000L);
+    Thread.sleep(1000L);
     transport.sendMessage(message, message.getAllRecipients());
     transport.close();
     file.delete();
+    writer.close();
     return transport;
   }
 

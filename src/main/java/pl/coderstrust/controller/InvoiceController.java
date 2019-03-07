@@ -150,6 +150,7 @@ public class InvoiceController {
         HttpHeaders responseHeaders = new HttpHeaders();
         if (addedInvoice.isPresent()) {
           responseHeaders.setLocation(URI.create(String.format("/invoices/%d", addedInvoice.get().getId())));
+          log.debug("Sending email with invoice: {}", invoice);
           invoiceEmailService.sendMail(invoice);
           return new ResponseEntity<>(addedInvoice.get(), responseHeaders, HttpStatus.CREATED);
         }
