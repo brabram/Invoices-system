@@ -45,10 +45,13 @@ public class InvoiceEmailService {
 
   @Async
   public CompletableFuture<Transport> sendMail(Invoice invoice) throws NoSuchProviderException {
+    if (invoice == null) {
+      throw new IllegalArgumentException("Invoice cannot be null.");
+    }
     Session session = getSession();
     try {
-      log.debug("Sending email with PDF for invoice. Invoice id: {}", invoice.getId());
       Transport transport = getTransport(invoice, session);
+      log.debug("Sending email with PDF for invoice. Invoice id: {}", invoice.getId());
       return CompletableFuture.completedFuture(transport);
     } catch (Exception e) {
       String message = String.format("An error occurred during sending email with PDF for invoice. Invoice id: %d", invoice.getId());
@@ -58,21 +61,7 @@ public class InvoiceEmailService {
   }
 
   private Transport getTransport(Invoice invoice, Session session) throws MessagingException, IOException, ServiceOperationException, InterruptedException {
-    Message message = new MimeMessage(session);
-    message.setFrom(new InternetAddress(username));
-    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(sendTo));
-    message.setSubject("Mail from Invoice Database");
-    String msg = "New Invoice was added";
-    MimeBodyPart mimeBodyPart = new MimeBodyPart();
-    mimeBodyPart.setContent(msg, "text/html");
-    MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-    file.createNewFile();
-    writer.write(invoicePdfService.createPdf(invoice));
-    attachmentBodyPart.attachFile(new File(filePath));
-    Multipart multipart = new MimeMultipart();
-    multipart.addBodyPart(mimeBodyPart);
-    multipart.addBodyPart(attachmentBodyPart);
-    message.setContent(multipart);
+    Message message = getMessage(invoice, session);
     Transport transport = session.getTransport("smtp");
     transport.connect(username, password);
     Thread.sleep(1000L);
@@ -81,6 +70,25 @@ public class InvoiceEmailService {
     file.delete();
     writer.close();
     return transport;
+  }
+
+  private Message getMessage(Invoice invoice, Session session) throws MessagingException, IOException, ServiceOperationException {
+    Message message = new MimeMessage(session);
+    message.setFrom(new InternetAddress(username));
+    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(sendTo));
+    message.setSubject("Mail from Invoice Database.");
+    String msg = String.format("New Invoice with number: %s has been added to database.", invoice.getNumber());
+    MimeBodyPart mimeBodyPart = new MimeBodyPart();
+    mimeBodyPart.setContent(msg, "text/html");
+    MimeBodyPart attachmentBodyPart = new MimeBodyPart();
+    file.createNewFile();
+    writer.write(invoicePdfService.createPdf(invoice));
+    attachmentBodyPart.attachFile(file);
+    Multipart multipart = new MimeMultipart();
+    multipart.addBodyPart(mimeBodyPart);
+    multipart.addBodyPart(attachmentBodyPart);
+    message.setContent(multipart);
+    return message;
   }
 
   private Session getSession() {
