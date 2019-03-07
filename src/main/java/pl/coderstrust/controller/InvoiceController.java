@@ -5,15 +5,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.validators.InvoiceValidator;
+import pl.coderstrust.service.InvoiceEmailService;
 import pl.coderstrust.service.InvoicePdfService;
 import pl.coderstrust.service.InvoiceService;
 
@@ -38,14 +37,17 @@ import pl.coderstrust.service.InvoiceService;
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
+
   private static Logger log = LoggerFactory.getLogger(InvoiceController.class);
   private InvoiceService invoiceService;
   private InvoicePdfService invoicePdfService;
+  private InvoiceEmailService invoiceEmailService;
 
   @Autowired
-  public InvoiceController(InvoiceService invoiceService, InvoicePdfService invoicePdfService) {
+  public InvoiceController(InvoiceService invoiceService, InvoicePdfService invoicePdfService, InvoiceEmailService invoiceEmailService) throws FileNotFoundException {
     this.invoiceService = invoiceService;
     this.invoicePdfService = invoicePdfService;
+    this.invoiceEmailService = invoiceEmailService;
   }
 
   @GetMapping
@@ -148,6 +150,7 @@ public class InvoiceController {
         HttpHeaders responseHeaders = new HttpHeaders();
         if (addedInvoice.isPresent()) {
           responseHeaders.setLocation(URI.create(String.format("/invoices/%d", addedInvoice.get().getId())));
+          invoiceEmailService.sendMail(invoice);
           return new ResponseEntity<>(addedInvoice.get(), responseHeaders, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new ErrorMessage("Internal server error while adding invoice."), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -243,4 +246,30 @@ public class InvoiceController {
       return new ResponseEntity<>(new ErrorMessage(String.format(message, id)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+//  @RequestMapping("send-mail")
+//  public String send() {
+//
+//    user.setEmailAddress("barbara.mrugalska@gmail.com");
+//
+//    try {
+//      mailService.sendEmail(user);
+//    } catch (MailException mailException) {
+//      System.out.println(mailException);
+//    }
+//    return "Congratulations! Your mail has been send to the user.";
+//  }
+//
+//  @RequestMapping("send-mail-attachment")
+//  public String sendWithAttachment() throws MessagingException {
+//
+//    user.setEmailAddress("barbara.mrugalska@gmail.com");
+//
+//    try {
+//      mailService.sendEmailWithAttachment(user);
+//    } catch (MailException mailException) {
+//      System.out.println(mailException);
+//    }
+//    return "Congratulations! Your mail has been send to the user.";
+//  }
 }
