@@ -148,16 +148,16 @@ public final class Invoice {
 
   @Override
   public String toString() {
-    return "Invoice{" +
-            "id=" + id +
-            ", withNumber='" + number + '\'' +
-            ", issueDate=" + issueDate +
-            ", dueDate=" + dueDate +
-            ", totalNetValue=" + totalNetValue +
-            ", totalGrossValue=" + totalGrossValue +
-            ", seller=" + seller +
-            ", buyer=" + buyer +
-            ", entries=" + entries +
-            '}';
+    return "Invoice{"
+        + "id=" + id
+        + ", withNumber='" + number + '\''
+        + ", issueDate=" + issueDate
+        + ", dueDate=" + dueDate
+        + ", totalNetValue=" + totalNetValue
+        + ", totalGrossValue=" + totalGrossValue
+        + ", seller=" + seller
+        + ", buyer=" + buyer
+        + ", entries=" + entries
+        + '}';
   }
 }

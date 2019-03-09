@@ -116,14 +116,14 @@ public final class InvoiceEntry {
 
   @Override
   public String toString() {
-    return "InvoiceEntry{" +
-            "id=" + id +
-            ", item='" + item + '\'' +
-            ", quantity=" + quantity +
-            ", price=" + price +
-            ", vatValue=" + vatValue +
-            ", grossValue=" + grossValue +
-            ", vatRate=" + vatRate +
-            '}';
+    return "InvoiceEntry{"
+        + "id=" + id
+        + ", item='" + item + '\''
+        + ", quantity=" + quantity
+        + ", price=" + price
+        + ", vatValue=" + vatValue
+        + ", grossValue=" + grossValue
+        + ", vatRate=" + vatRate
+        + '}';
   }
 }

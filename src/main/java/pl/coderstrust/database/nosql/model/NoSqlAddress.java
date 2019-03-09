@@ -2,9 +2,8 @@ package pl.coderstrust.database.nosql.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.springframework.data.annotation.PersistenceConstructor;
-
 import java.util.Objects;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 @JsonDeserialize(builder = NoSqlAddress.Builder.class)
 public class NoSqlAddress {
@@ -71,7 +70,7 @@ public class NoSqlAddress {
     }
 
     public NoSqlAddress build() {
-      return new NoSqlAddress( this );
+      return new NoSqlAddress(this);
     }
   }
 
@@ -118,12 +117,12 @@ public class NoSqlAddress {
 
   @Override
   public String toString() {
-    return "NoSqlAddress{" +
-            "street='" + street + '\'' +
-            ", number='" + number + '\'' +
-            ", postalCode='" + postalCode + '\'' +
-            ", city='" + city + '\'' +
-            ", country='" + country + '\'' +
-            '}';
+    return "NoSqlAddress{"
+        + "street='" + street + '\''
+        + ", number='" + number + '\''
+        + ", postalCode='" + postalCode + '\''
+        + ", city='" + city + '\''
+        + ", country='" + country + '\''
+        + '}';
   }
 }

@@ -1,4 +1,4 @@
-package pl.coderstrust.database.nosql.mongoInvoiceDatabase;
+package pl.coderstrust.database.nosql.mongo;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +53,7 @@ public class MongoInvoiceDatabase implements InvoiceDatabase {
     this.noSqlModelMapper = noSqlModelMapper;
     this.properties = properties;
     this.identifierGenerator = identifierGenerator;
-    this.identifierGenerator.initalize(getLastInvoiceId());
+    this.identifierGenerator.initialize(getLastInvoiceId());
   }
 
   @Override

@@ -1,4 +1,4 @@
-package pl.coderstrust.database.nosql.inFileInvoiceDatabase;
+package pl.coderstrust.database.nosql.infile;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

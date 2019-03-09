@@ -1,5 +1,6 @@
 package pl.coderstrust.database.nosql;
 
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pl.coderstrust.database.nosql.model.NoSqlAccountNumber;
@@ -16,8 +17,6 @@ import pl.coderstrust.model.ContactDetails;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Vat;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface NoSqlModelMapper {

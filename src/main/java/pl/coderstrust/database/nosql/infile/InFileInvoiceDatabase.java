@@ -1,4 +1,4 @@
-package pl.coderstrust.database.nosql.inFileInvoiceDatabase;
+package pl.coderstrust.database.nosql.infile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,11 +36,11 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
   private final NoSqlModelMapper noSqlModelMapper;
 
   @Autowired
-  public InFileInvoiceDatabase(ObjectMapper mapper
-      , FileHelper fileHelper
-      , InFileInvoiceDatabaseProperties databaseFilePath
-      , IdentifierGenerator identifierGenerator
-      , NoSqlModelMapper noSqlModelMapper) throws DatabaseOperationException {
+  public InFileInvoiceDatabase(ObjectMapper mapper,
+      FileHelper fileHelper,
+      InFileInvoiceDatabaseProperties databaseFilePath,
+      IdentifierGenerator identifierGenerator,
+      NoSqlModelMapper noSqlModelMapper) throws DatabaseOperationException {
     if (mapper == null) {
       throw new IllegalArgumentException("mapper cannot be null");
     }
@@ -65,7 +65,7 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
       if (!fileHelper.exists(databaseFilePath.getFilePath())) {
         fileHelper.create(databaseFilePath.getFilePath());
       }
-      this.identifierGenerator.initalize(getLastInvoiceId());
+      this.identifierGenerator.initialize(getLastInvoiceId());
     } catch (IOException e) {
       throw new DatabaseOperationException("An error occurred during trying to build database file", e);
     }

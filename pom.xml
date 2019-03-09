@@ -23,6 +23,7 @@
     <checkstylePlugin.version>3.0.0</checkstylePlugin.version>
     <projectInfoReportsPlugin.version>3.0.0</projectInfoReportsPlugin.version>
     <checkstyle.config.location>checkstyle-config/google_style_settings.xml</checkstyle.config.location>
+    <checkstyle.suppressions.location>checkstyle-config/checkstyle-suppressions.xml</checkstyle.suppressions.location>
     <linkXRef>false</linkXRef>
     <springframework.version>5.1.4.RELEASE</springframework.version>
     <jackson.version>2.9.7</jackson.version>
@@ -260,6 +261,7 @@
                   <excludes>
                     <exclude>pl.coderstrust.database.DatabaseOperationException</exclude>
                     <exclude>pl.coderstrust.service.ServiceOperationException</exclude>
+                    <exclude>pl.coderstrust.database.IdentifierGeneratorException</exclude>
                     <exclude>pl.coderstrust.Application</exclude>
                     <exclude>pl.coderstrust.configuration.SwaggerConfiguration</exclude>
                     <exclude>pl.coderstrust.configuration.SecurityConfiguration</exclude>
@@ -274,6 +276,11 @@
                     <exclude>pl.coderstrust.model.Company</exclude>
                     <exclude>pl.coderstrust.model.AccountNumber</exclude>
                     <exclude>pl.coderstrust.service.InvoiceEmailService</exclude>
+                    <exclude>pl.coderstrust.configuration.*</exclude>
+                    <exclude>pl.coderstrust.database.sql.model.*</exclude>
+                    <exclude>pl.coderstrust.database.nosql.model.*</exclude>
+                    <exclude>pl.coderstrust.database.sql.SqlModelMapperImpl</exclude>
+                    <exclude>pl.coderstrust.database.nosql.NoSqlModelMapperImpl</exclude>
                   </excludes>
                 </rule>
               </rules>

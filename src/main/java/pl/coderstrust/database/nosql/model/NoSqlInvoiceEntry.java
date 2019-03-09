@@ -2,10 +2,9 @@ package pl.coderstrust.database.nosql.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.springframework.data.annotation.PersistenceConstructor;
-
 import java.math.BigDecimal;
 import java.util.Objects;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 @JsonDeserialize(builder = NoSqlInvoiceEntry.Builder.class)
 public class NoSqlInvoiceEntry {
@@ -34,7 +33,7 @@ public class NoSqlInvoiceEntry {
     this.vatValue = builder.vatValue;
     this.grossValue = builder.grossValue;
     this.vatRate = builder.vatRate;
-}
+  }
 
   public static NoSqlInvoiceEntry.Builder builder() {
     return new NoSqlInvoiceEntry.Builder();
@@ -81,7 +80,7 @@ public class NoSqlInvoiceEntry {
     }
 
     public NoSqlInvoiceEntry build() {
-      return new NoSqlInvoiceEntry( this );
+      return new NoSqlInvoiceEntry(this);
     }
   }
 
@@ -133,13 +132,13 @@ public class NoSqlInvoiceEntry {
 
   @Override
   public String toString() {
-    return "NoSqlInvoiceEntry{" +
-            "item='" + item + '\'' +
-            ", quantity=" + quantity +
-            ", price=" + price +
-            ", vatValue=" + vatValue +
-            ", grossValue=" + grossValue +
-            ", vatRate=" + vatRate +
-            '}';
+    return "NoSqlInvoiceEntry{"
+        + "item='" + item + '\''
+        + ", quantity=" + quantity
+        + ", price=" + price
+        + ", vatValue=" + vatValue
+        + ", grossValue=" + grossValue
+        + ", vatRate=" + vatRate
+        + '}';
   }
 }

@@ -1,10 +1,10 @@
 package pl.coderstrust.database.sql.model;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class SqlAddress {
@@ -80,7 +80,7 @@ public class SqlAddress {
     }
 
     public SqlAddress build() {
-      return new SqlAddress( this );
+      return new SqlAddress(this);
     }
   }
 
@@ -132,13 +132,13 @@ public class SqlAddress {
 
   @Override
   public String toString() {
-    return "SqlAddress{" +
-            "id=" + id +
-            ", street='" + street + '\'' +
-            ", number='" + number + '\'' +
-            ", postalCode='" + postalCode + '\'' +
-            ", city='" + city + '\'' +
-            ", country='" + country + '\'' +
-            '}';
+    return "SqlAddress{"
+        + "id=" + id
+        + ", street='" + street + '\''
+        + ", number='" + number + '\''
+        + ", postalCode='" + postalCode + '\''
+        + ", city='" + city + '\''
+        + ", country='" + country + '\''
+        + '}';
   }
 }

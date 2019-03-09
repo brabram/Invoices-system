@@ -104,13 +104,13 @@ public final class Address {
 
   @Override
   public String toString() {
-    return "Address{" +
-            "id=" + id +
-            ", street='" + street + '\'' +
-            ", number='" + number + '\'' +
-            ", postalCode='" + postalCode + '\'' +
-            ", city='" + city + '\'' +
-            ", country='" + country + '\'' +
-            '}';
+    return "Address{"
+        + "id=" + id
+        + ", street='" + street + '\''
+        + ", number='" + number + '\''
+        + ", postalCode='" + postalCode + '\''
+        + ", city='" + city + '\''
+        + ", country='" + country + '\''
+        + '}';
   }
 }

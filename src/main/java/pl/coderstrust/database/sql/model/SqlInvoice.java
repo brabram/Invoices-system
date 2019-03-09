@@ -189,16 +189,16 @@ public class SqlInvoice {
 
   @Override
   public String toString() {
-    return "SqlInvoice{" +
-        "id=" + id +
-        ", number='" + number + '\'' +
-        ", issueDate=" + issueDate +
-        ", dueDate=" + dueDate +
-        ", totalNetValue=" + totalNetValue +
-        ", totalGrossValue=" + totalGrossValue +
-        ", seller=" + seller +
-        ", buyer=" + buyer +
-        ", entries=" + entries +
-        '}';
+    return "SqlInvoice{"
+        + "id=" + id
+        + ", number='" + number + '\''
+        + ", issueDate=" + issueDate
+        + ", dueDate=" + dueDate
+        + ", totalNetValue=" + totalNetValue
+        + ", totalGrossValue=" + totalGrossValue
+        + ", seller=" + seller
+        + ", buyer=" + buyer
+        + ", entries=" + entries
+        + '}';
   }
 }

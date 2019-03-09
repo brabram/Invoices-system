@@ -1,4 +1,4 @@
-package pl.coderstrust.database.nosql.inMemoryInvoiceDatabase;
+package pl.coderstrust.database.nosql.inmemory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +37,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
       throw new IllegalArgumentException("noSqlModelMapper cannot be null");
     }
     this.identifierGenerator = identifierGenerator;
-    this.identifierGenerator.initalize(0);
+    this.identifierGenerator.initialize(0);
     this.noSqlModelMapper = noSqlModelMapper;
   }
 
@@ -52,7 +52,7 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
         return Optional.of(updateInvoice(invoice));
       }
       return Optional.of(addInvoice(invoice));
-    }catch (IdentifierGeneratorException e){
+    } catch (IdentifierGeneratorException e) {
       throw new DatabaseOperationException("An error occurred during saving invoice", e);
     }
   }

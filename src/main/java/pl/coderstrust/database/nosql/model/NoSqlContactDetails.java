@@ -2,9 +2,8 @@ package pl.coderstrust.database.nosql.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.springframework.data.annotation.PersistenceConstructor;
-
 import java.util.Objects;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 @JsonDeserialize(builder = NoSqlContactDetails.Builder.class)
 public class NoSqlContactDetails {
@@ -62,7 +61,7 @@ public class NoSqlContactDetails {
     }
 
     public NoSqlContactDetails build() {
-      return new NoSqlContactDetails( this );
+      return new NoSqlContactDetails(this);
     }
   }
 
@@ -104,11 +103,11 @@ public class NoSqlContactDetails {
 
   @Override
   public String toString() {
-    return "NoSqlContactDetails{" +
-            "email='" + email + '\'' +
-            ", phoneNumber='" + phoneNumber + '\'' +
-            ", website='" + website + '\'' +
-            ", address=" + address +
-            '}';
+    return "NoSqlContactDetails{"
+        + "email='" + email + '\''
+        + ", phoneNumber='" + phoneNumber + '\''
+        + ", website='" + website + '\''
+        + ", address=" + address
+        + '}';
   }
 }

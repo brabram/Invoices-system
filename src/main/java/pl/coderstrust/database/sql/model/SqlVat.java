@@ -18,8 +18,8 @@ public enum SqlVat {
 
   @Override
   public String toString() {
-    return "SqlVat{" +
-            "value=" + value +
-            '}';
+    return "SqlVat{"
+        + "value=" + value
+        + '}';
   }
 }

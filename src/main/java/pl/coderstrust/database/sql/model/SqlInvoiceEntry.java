@@ -1,11 +1,11 @@
 package pl.coderstrust.database.sql.model;
 
+import java.math.BigDecimal;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity
 public class SqlInvoiceEntry {
@@ -90,7 +90,7 @@ public class SqlInvoiceEntry {
     }
 
     public SqlInvoiceEntry build() {
-      return new SqlInvoiceEntry( this );
+      return new SqlInvoiceEntry(this);
     }
   }
 
@@ -147,14 +147,14 @@ public class SqlInvoiceEntry {
 
   @Override
   public String toString() {
-    return "SqlInvoiceEntry{" +
-            "id=" + id +
-            ", item='" + item + '\'' +
-            ", quantity=" + quantity +
-            ", price=" + price +
-            ", vatValue=" + vatValue +
-            ", grossValue=" + grossValue +
-            ", vatRate=" + vatRate +
-            '}';
+    return "SqlInvoiceEntry{"
+        + "id=" + id
+        + ", item='" + item + '\''
+        + ", quantity=" + quantity
+        + ", price=" + price
+        + ", vatValue=" + vatValue
+        + ", grossValue=" + grossValue
+        + ", vatRate=" + vatRate
+        + '}';
   }
 }

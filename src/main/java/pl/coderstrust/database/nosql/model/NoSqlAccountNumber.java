@@ -2,9 +2,8 @@ package pl.coderstrust.database.nosql.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.springframework.data.annotation.PersistenceConstructor;
-
 import java.util.Objects;
+import org.springframework.data.annotation.PersistenceConstructor;
 
 @JsonDeserialize(builder = NoSqlAccountNumber.Builder.class)
 public class NoSqlAccountNumber {
@@ -44,7 +43,7 @@ public class NoSqlAccountNumber {
     }
 
     public NoSqlAccountNumber build() {
-      return new NoSqlAccountNumber( this );
+      return new NoSqlAccountNumber(this);
     }
   }
 
@@ -76,9 +75,9 @@ public class NoSqlAccountNumber {
 
   @Override
   public String toString() {
-    return "NoSqlAccountNumber{" +
-            "ibanNumber='" + ibanNumber + '\'' +
-            ", localNumber='" + localNumber + '\'' +
-            '}';
+    return "NoSqlAccountNumber{"
+        + "ibanNumber='" + ibanNumber + '\''
+        + ", localNumber='" + localNumber + '\''
+        + '}';
   }
 }

@@ -1,10 +1,10 @@
 package pl.coderstrust.database.sql.model;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class SqlAccountNumber {
@@ -53,7 +53,7 @@ public class SqlAccountNumber {
     }
 
     public SqlAccountNumber build() {
-      return new SqlAccountNumber( this );
+      return new SqlAccountNumber(this);
     }
   }
 
@@ -90,10 +90,10 @@ public class SqlAccountNumber {
 
   @Override
   public String toString() {
-    return "SqlAccountNumber{" +
-            "id=" + id +
-            ", ibanNumber='" + ibanNumber + '\'' +
-            ", localNumber='" + localNumber + '\'' +
-            '}';
+    return "SqlAccountNumber{"
+        + "id=" + id
+        + ", ibanNumber='" + ibanNumber + '\''
+        + ", localNumber='" + localNumber + '\''
+        + '}';
   }
 }

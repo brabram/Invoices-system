@@ -1,12 +1,12 @@
 package pl.coderstrust.database.sql.model;
 
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import java.util.Objects;
 
 @Entity
 public class SqlContactDetails {
@@ -75,7 +75,7 @@ public class SqlContactDetails {
     }
 
     public SqlContactDetails build() {
-      return new SqlContactDetails( this );
+      return new SqlContactDetails(this);
     }
   }
 
@@ -122,12 +122,12 @@ public class SqlContactDetails {
 
   @Override
   public String toString() {
-    return "SqlContactDetails{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            ", phoneNumber='" + phoneNumber + '\'' +
-            ", website='" + website + '\'' +
-            ", address=" + address +
-            '}';
+    return "SqlContactDetails{"
+        + "id=" + id
+        + ", email='" + email + '\''
+        + ", phoneNumber='" + phoneNumber + '\''
+        + ", website='" + website + '\''
+        + ", address=" + address
+        + '}';
   }
 }

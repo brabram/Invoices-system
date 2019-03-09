@@ -3,15 +3,14 @@ package pl.coderstrust.database.nosql.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 @JsonDeserialize(builder = NoSqlInvoice.Builder.class)
@@ -129,10 +128,10 @@ public class NoSqlInvoice {
     }
 
     public NoSqlInvoice build() {
-      return new NoSqlInvoice( this );
+      return new NoSqlInvoice(this);
     }
   }
- 
+
   public String getMongoId() {
     return mongoId;
   }
@@ -200,17 +199,17 @@ public class NoSqlInvoice {
 
   @Override
   public String toString() {
-    return "NoSqlInvoice{" +
-            "mongoId='" + mongoId + '\'' +
-            ", id=" + id +
-            ", withNumber='" + number + '\'' +
-            ", issueDate=" + issueDate +
-            ", dueDate=" + dueDate +
-            ", totalNetValue=" + totalNetValue +
-            ", totalGrossValue=" + totalGrossValue +
-            ", seller=" + seller +
-            ", buyer=" + buyer +
-            ", entries=" + entries +
-            '}';
+    return "NoSqlInvoice{"
+        + "mongoId='" + mongoId + '\''
+        + ", id=" + id
+        + ", withNumber='" + number + '\''
+        + ", issueDate=" + issueDate
+        + ", dueDate=" + dueDate
+        + ", totalNetValue=" + totalNetValue
+        + ", totalGrossValue=" + totalGrossValue
+        + ", seller=" + seller
+        + ", buyer=" + buyer
+        + ", entries=" + entries
+        + '}';
   }
 }

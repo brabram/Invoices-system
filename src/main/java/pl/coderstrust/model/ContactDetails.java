@@ -95,12 +95,12 @@ public final class ContactDetails {
 
   @Override
   public String toString() {
-    return "ContactDetails{" +
-            "id=" + id +
-            ", email='" + email + '\'' +
-            ", phoneNumber='" + phoneNumber + '\'' +
-            ", website='" + website + '\'' +
-            ", address=" + address +
-            '}';
+    return "ContactDetails{"
+        + "id=" + id
+        + ", email='" + email + '\''
+        + ", phoneNumber='" + phoneNumber + '\''
+        + ", website='" + website + '\''
+        + ", address=" + address
+        + '}';
   }
 }

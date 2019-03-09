@@ -1,4 +1,4 @@
-package pl.coderstrust.database.nosql.inMemoryInvoiceDatabase;
+package pl.coderstrust.database.nosql.inmemory;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +18,6 @@ import pl.coderstrust.database.IdentifierGenerator;
 import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.database.nosql.NoSqlModelMapper;
 import pl.coderstrust.database.nosql.NoSqlModelMapperImpl;
-import pl.coderstrust.database.nosql.inMemoryInvoiceDatabase.InMemoryInvoiceDatabase;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 

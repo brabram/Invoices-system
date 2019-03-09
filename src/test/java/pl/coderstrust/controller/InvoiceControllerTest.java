@@ -544,7 +544,7 @@ class InvoiceControllerTest {
     //Given
     Long id = 1L;
     when(invoiceService.getInvoiceById(id)).thenReturn(Optional.empty());
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice with %d id does not exist.", id));
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice with id: %d does not exist.", id));
 
     //When
     MvcResult result = mockMvc
