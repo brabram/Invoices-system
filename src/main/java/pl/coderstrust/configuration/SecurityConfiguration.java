@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @PropertySource("classpath:security.properties")
 @ConfigurationProperties(prefix = "spring.security")
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   private String adminName;
 

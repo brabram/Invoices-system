@@ -261,8 +261,8 @@
                     <exclude>pl.coderstrust.database.DatabaseOperationException</exclude>
                     <exclude>pl.coderstrust.service.ServiceOperationException</exclude>
                     <exclude>pl.coderstrust.Application</exclude>
-                    <exclude>pl.coderstrust.configuration.SwaggerConfig</exclude>
-                    <exclude>pl.coderstrust.configuration.SecurityConfig</exclude>
+                    <exclude>pl.coderstrust.configuration.SwaggerConfiguration</exclude>
+                    <exclude>pl.coderstrust.configuration.SecurityConfiguration</exclude>
                     <exclude>pl.coderstrust.configuration.InFileInvoiceDatabaseProperties</exclude>
                     <exclude>pl.coderstrust.configuration.InFileInvoiceDatabaseProperties</exclude>
                     <exclude>pl.coderstrust.configuration.HibernateConfiguration</exclude>
