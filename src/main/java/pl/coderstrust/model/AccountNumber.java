@@ -1,5 +1,7 @@
 package pl.coderstrust.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -21,7 +23,10 @@ public final class AccountNumber {
   @ApiModelProperty(value = "26 digit account number", example = "'19200000000120067894552302'")
   private final String localNumber;
 
-  public AccountNumber(Long id, String ibanNumber, String localNumber) {
+  @JsonCreator
+  public AccountNumber(@JsonProperty("id") Long id,
+                       @JsonProperty("ibanNumber") String ibanNumber,
+                       @JsonProperty("localNumber") String localNumber) {
     this.id = id;
     this.ibanNumber = ibanNumber;
     this.localNumber = localNumber;

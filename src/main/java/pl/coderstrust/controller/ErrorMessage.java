@@ -1,23 +1,23 @@
 package pl.coderstrust.controller;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ErrorMessage {
+public final class ErrorMessage {
 
-  private String message;
-  private List<String> details;
-
-  protected ErrorMessage() {
-  }
+  private final String message;
+  private final List<String> details;
 
   public ErrorMessage(String message) {
     this.message = message;
     details = new ArrayList<>();
   }
 
-  public ErrorMessage(String message, List<String> details) {
+  @JsonCreator
+  public ErrorMessage(@JsonProperty("message") String message, @JsonProperty("details") List<String> details) {
     this.message = message;
     this.details = details;
   }
@@ -26,16 +26,8 @@ public class ErrorMessage {
     return message;
   }
 
-  public void setMessage(String message) {
-    this.message = message;
-  }
-
   public List<String> getDetails() {
     return details;
-  }
-
-  public void setDetails(List<String> details) {
-    this.details = details;
   }
 
   @Override

@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
@@ -32,20 +31,41 @@ public class InvoiceGenerator {
 
   public static Invoice getRandomInvoiceWithSpecificIssueDate(LocalDate issueDate) {
     Invoice invoice = getRandomInvoice();
-    invoice.setIssueDate(issueDate);
-    return invoice;
+    return new Invoice(invoice.getId(),
+        invoice.getNumber(),
+        issueDate,
+        invoice.getDueDate(),
+        invoice.getSeller(),
+        invoice.getBuyer(),
+        invoice.getEntries(),
+        invoice.getTotalNetValue(),
+        invoice.getTotalGrossValue());
   }
 
   public static Invoice getRandomInvoiceWithSpecificDueDate(LocalDate dueDate) {
     Invoice invoice = getRandomInvoice();
-    invoice.setDueDate(dueDate);
-    return invoice;
+    return new Invoice(invoice.getId(),
+        invoice.getNumber(),
+        invoice.getIssueDate(),
+        dueDate,
+        invoice.getSeller(),
+        invoice.getBuyer(),
+        invoice.getEntries(),
+        invoice.getTotalNetValue(),
+        invoice.getTotalGrossValue());
   }
 
   public static Invoice getRandomInvoicesIssuedInSpecificDateRange(LocalDate startDate, LocalDate endDate) {
     Invoice invoice = getRandomInvoice();
-    invoice.setIssueDate(createRandomDateInSpecificDateRange(startDate, endDate));
-    return invoice;
+    return new Invoice(invoice.getId(),
+        invoice.getNumber(),
+        createRandomDateInSpecificDateRange(startDate, endDate),
+        invoice.getDueDate(),
+        invoice.getSeller(),
+        invoice.getBuyer(),
+        invoice.getEntries(),
+        invoice.getTotalNetValue(),
+        invoice.getTotalGrossValue());
   }
 
   private static LocalDate createRandomDate() {

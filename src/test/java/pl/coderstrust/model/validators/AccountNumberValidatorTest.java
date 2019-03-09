@@ -6,28 +6,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.coderstrust.generators.AccountNumberGenerator;
 import pl.coderstrust.model.AccountNumber;
 
 class AccountNumberValidatorTest {
-  private AccountNumber accountNumber;
-
-  @BeforeEach
-  void setup() {
-    accountNumber = AccountNumberGenerator.getRandomAccount();
-  }
 
   @ParameterizedTest
   @MethodSource("ibanNumberArguments")
   void shouldValidateIbanNumber(String ibanNumber, List<String> expected) {
-    accountNumber.setIbanNumber(ibanNumber);
-    accountNumber.setLocalNumber("53533242");
+    AccountNumber accountNumber = new AccountNumber(1L, ibanNumber, "53533242");
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
     assertEquals(expected, resultOfValidation);
   }
@@ -45,8 +35,7 @@ class AccountNumberValidatorTest {
   @ParameterizedTest
   @MethodSource("localNumberArguments")
   void shouldValidateLocalNumber(String localNumber, List<String> expected) {
-    accountNumber.setLocalNumber(localNumber);
-    accountNumber.setIbanNumber("PL4343433");
+    AccountNumber accountNumber = new AccountNumber(1L, "PL4343433", localNumber);
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
     assertEquals(expected, resultOfValidation);
   }
@@ -65,15 +54,14 @@ class AccountNumberValidatorTest {
   @ParameterizedTest
   @MethodSource("accountNumberArguments")
   void shouldCompareIbanNumberAndLocalNumber(String localNumber, String ibanNumber, List<String> expected) {
-    accountNumber.setLocalNumber(localNumber);
-    accountNumber.setIbanNumber(ibanNumber);
+    AccountNumber accountNumber = new AccountNumber(1L, ibanNumber, localNumber);
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
     assertEquals(expected, resultOfValidation);
   }
 
   private static Stream<Arguments> accountNumberArguments() {
     return Stream.of(
-        Arguments.of("34342", "PL54646", Collections.singletonList("Check if iban number and local number are same, iban number must contain 2 letters at the beginning")),
+        Arguments.of("34342", "PL54646", Collections.singletonList("Check if iban number and local number are same, iban number must contain two letters at the beginning")),
         Arguments.of("34222", "PL34222", new ArrayList<String>())
     );
   }

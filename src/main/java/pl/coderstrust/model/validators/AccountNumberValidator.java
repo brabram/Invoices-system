@@ -55,7 +55,7 @@ public class AccountNumberValidator extends Validator {
 
   private static String compareNumbers(String localNumber, String ibanNumber) {
     if (!localNumber.equals(ibanNumber.substring(2))) {
-      return "Check if iban number and local number are same, iban number must contain 2 letters at the beginning";
+      return "Check if iban number and local number are same, iban number must contain two letters at the beginning";
     }
     return null;
   }

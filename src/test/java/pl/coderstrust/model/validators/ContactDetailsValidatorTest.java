@@ -6,27 +6,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.coderstrust.generators.ContactDetailsGenerator;
+import pl.coderstrust.generators.AddressGenerator;
 import pl.coderstrust.model.ContactDetails;
 
 class ContactDetailsValidatorTest {
-  private ContactDetails contactDetails;
-
-  @BeforeEach
-  void setup() {
-    contactDetails = ContactDetailsGenerator.getRandomContactDetails();
-  }
 
   @ParameterizedTest
   @MethodSource("emailArguments")
   void shouldValidateEmail(String email, List<String> expected) {
-    contactDetails.setEmail(email);
+    ContactDetails contactDetails = new ContactDetails(1L, email, "+48786345298", "www.company.net.eu", AddressGenerator.getRandomAddress());
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);
   }
@@ -45,7 +37,7 @@ class ContactDetailsValidatorTest {
   @ParameterizedTest
   @MethodSource("webSiteArguments")
   void shouldValidateWebSite(String webSite, List<String> expected) {
-    contactDetails.setWebsite(webSite);
+    ContactDetails contactDetails = new ContactDetails(1L, "poczta@onet.pl", "+48786345298", webSite, AddressGenerator.getRandomAddress());
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);
   }
@@ -66,7 +58,7 @@ class ContactDetailsValidatorTest {
   @ParameterizedTest
   @MethodSource("phoneNumberArguments")
   void shouldValidatePhoneNumber(String phoneNumber, List<String> expected) {
-    contactDetails.setPhoneNumber(phoneNumber);
+    ContactDetails contactDetails = new ContactDetails(1L, "poczta@onet.pl", phoneNumber, "www.company.net.eu", AddressGenerator.getRandomAddress());
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);
   }
@@ -91,7 +83,7 @@ class ContactDetailsValidatorTest {
 
   @Test
   void shouldValidateAddress() {
-    contactDetails.setAddress(null);
+    ContactDetails contactDetails = new ContactDetails(1L, "poczta@onet.pl", "+48786345298", "www.company.net.eu", null);
     List<String> expected = Collections.singletonList("Address cannot be null");
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);

@@ -1,5 +1,7 @@
 package pl.coderstrust.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -29,7 +31,12 @@ public final class Company {
   @OneToOne(cascade = CascadeType.ALL)
   private final ContactDetails contactDetails;
 
-  public Company(Long id, String name, String taxIdentificationNumber, AccountNumber accountNumber, ContactDetails contactDetails) {
+  @JsonCreator
+  public Company(@JsonProperty("id") Long id,
+                 @JsonProperty("name") String name,
+                 @JsonProperty("taxIdentificationNumber") String taxIdentificationNumber,
+                 @JsonProperty("accountNumber") AccountNumber accountNumber,
+                 @JsonProperty("contactDetails") ContactDetails contactDetails) {
     this.id = id;
     this.name = name;
     this.taxIdentificationNumber = taxIdentificationNumber;

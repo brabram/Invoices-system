@@ -6,27 +6,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import pl.coderstrust.generators.AddressGenerator;
 import pl.coderstrust.model.Address;
 
 class AddressValidatorTest {
-  private Address address;
-
-  @BeforeEach
-  void setup() {
-    address = AddressGenerator.getRandomAddress();
-  }
 
   @ParameterizedTest
   @MethodSource("streetArguments")
   void shouldValidateStreet(String street, List<String> expected) {
-    address.setStreet(street);
+    Address address = new Address(1L, street, "15a/1", "00810", "Warsaw", "Poland");
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -47,7 +38,7 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("cityArguments")
   void shouldValidateCity(String city, List<String> expected) {
-    address.setCity(city);
+    Address address = new Address(1L, "Warszawska", "15a/1", "00810", city, "Poland");
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -69,7 +60,7 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("countryArguments")
   void shouldValidateCountry(String country, List<String> expected) {
-    address.setCountry(country);
+    Address address = new Address(1L, "Warszawska", "15a/1", "00810", "Warsaw", country);
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -91,7 +82,7 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("addressNumberArguments")
   void shouldValidateAddressNumber(String addressNumber, List<String> expected) {
-    address.setNumber(addressNumber);
+    Address address = new Address(1L, "Warszawska", addressNumber, "00810", "Warsaw", "Poland");
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -111,7 +102,7 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("postalCodeArguments")
   void shouldValidatePostalCode(String postalCode, List<String> expected) {
-    address.setPostalCode(postalCode);
+    Address address = new Address(1L, "Warszawska", "15a/1", postalCode, "Warsaw", "Poland");
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }

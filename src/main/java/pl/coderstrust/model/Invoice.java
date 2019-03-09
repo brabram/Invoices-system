@@ -1,5 +1,7 @@
 package pl.coderstrust.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -46,19 +48,16 @@ public final class Invoice {
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private final List<InvoiceEntry> entries;
 
-  protected Invoice(Long id, String number, LocalDate issueDate, LocalDate dueDate, BigDecimal totalNetValue, BigDecimal totalGrossValue, Company seller, Company buyer, List<InvoiceEntry> entries) {
-    this.id = id;
-    this.number = number;
-    this.issueDate = issueDate;
-    this.dueDate = dueDate;
-    this.totalNetValue = totalNetValue;
-    this.totalGrossValue = totalGrossValue;
-    this.seller = seller;
-    this.buyer = buyer;
-    this.entries = entries;
-  }
-
-  public Invoice(Long id, String number, LocalDate issueDate, LocalDate dueDate, Company seller, Company buyer, List<InvoiceEntry> entries, BigDecimal totalNetValue, BigDecimal totalGrossValue) {
+  @JsonCreator
+  public Invoice(@JsonProperty("id") Long id,
+                 @JsonProperty("number") String number,
+                 @JsonProperty("issueDate") LocalDate issueDate,
+                 @JsonProperty("dueDate") LocalDate dueDate,
+                 @JsonProperty("seller") Company seller,
+                 @JsonProperty("buyer") Company buyer,
+                 @JsonProperty("entries") List<InvoiceEntry> entries,
+                 @JsonProperty("totalNetValue") BigDecimal totalNetValue,
+                 @JsonProperty("totalGrossValue") BigDecimal totalGrossValue) {
     this.id = id;
     this.number = number;
     this.issueDate = issueDate;

@@ -30,15 +30,10 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
         throw new IllegalArgumentException("Invoice cannot be null");
       }
       log.debug("Saving invoice: {}", invoice);
-      Invoice invoiceToAddOrUpdate = new Invoice(invoice);
-      if (invoiceToAddOrUpdate.getId() != null && isInvoiceExist(invoiceToAddOrUpdate.getId())) {
-        invoices.put(invoiceToAddOrUpdate.getId(), invoiceToAddOrUpdate);
-        return Optional.of(invoiceToAddOrUpdate);
+      if (invoice.getId() != null && isInvoiceExist(invoice.getId())) {
+        return Optional.of(updateInvoice(invoice));
       }
-      long id = counter.incrementAndGet();
-      invoiceToAddOrUpdate.setId(id);
-      invoices.put(id, invoiceToAddOrUpdate);
-      return Optional.of(invoiceToAddOrUpdate);
+      return Optional.of(addInvoice(invoice));
     }
   }
 
@@ -105,5 +100,34 @@ public class InMemoryInvoiceDatabase implements InvoiceDatabase {
   private boolean isInvoiceExist(long id) {
     log.info("Checking if invoice exists by id: {}", id);
     return invoices.containsKey(id);
+  }
+
+  private Invoice addInvoice(Invoice invoice) {
+    long id = counter.incrementAndGet();
+    Invoice invoiceToAdd = new Invoice(id,
+        invoice.getNumber(),
+        invoice.getIssueDate(),
+        invoice.getDueDate(),
+        invoice.getSeller(),
+        invoice.getBuyer(),
+        invoice.getEntries(),
+        invoice.getTotalNetValue(),
+        invoice.getTotalGrossValue());
+    invoices.put(invoiceToAdd.getId(), invoiceToAdd);
+    return invoiceToAdd;
+  }
+
+  private Invoice updateInvoice(Invoice invoice) {
+    Invoice invoiceToUpdate = new Invoice(invoice.getId(),
+        invoice.getNumber(),
+        invoice.getIssueDate(),
+        invoice.getDueDate(),
+        invoice.getSeller(),
+        invoice.getBuyer(),
+        invoice.getEntries(),
+        invoice.getTotalNetValue(),
+        invoice.getTotalGrossValue());
+    invoices.put(invoiceToUpdate.getId(), invoiceToUpdate);
+    return invoiceToUpdate;
   }
 }

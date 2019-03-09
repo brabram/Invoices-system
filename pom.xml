@@ -243,6 +243,7 @@
                     <exclude>pl.coderstrust.configuration.InFileInvoiceDatabaseProperties</exclude>
                     <exclude>pl.coderstrust.configuration.InFileInvoiceDatabaseProperties</exclude>
                     <exclude>pl.coderstrust.configuration.HibernateConfiguration</exclude>
+                    <exclude>pl.coderstrust.controller.ErrorMessage</exclude>
                   </excludes>
                 </rule>
               </rules>

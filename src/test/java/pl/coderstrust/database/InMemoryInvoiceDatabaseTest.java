@@ -44,20 +44,28 @@ class InMemoryInvoiceDatabaseTest {
   void shouldUpdateInvoice() throws DatabaseOperationException {
     //given
     Invoice invoiceToSave = InvoiceGenerator.getRandomInvoice();
-    Optional<Invoice> invoiceToUpdate = invoiceDatabase.save(invoiceToSave);
-    assertTrue(invoiceToUpdate.isPresent());
-    assertEquals(invoiceToUpdate, invoiceDatabase.findById(invoiceToUpdate.get().getId()));
-    invoiceToUpdate.get().setNumber("11");
-    invoiceToUpdate.get().setTotalNetValue(BigDecimal.valueOf(5555));
+    Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
+    assertTrue(savedInvoice.isPresent());
+    assertEquals(savedInvoice, invoiceDatabase.findById(savedInvoice.get().getId()));
+    Invoice invoiceToUpdate = new Invoice(savedInvoice.get().getId(),
+        "11",
+        savedInvoice.get().getIssueDate(),
+        savedInvoice.get().getDueDate(),
+        savedInvoice.get().getSeller(),
+        savedInvoice.get().getBuyer(),
+        savedInvoice.get().getEntries(),
+        BigDecimal.valueOf(5555),
+        savedInvoice.get().getTotalGrossValue());
+    Optional<Invoice> invoice = invoiceDatabase.save(invoiceToUpdate);
 
     //when
-    Optional<Invoice> updatedInvoice = invoiceDatabase.save(invoiceToUpdate.get());
+    Optional<Invoice> updatedInvoice = invoiceDatabase.save(invoiceToUpdate);
     assertTrue(updatedInvoice.isPresent());
     Optional<Invoice> invoiceFromDatabase = invoiceDatabase.findById(updatedInvoice.get().getId());
 
     //then
     assertNotNull(invoiceFromDatabase);
-    assertEquals(invoiceToUpdate, updatedInvoice);
+    assertEquals(invoice, updatedInvoice);
   }
 
   @Test

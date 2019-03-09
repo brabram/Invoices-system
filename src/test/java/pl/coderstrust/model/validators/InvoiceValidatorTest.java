@@ -8,27 +8,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import pl.coderstrust.generators.CompanyGenerator;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 
 class InvoiceValidatorTest {
-  private Invoice invoice;
-
-  @BeforeEach
-  void setup() {
-    invoice = InvoiceGenerator.getRandomInvoice();
-  }
 
   @ParameterizedTest
   @MethodSource("invoiceIdArguments")
   void shouldValidateInvoiceId(Long id, List<String> expected) {
-    invoice.setId(id);
+    Invoice invoice = new Invoice(id, "FV/1234a", LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), CompanyGenerator.getRandomCompany(), CompanyGenerator.getRandomCompany(), new ArrayList<>(), BigDecimal.valueOf(1000.00), BigDecimal.valueOf(1023.00));
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
@@ -44,7 +37,7 @@ class InvoiceValidatorTest {
 
   @Test
   void shouldValidateInvoiceWhenIdNotRequired() {
-    invoice.setId(2L);
+    Invoice invoice = new Invoice(2L, "FV/1234a", LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), CompanyGenerator.getRandomCompany(), CompanyGenerator.getRandomCompany(), new ArrayList<>(), BigDecimal.valueOf(1000.00), BigDecimal.valueOf(1023.00));
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, false);
     List expected = new ArrayList<String>();
     assertEquals(expected, resultOfValidation);
@@ -53,7 +46,7 @@ class InvoiceValidatorTest {
   @ParameterizedTest
   @MethodSource("invoiceNumberArguments")
   void shouldValidateInvoiceNumber(String number, List<String> expected) {
-    invoice.setNumber(number);
+    Invoice invoice = new Invoice(1L, number, LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), CompanyGenerator.getRandomCompany(), CompanyGenerator.getRandomCompany(), new ArrayList<>(), BigDecimal.valueOf(1000.00), BigDecimal.valueOf(1023.00));
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
@@ -74,8 +67,7 @@ class InvoiceValidatorTest {
   @ParameterizedTest
   @MethodSource("invoiceDateArguments")
   void shouldValidateInvoiceIssueDate(LocalDate issueDate, LocalDate dueDate, List<String> expected) {
-    invoice.setIssueDate(issueDate);
-    invoice.setDueDate(dueDate);
+    Invoice invoice = new Invoice(1L, "FV/1234a", issueDate, dueDate, CompanyGenerator.getRandomCompany(), CompanyGenerator.getRandomCompany(), new ArrayList<>(), BigDecimal.valueOf(1000.00), BigDecimal.valueOf(1023.00));
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
@@ -94,7 +86,7 @@ class InvoiceValidatorTest {
   @ParameterizedTest
   @MethodSource("totalNetValueArguments")
   void shouldValidateTotalNetValue(BigDecimal netValue, List<String> expected) {
-    invoice.setTotalNetValue(netValue);
+    Invoice invoice = new Invoice(1L, "FV/1234a", LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), CompanyGenerator.getRandomCompany(), CompanyGenerator.getRandomCompany(), new ArrayList<>(), netValue, BigDecimal.valueOf(1023.00));
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
@@ -111,7 +103,7 @@ class InvoiceValidatorTest {
   @ParameterizedTest
   @MethodSource("totalGrossValueArguments")
   void shouldValidateTotalGrossValue(BigDecimal grossValue, List<String> expected) {
-    invoice.setTotalGrossValue(grossValue);
+    Invoice invoice = new Invoice(1L, "FV/1234a", LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), CompanyGenerator.getRandomCompany(), CompanyGenerator.getRandomCompany(), new ArrayList<>(), BigDecimal.valueOf(1000.00), grossValue);
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
   }
@@ -134,7 +126,7 @@ class InvoiceValidatorTest {
 
   @Test
   void shouldValidateCompanySeller() {
-    invoice.setSeller(null);
+    Invoice invoice = new Invoice(1L, "FV/1234a", LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), null, CompanyGenerator.getRandomCompany(), new ArrayList<>(), BigDecimal.valueOf(1000.00), BigDecimal.valueOf(1023.00));
     List<String> expected = Collections.singletonList("Company cannot be null");
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
@@ -142,7 +134,7 @@ class InvoiceValidatorTest {
 
   @Test
   void shouldValidateCompanyBuyer() {
-    invoice.setBuyer(null);
+    Invoice invoice = new Invoice(1L, "FV/1234a", LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), CompanyGenerator.getRandomCompany(), null, new ArrayList<>(), BigDecimal.valueOf(1000.00), BigDecimal.valueOf(1023.00));
     List<String> expected = Collections.singletonList("Company cannot be null");
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);
@@ -150,7 +142,7 @@ class InvoiceValidatorTest {
 
   @Test
   void shouldValidateInvoiceEntries() {
-    invoice.setEntries(null);
+    Invoice invoice = new Invoice(1L, "FV/1234a", LocalDate.of(2019,2,4), LocalDate.of(2019,2,18), CompanyGenerator.getRandomCompany(), CompanyGenerator.getRandomCompany(), null, BigDecimal.valueOf(1000.00), BigDecimal.valueOf(1023.00));
     List<String> expected = Collections.singletonList("Invoice entries cannot be null");
     List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
     assertEquals(expected, resultOfValidation);

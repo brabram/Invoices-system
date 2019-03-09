@@ -325,8 +325,14 @@ class InFileInvoiceDatabaseTest {
   @Test
   void shouldAddInvoice() throws IOException, DatabaseOperationException {
     Invoice invoiceToAdd = InvoiceGenerator.getRandomInvoice();
-    Invoice expectedInvoice = new Invoice(invoiceToAdd);
-    expectedInvoice.setId(1L);
+    Invoice expectedInvoice = new Invoice(1L, invoiceToAdd.getNumber(),
+        invoiceToAdd.getIssueDate(),
+        invoiceToAdd.getDueDate(),
+        invoiceToAdd.getSeller(),
+        invoiceToAdd.getBuyer(),
+        invoiceToAdd.getEntries(),
+        invoiceToAdd.getTotalNetValue(),
+        invoiceToAdd.getTotalGrossValue());
     Invoice invoiceInDatabase1 = InvoiceGenerator.getRandomInvoice();
     Invoice invoiceInDatabase2 = InvoiceGenerator.getRandomInvoice();
     List<String> invoicesInDatabase = new ArrayList<>();

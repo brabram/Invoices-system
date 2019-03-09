@@ -55,15 +55,10 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
         throw new IllegalArgumentException("Invoice cannot be null");
       }
       try {
-        Invoice invoiceToAddOrUpdate = new Invoice(invoice);
-        if (invoiceToAddOrUpdate.getId() != null && isInvoiceExist(invoiceToAddOrUpdate.getId())) {
-          deleteInvoice(invoiceToAddOrUpdate.getId());
-        } else {
-          invoiceToAddOrUpdate.setId(getNextInvoiceId());
+        if (invoice.getId() != null && isInvoiceExist(invoice.getId())) {
+          return Optional.of(updateInvoice(invoice));
         }
-        String invoiceAsJson = serializeInvoiceToJson(invoiceToAddOrUpdate);
-        fileHelper.writeLine(databaseFilePath.getFilePath(), invoiceAsJson);
-        return Optional.of(invoiceToAddOrUpdate);
+        return Optional.of(addInvoice(invoice));
       } catch (IOException e) {
         throw new DatabaseOperationException("An error occurred during saving invoice", e);
       }
@@ -203,5 +198,37 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
 
   private long getNextInvoiceId() {
     return ++lastInvoiceId;
+  }
+
+  private Invoice addInvoice(Invoice invoice) throws IOException {
+    long id = getNextInvoiceId();
+    Invoice invoiceToAdd = new Invoice(id,
+        invoice.getNumber(),
+        invoice.getIssueDate(),
+        invoice.getDueDate(),
+        invoice.getSeller(),
+        invoice.getBuyer(),
+        invoice.getEntries(),
+        invoice.getTotalNetValue(),
+        invoice.getTotalGrossValue());
+    String invoiceAsJson = serializeInvoiceToJson(invoiceToAdd);
+    fileHelper.writeLine(databaseFilePath.getFilePath(), invoiceAsJson);
+    return invoiceToAdd;
+  }
+
+  private Invoice updateInvoice(Invoice invoice) throws IOException, DatabaseOperationException {
+    deleteInvoice(invoice.getId());
+    Invoice invoiceToUpdate = new Invoice(invoice.getId(),
+        invoice.getNumber(),
+        invoice.getIssueDate(),
+        invoice.getDueDate(),
+        invoice.getSeller(),
+        invoice.getBuyer(),
+        invoice.getEntries(),
+        invoice.getTotalNetValue(),
+        invoice.getTotalGrossValue());
+    String invoiceAsJson = serializeInvoiceToJson(invoiceToUpdate);
+    fileHelper.writeLine(databaseFilePath.getFilePath(), invoiceAsJson);
+    return invoiceToUpdate;
   }
 }
