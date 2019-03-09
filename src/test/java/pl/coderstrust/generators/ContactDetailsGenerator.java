@@ -18,4 +18,13 @@ public class ContactDetailsGenerator {
     Address address = AddressGenerator.getRandomAddress();
     return new ContactDetails(id, email, phoneNumber, webSite, address);
   }
+
+  public static ContactDetails getRandomContactDetailsWithoutId() {
+    long id = 0L;
+    String email = String.format("%s@gmail.com", getRandomWord());
+    String phoneNumber = String.format("+48%09d", random.nextInt(999999999));
+    String webSite = String.format("www.%s.com", getRandomWord());
+    Address address = AddressGenerator.getRandomAddressWithoutId();
+    return new ContactDetails(id, email, phoneNumber, webSite, address);
+  }
 }

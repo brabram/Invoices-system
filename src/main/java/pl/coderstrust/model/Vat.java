@@ -18,6 +18,8 @@ public enum Vat {
 
   @Override
   public String toString() {
-    return String.format("Value: %f", value);
+    return "Vat{" +
+            "value=" + value +
+            '}';
   }
 }

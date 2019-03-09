@@ -100,16 +100,16 @@ public class InvoiceController {
 
   @GetMapping("/byNumber")
   @ApiOperation(
-      value = "Get invoice by number.",
+      value = "Get invoice by withNumber.",
       response = Invoice.class)
-  @ApiImplicitParam(name = "number", value = "Possible letters, numbers and sign '/'  e.g. 'FV/789006a'", example = "FV/789006a")
+  @ApiImplicitParam(name = "withNumber", value = "Possible letters, numbers and sign '/'  e.g. 'FV/789006a'", example = "FV/789006a")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "OK", response = Invoice.class),
-      @ApiResponse(code = 404, message = "Invoice not found for passed number.", response = ErrorMessage.class),
+      @ApiResponse(code = 404, message = "Invoice not found for passed withNumber.", response = ErrorMessage.class),
       @ApiResponse(code = 500, message = "Internal server error.", response = ErrorMessage.class)})
-  public ResponseEntity<?> getByNumber(@RequestParam("number") String number) {
+  public ResponseEntity<?> getByNumber(@RequestParam("withNumber") String number) {
     try {
-      log.debug("Getting invoice by number: {}", number);
+      log.debug("Getting invoice by withNumber: {}", number);
       Optional<List<Invoice>> optionalInvoicesList = invoiceService.getAllInvoices();
       if (optionalInvoicesList.isPresent()) {
         Optional<Invoice> optionalInvoice = optionalInvoicesList.get()
@@ -119,11 +119,11 @@ public class InvoiceController {
         if (optionalInvoice.isPresent()) {
           return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed number: %s", number)), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed withNumber: %s", number)), HttpStatus.NOT_FOUND);
       }
-      return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed number: %s", number)), HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(new ErrorMessage(String.format("Invoice not found for passed withNumber: %s", number)), HttpStatus.NOT_FOUND);
     } catch (Exception e) {
-      String message = String.format("Internal server error while getting invoice by number: %s", number);
+      String message = String.format("Internal server error while getting invoice by withNumber: %s", number);
       log.error(message, e);
       return new ResponseEntity<>(new ErrorMessage(message), HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -210,7 +210,7 @@ public class InvoiceController {
       log.debug("Removing invoice. id: {}", id);
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (!optionalInvoice.isPresent()) {
-        return new ResponseEntity<>(new ErrorMessage(String.format("Invoice with %d id does not exist.", id)), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorMessage(String.format("Invoice with id: %d does not exist.", id)), HttpStatus.NOT_FOUND);
       }
       invoiceService.deleteInvoiceById(id);
       return new ResponseEntity<>(optionalInvoice.get(), HttpStatus.OK);

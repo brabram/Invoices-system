@@ -116,7 +116,14 @@ public final class InvoiceEntry {
 
   @Override
   public String toString() {
-    return String.format("id: %d, item: %s, quantity: %s, price: %s, vatValue: %s, grossValue: %s, vatRate: %s",
-        id, item, quantity, price, vatValue, grossValue, vatRate);
+    return "InvoiceEntry{" +
+            "id=" + id +
+            ", item='" + item + '\'' +
+            ", quantity=" + quantity +
+            ", price=" + price +
+            ", vatValue=" + vatValue +
+            ", grossValue=" + grossValue +
+            ", vatRate=" + vatRate +
+            '}';
   }
 }

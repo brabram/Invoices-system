@@ -104,7 +104,13 @@ public final class Address {
 
   @Override
   public String toString() {
-    return String.format("id: %d, street: %s, number: %s, postalCode: %s, city: %s, country: %s",
-        id, street, number, postalCode, city, country);
+    return "Address{" +
+            "id=" + id +
+            ", street='" + street + '\'' +
+            ", number='" + number + '\'' +
+            ", postalCode='" + postalCode + '\'' +
+            ", city='" + city + '\'' +
+            ", country='" + country + '\'' +
+            '}';
   }
 }

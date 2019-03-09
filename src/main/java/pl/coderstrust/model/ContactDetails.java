@@ -95,7 +95,12 @@ public final class ContactDetails {
 
   @Override
   public String toString() {
-    return String.format("id: %d, email: %s, phoneNumber: %s, website: %s, address: %s",
-        id, email, phoneNumber, website, address);
+    return "ContactDetails{" +
+            "id=" + id +
+            ", email='" + email + '\'' +
+            ", phoneNumber='" + phoneNumber + '\'' +
+            ", website='" + website + '\'' +
+            ", address=" + address +
+            '}';
   }
 }

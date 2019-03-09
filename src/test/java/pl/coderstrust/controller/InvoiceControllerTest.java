@@ -202,7 +202,7 @@ class InvoiceControllerTest {
     //When
     MvcResult result = mockMvc
         .perform(get(String.format("%s/byNumber", urlAddressTemplate))
-            .param("number", number)
+            .param("withNumber", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -222,12 +222,12 @@ class InvoiceControllerTest {
     List<Invoice> invoicesList = Collections.singletonList(invoice);
     String number = invoice.getNumber() + "xxx";
     when(invoiceService.getAllInvoices()).thenReturn(Optional.of(invoicesList));
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed number: %s", number));
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed withNumber: %s", number));
 
     //When
     MvcResult result = mockMvc
         .perform(get(String.format("%s/byNumber", urlAddressTemplate))
-            .param("number", number)
+            .param("withNumber", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -245,12 +245,12 @@ class InvoiceControllerTest {
     //Given
     String number = "1";
     when(invoiceService.getAllInvoices()).thenReturn(Optional.empty());
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed number: %s", number));
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Invoice not found for passed withNumber: %s", number));
 
     //When
     MvcResult result = mockMvc
         .perform(get(String.format("%s/byNumber", urlAddressTemplate))
-            .param("number", number)
+            .param("withNumber", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();
@@ -268,12 +268,12 @@ class InvoiceControllerTest {
     //Given
     String number = "1";
     doThrow(ServiceOperationException.class).when(invoiceService).getAllInvoices();
-    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by number: %s", number));
+    ErrorMessage expectedResponse = new ErrorMessage(String.format("Internal server error while getting invoice by withNumber: %s", number));
 
     //When
     MvcResult result = mockMvc
         .perform(get(String.format("%s/byNumber", urlAddressTemplate))
-            .param("number", number)
+            .param("withNumber", number)
             .accept(MediaType.APPLICATION_JSON_UTF8))
         .andReturn();
     int actualHttpStatus = result.getResponse().getStatus();

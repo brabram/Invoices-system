@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ConditionalOnProperty(name = "pl.coderstrust.database", havingValue = "hibernate")
-@Import({DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@Import({DataSourceAutoConfiguration.class
+        , DataSourceTransactionManagerAutoConfiguration.class
+        , HibernateJpaAutoConfiguration.class})
 public class HibernateConfiguration {
 }

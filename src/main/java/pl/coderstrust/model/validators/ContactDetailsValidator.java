@@ -34,21 +34,21 @@ public class ContactDetailsValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.emailPattern.matcher(email);
     if (!matcher.matches()) {
-      return "Incorrect email address";
+      return "Incorrect withEmail withAddress";
     }
     return null;
   }
 
   private static String validatePhoneNumber(String phoneNumber) {
     if (phoneNumber == null) {
-      return "Phone number cannot be null";
+      return "Phone withNumber cannot be null";
     }
     if (phoneNumber.trim().isEmpty()) {
-      return "Phone number cannot be empty";
+      return "Phone withNumber cannot be empty";
     }
     Matcher matcher = RegExpPatterns.phoneNumberPattern.matcher(phoneNumber);
     if (!matcher.matches()) {
-      return "Incorrect phone number";
+      return "Incorrect phone withNumber";
     }
     return null;
   }

@@ -27,8 +27,8 @@ class ContactDetailsValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Email cannot be null")),
         Arguments.of("", Collections.singletonList("Email cannot be empty")),
-        Arguments.of("weefwfw", Collections.singletonList("Incorrect email address")),
-        Arguments.of("weefwfw@fer", Collections.singletonList("Incorrect email address")),
+        Arguments.of("weefwfw", Collections.singletonList("Incorrect withEmail withAddress")),
+        Arguments.of("weefwfw@fer", Collections.singletonList("Incorrect withEmail withAddress")),
         Arguments.of("weefwfw@gmail.com", new ArrayList<String>()),
         Arguments.of("Weefwfw@gmail.com.pl", new ArrayList<String>())
     );
@@ -65,10 +65,10 @@ class ContactDetailsValidatorTest {
 
   private static Stream<Arguments> phoneNumberArguments() {
     return Stream.of(
-        Arguments.of(null, Collections.singletonList("Phone number cannot be null")),
-        Arguments.of("", Collections.singletonList("Phone number cannot be empty")),
-        Arguments.of("gtr", Collections.singletonList("Incorrect phone number")),
-        Arguments.of("23243grrg", Collections.singletonList("Incorrect phone number")),
+        Arguments.of(null, Collections.singletonList("Phone withNumber cannot be null")),
+        Arguments.of("", Collections.singletonList("Phone withNumber cannot be empty")),
+        Arguments.of("gtr", Collections.singletonList("Incorrect phone withNumber")),
+        Arguments.of("23243grrg", Collections.singletonList("Incorrect phone withNumber")),
         Arguments.of("+48111111111", new ArrayList<String>()),
         Arguments.of("48111111111", new ArrayList<String>())
     );

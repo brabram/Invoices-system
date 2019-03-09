@@ -17,4 +17,13 @@ public class CompanyGenerator {
     ContactDetails contactDetails = ContactDetailsGenerator.getRandomContactDetails();
     return new Company(id, name, taxIdentificationNumber, accountNumber, contactDetails);
   }
+
+  public static Company getRandomCompanyWithoutId() {
+    long id = 0L;
+    String name = WordGenerator.getRandomWord();
+    String taxIdentificationNumber = String.format("%05d%05d", random.nextInt(99999), random.nextInt(99999));
+    AccountNumber accountNumber = AccountNumberGenerator.getRandomAccountWithoutId();
+    ContactDetails contactDetails = ContactDetailsGenerator.getRandomContactDetailsWithoutId();
+    return new Company(id, name, taxIdentificationNumber, accountNumber, contactDetails);
+  }
 }

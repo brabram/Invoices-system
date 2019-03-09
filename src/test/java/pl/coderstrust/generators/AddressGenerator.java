@@ -16,4 +16,14 @@ public class AddressGenerator {
     String country = "Poland";
     return new Address(id, street, number, postalCode, city, country);
   }
+
+  public static Address getRandomAddressWithoutId() {
+    long id = 0L;
+    String street = "Krakowska";
+    String number = String.format("%d/%d", random.nextInt(150), random.nextInt(180));
+    String postalCode = String.format("%05d", random.nextInt(99999));
+    String city = "Warsaw";
+    String country = "Poland";
+    return new Address(id, street, number, postalCode, city, country);
+  }
 }

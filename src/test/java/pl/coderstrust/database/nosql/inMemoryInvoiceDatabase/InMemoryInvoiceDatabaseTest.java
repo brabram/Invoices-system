@@ -1,6 +1,7 @@
-package pl.coderstrust.database;
+package pl.coderstrust.database.nosql.inMemoryInvoiceDatabase;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,9 +11,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.coderstrust.database.DatabaseOperationException;
+import pl.coderstrust.database.IdentifierGenerator;
+import pl.coderstrust.database.InvoiceDatabase;
+import pl.coderstrust.database.nosql.NoSqlModelMapper;
+import pl.coderstrust.database.nosql.NoSqlModelMapperImpl;
+import pl.coderstrust.database.nosql.inMemoryInvoiceDatabase.InMemoryInvoiceDatabase;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
 
@@ -22,7 +28,9 @@ class InMemoryInvoiceDatabaseTest {
 
   @BeforeEach
   void setup() {
-    invoiceDatabase = new InMemoryInvoiceDatabase();
+    IdentifierGenerator identifierGenerator = new IdentifierGenerator();
+    NoSqlModelMapper noSqlModelMapper = new NoSqlModelMapperImpl();
+    invoiceDatabase = new InMemoryInvoiceDatabase(identifierGenerator, noSqlModelMapper);
   }
 
   @Test
@@ -213,3 +221,4 @@ class InMemoryInvoiceDatabaseTest {
     assertThrows(IllegalArgumentException.class, () -> invoiceDatabase.existsById(null));
   }
 }
+

@@ -14,4 +14,12 @@ public class AccountNumberGenerator {
     String ibanNumber = String.format("PL%s", localNumber);
     return new AccountNumber(id, ibanNumber, localNumber);
   }
+
+  public static AccountNumber getRandomAccountWithoutId() {
+    long id = 0L;
+    String localNumber = String.format("%02d%04d%04d%04d%04d%04d%04d", random.nextInt(99), random.nextInt(9999), random.nextInt(9999),
+        random.nextInt(9999), random.nextInt(9999), random.nextInt(9999), random.nextInt(9999));
+    String ibanNumber = String.format("PL%s", localNumber);
+    return new AccountNumber(id, ibanNumber, localNumber);
+  }
 }

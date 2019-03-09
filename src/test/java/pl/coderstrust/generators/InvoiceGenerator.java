@@ -29,6 +29,35 @@ public class InvoiceGenerator {
         list, totalNetValue, totalGrossValue);
   }
 
+  public static Invoice getRandomInvoiceWithoutIdInOtherEntities() {
+    long id = IdGenerator.getNextId();
+    String number = String.valueOf(random.nextInt(5000));
+    LocalDate issueDate = createRandomDate();
+    LocalDate dueDate = issueDate.plusDays(7);
+    Company seller = CompanyGenerator.getRandomCompanyWithoutId();
+    Company buyer = CompanyGenerator.getRandomCompanyWithoutId();
+    List<InvoiceEntry> list = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      list.add(InvoiceEntriesGenerator.getRandomInvoiceEntryWithoutId());
+    }
+    BigDecimal totalNetValue = list.stream().map(item -> item.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    BigDecimal totalGrossValue = list.stream().map(item -> item.getGrossValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    return new Invoice(id, number, issueDate, dueDate, seller, buyer,
+        list, totalNetValue, totalGrossValue);
+  }
+
+  public static Invoice getRandomInvoiceWithSpecificIssueDate(LocalDate issueDate) {
+    Invoice invoice = getRandomInvoice();
+    invoice.setIssueDate(issueDate);
+    return invoice;
+  }
+
+  public static Invoice getRandomInvoiceWithSpecificDueDate(LocalDate dueDate) {
+    Invoice invoice = getRandomInvoice();
+    invoice.setDueDate(dueDate);
+    return invoice;
+  }
+
   public static Invoice getRandomInvoicesIssuedInSpecificDateRange(LocalDate startDate, LocalDate endDate) {
     Invoice invoice = getRandomInvoice();
     return new Invoice(invoice.getId(),

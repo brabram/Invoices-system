@@ -55,7 +55,7 @@ public class InvoicePdfService {
   }
 
   private Paragraph getInvoiceDetails(Invoice invoice) {
-    Paragraph title = new Paragraph(String.format("Invoice number: %s", invoice.getNumber()),
+    Paragraph title = new Paragraph(String.format("Invoice withNumber: %s", invoice.getNumber()),
         FontFactory.getFont(FontFactory.HELVETICA, 12, Font.BOLD));
     Paragraph issueDate = new Paragraph(String.format("Issue date: %s", invoice.getIssueDate()));
     Paragraph dueDate = new Paragraph(String.format("Due date: %s", invoice.getDueDate()));

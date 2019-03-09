@@ -36,7 +36,7 @@ public class AddressValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.streetNamePattern.matcher(street);
     if (!matcher.matches()) {
-      return "Incorrect street name";
+      return "Incorrect withStreet withName";
     }
     return null;
   }
@@ -50,7 +50,7 @@ public class AddressValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.addressNumberPattern.matcher(number);
     if (!matcher.matches()) {
-      return "Incorrect address number";
+      return "Incorrect withAddress withNumber";
     }
     return null;
   }
@@ -78,7 +78,7 @@ public class AddressValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.geographicalNamePattern.matcher(city);
     if (!matcher.matches()) {
-      return "Incorrect city name";
+      return "Incorrect withCity withName";
     }
     return null;
   }
@@ -92,7 +92,7 @@ public class AddressValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.geographicalNamePattern.matcher(country);
     if (!matcher.matches()) {
-      return "Incorrect country name";
+      return "Incorrect withCountry withName";
     }
     return null;
   }

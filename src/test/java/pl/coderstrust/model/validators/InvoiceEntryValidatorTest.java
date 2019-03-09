@@ -30,7 +30,7 @@ class InvoiceEntryValidatorTest {
         Arguments.of("", Collections.singletonList("Item cannot be empty")),
         Arguments.of("sdf35", new ArrayList<String>()),
         Arguments.of("35fewf", new ArrayList<String>()),
-        Arguments.of("-535", Collections.singletonList("Incorrect item")),
+        Arguments.of("-535", Collections.singletonList("Incorrect withItem")),
         Arguments.of("Something", new ArrayList<String>()),
         Arguments.of("something", new ArrayList<String>()),
         Arguments.of("free wwd fre", new ArrayList<String>()),

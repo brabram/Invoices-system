@@ -1,11 +1,12 @@
-package pl.coderstrust.database;
+package pl.coderstrust.database.nosql.inFileInvoiceDatabase;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
@@ -27,6 +28,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.coderstrust.configuration.ApplicationConfiguration;
 import pl.coderstrust.configuration.InFileInvoiceDatabaseProperties;
+import pl.coderstrust.database.DatabaseOperationException;
+import pl.coderstrust.database.IdentifierGenerator;
+import pl.coderstrust.database.nosql.NoSqlModelMapper;
+import pl.coderstrust.database.nosql.NoSqlModelMapperImpl;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.helpers.FileHelper;
 import pl.coderstrust.model.Invoice;
@@ -39,24 +44,24 @@ class InFileInvoiceDatabaseTest {
 
   @Mock
   private FileHelper fileHelper;
-
-  private InFileInvoiceDatabaseProperties inFileInvoiceDatabaseProperties;
-
   private InFileInvoiceDatabase database;
+  private NoSqlModelMapper noSqlModelMapper;
 
   @BeforeEach
   void setup() throws DatabaseOperationException {
-    inFileInvoiceDatabaseProperties = new InFileInvoiceDatabaseProperties();
+    noSqlModelMapper = new NoSqlModelMapperImpl();
+    IdentifierGenerator identifierGenerator = new IdentifierGenerator();
+    InFileInvoiceDatabaseProperties inFileInvoiceDatabaseProperties = new InFileInvoiceDatabaseProperties();
     inFileInvoiceDatabaseProperties.setFilePath(DATABASE_FILEPATH);
-    database = new InFileInvoiceDatabase(mapper, fileHelper, inFileInvoiceDatabaseProperties);
+    database = new InFileInvoiceDatabase(mapper, fileHelper, inFileInvoiceDatabaseProperties, identifierGenerator, noSqlModelMapper);
   }
 
   @Test
   void shouldReturnNumberOfInvoices() throws IOException, DatabaseOperationException {
     //given
     List<String> invoicesInDatabaseFile = new ArrayList<>();
-    invoicesInDatabaseFile.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
-    invoicesInDatabaseFile.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
+    invoicesInDatabaseFile.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(InvoiceGenerator.getRandomInvoice())));
+    invoicesInDatabaseFile.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(InvoiceGenerator.getRandomInvoice())));
     when(fileHelper.isEmpty(DATABASE_FILEPATH)).thenReturn(false);
     when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesInDatabaseFile);
     long expectedInvoicesCount = invoicesInDatabaseFile.size();
@@ -117,11 +122,11 @@ class InFileInvoiceDatabaseTest {
   void shouldDeleteInvoice() throws DatabaseOperationException, IOException {
     //given
     Invoice invoiceToDelete = InvoiceGenerator.getRandomInvoice();
-    List<String> invoicesInDatabase = new ArrayList<>();
-    invoicesInDatabase.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
-    invoicesInDatabase.add(mapper.writeValueAsString(invoiceToDelete));
-    invoicesInDatabase.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
-    when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesInDatabase);
+    List<String> invoicesOfDatabase = new ArrayList<>();
+    invoicesOfDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(InvoiceGenerator.getRandomInvoice())));
+    invoicesOfDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoiceToDelete)));
+    invoicesOfDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(InvoiceGenerator.getRandomInvoice())));
+    when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesOfDatabase);
     doNothing().when(fileHelper).removeLine(DATABASE_FILEPATH, 2);
 
     //when
@@ -186,17 +191,17 @@ class InFileInvoiceDatabaseTest {
   @Test
   void shouldReturnAllInvoices() throws IOException, DatabaseOperationException {
     //given
-    Invoice invoice1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoice2 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoice3 = InvoiceGenerator.getRandomInvoice();
+    Invoice invoice1 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
+    Invoice invoice2 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
+    Invoice invoice3 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     List<Invoice> expectedInvoices = new ArrayList<>();
     expectedInvoices.add(invoice1);
     expectedInvoices.add(invoice2);
     expectedInvoices.add(invoice3);
     List<String> invoicesInDatabaseFile = new ArrayList<>();
-    invoicesInDatabaseFile.add(mapper.writeValueAsString(invoice1));
-    invoicesInDatabaseFile.add(mapper.writeValueAsString(invoice2));
-    invoicesInDatabaseFile.add(mapper.writeValueAsString(invoice3));
+    invoicesInDatabaseFile.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoice1)));
+    invoicesInDatabaseFile.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoice2)));
+    invoicesInDatabaseFile.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoice3)));
     when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesInDatabaseFile);
 
     //when
@@ -238,7 +243,7 @@ class InFileInvoiceDatabaseTest {
     //given
     Invoice invoice = InvoiceGenerator.getRandomInvoice();
     List<String> invoicesList = new ArrayList<>();
-    invoicesList.add(mapper.writeValueAsString(invoice));
+    invoicesList.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoice)));
     when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesList);
 
     //when
@@ -278,13 +283,13 @@ class InFileInvoiceDatabaseTest {
   @Test
   void shouldReturnInvoice() throws IOException, DatabaseOperationException {
     //given
-    Invoice invoice1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoice2 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoice3 = InvoiceGenerator.getRandomInvoice();
+    Invoice invoice1 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
+    Invoice invoice2 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
+    Invoice invoice3 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     List<String> invoicesInDatabase = new ArrayList<>();
-    invoicesInDatabase.add(mapper.writeValueAsString(invoice1));
-    invoicesInDatabase.add(mapper.writeValueAsString(invoice2));
-    invoicesInDatabase.add(mapper.writeValueAsString(invoice3));
+    invoicesInDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoice1)));
+    invoicesInDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoice2)));
+    invoicesInDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoice3)));
     when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesInDatabase);
 
     //when
@@ -324,21 +329,21 @@ class InFileInvoiceDatabaseTest {
 
   @Test
   void shouldAddInvoice() throws IOException, DatabaseOperationException {
-    Invoice invoiceToAdd = InvoiceGenerator.getRandomInvoice();
+    Invoice invoiceToAdd = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     Invoice expectedInvoice = new Invoice(1L, invoiceToAdd.getNumber(),
-        invoiceToAdd.getIssueDate(),
-        invoiceToAdd.getDueDate(),
-        invoiceToAdd.getSeller(),
-        invoiceToAdd.getBuyer(),
-        invoiceToAdd.getEntries(),
-        invoiceToAdd.getTotalNetValue(),
-        invoiceToAdd.getTotalGrossValue());
-    Invoice invoiceInDatabase1 = InvoiceGenerator.getRandomInvoice();
-    Invoice invoiceInDatabase2 = InvoiceGenerator.getRandomInvoice();
+            invoiceToAdd.getIssueDate(),
+            invoiceToAdd.getDueDate(),
+            invoiceToAdd.getSeller(),
+            invoiceToAdd.getBuyer(),
+            invoiceToAdd.getEntries(),
+            invoiceToAdd.getTotalNetValue(),
+            invoiceToAdd.getTotalGrossValue());
+    Invoice invoiceInDatabase1 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
+    Invoice invoiceInDatabase2 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     List<String> invoicesInDatabase = new ArrayList<>();
-    invoicesInDatabase.add(mapper.writeValueAsString(invoiceInDatabase1));
-    invoicesInDatabase.add(mapper.writeValueAsString(invoiceInDatabase2));
-    String invoiceToAddAsJson = mapper.writeValueAsString(expectedInvoice);
+    invoicesInDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoiceInDatabase1)));
+    invoicesInDatabase.add(mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoiceInDatabase2)));
+    String invoiceToAddAsJson = mapper.writeValueAsString(noSqlModelMapper.mapInvoice(expectedInvoice));
     when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesInDatabase);
     doNothing().when(fileHelper).writeLine(DATABASE_FILEPATH, invoiceToAddAsJson);
 
@@ -355,8 +360,8 @@ class InFileInvoiceDatabaseTest {
   @Test
   void shouldUpdateInvoice() throws IOException, DatabaseOperationException {
     //given
-    Invoice invoiceInDatabase = InvoiceGenerator.getRandomInvoice();
-    String invoiceInDatabaseAsJson = mapper.writeValueAsString(invoiceInDatabase);
+    Invoice invoiceInDatabase = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
+    String invoiceInDatabaseAsJson = mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoiceInDatabase));
     Invoice invoiceToUpdate = new Invoice(
         invoiceInDatabase.getId(),
         "3",
@@ -367,7 +372,7 @@ class InFileInvoiceDatabaseTest {
         invoiceInDatabase.getEntries(),
         invoiceInDatabase.getTotalNetValue(),
         invoiceInDatabase.getTotalGrossValue());
-    String invoiceToUpdateAsJson = mapper.writeValueAsString(invoiceToUpdate);
+    String invoiceToUpdateAsJson = mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoiceToUpdate));
     when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(Collections.singletonList(invoiceInDatabaseAsJson));
     doNothing().when(fileHelper).removeLine(DATABASE_FILEPATH, 1);
     doNothing().when(fileHelper).writeLine(DATABASE_FILEPATH, invoiceToUpdateAsJson);

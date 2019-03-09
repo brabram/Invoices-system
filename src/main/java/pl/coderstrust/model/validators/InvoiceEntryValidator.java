@@ -50,7 +50,7 @@ public class InvoiceEntryValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.itemNamePattern.matcher(item);
     if (!matcher.matches()) {
-      return "Incorrect item";
+      return "Incorrect withItem";
     }
     return null;
   }

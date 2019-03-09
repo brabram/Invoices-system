@@ -95,7 +95,12 @@ public final class Company {
 
   @Override
   public String toString() {
-    return String.format("id: %d, name: %s, taxIdentificationNumber: %s, accountNumber: %s, contactDetails: %s",
-        id, name, taxIdentificationNumber, accountNumber, contactDetails);
+    return "Company{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", taxIdentificationNumber='" + taxIdentificationNumber + '\'' +
+            ", accountNumber=" + accountNumber +
+            ", contactDetails=" + contactDetails +
+            '}';
   }
 }

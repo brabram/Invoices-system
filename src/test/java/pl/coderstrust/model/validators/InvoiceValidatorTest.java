@@ -55,7 +55,7 @@ class InvoiceValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Number cannot be null")),
         Arguments.of("", Collections.singletonList("Number cannot be empty")),
-        Arguments.of("-erfer", Collections.singletonList("Incorrect number")),
+        Arguments.of("-erfer", Collections.singletonList("Incorrect withNumber")),
         Arguments.of("535", new ArrayList<String>()),
         Arguments.of("sdf35/", new ArrayList<String>()),
         Arguments.of("35fewf", new ArrayList<String>()),

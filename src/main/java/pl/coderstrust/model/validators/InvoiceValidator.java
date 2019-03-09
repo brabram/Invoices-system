@@ -56,7 +56,7 @@ public class InvoiceValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.invoiceNumberPattern.matcher(number);
     if (!matcher.matches()) {
-      return "Incorrect number";
+      return "Incorrect withNumber";
     }
     return null;
   }

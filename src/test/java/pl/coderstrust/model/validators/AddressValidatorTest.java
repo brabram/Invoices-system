@@ -26,9 +26,9 @@ class AddressValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Street cannot be null")),
         Arguments.of("", Collections.singletonList("Street cannot be empty")),
-        Arguments.of("sdf34535", Collections.singletonList("Incorrect street name")),
-        Arguments.of("53533242", Collections.singletonList("Incorrect street name")),
-        Arguments.of("-53533242", Collections.singletonList("Incorrect street name")),
+        Arguments.of("sdf34535", Collections.singletonList("Incorrect withStreet withName")),
+        Arguments.of("53533242", Collections.singletonList("Incorrect withStreet withName")),
+        Arguments.of("-53533242", Collections.singletonList("Incorrect withStreet withName")),
         Arguments.of("aleja Krakowska", new ArrayList<String>()),
         Arguments.of("Krakowska", new ArrayList<String>()),
         Arguments.of("Krakowska Eefefe Rege", new ArrayList<String>())
@@ -47,11 +47,11 @@ class AddressValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("City cannot be null")),
         Arguments.of("", Collections.singletonList("City cannot be empty")),
-        Arguments.of("sdf34535", Collections.singletonList("Incorrect city name")),
-        Arguments.of("53533242", Collections.singletonList("Incorrect city name")),
-        Arguments.of("-53533242", Collections.singletonList("Incorrect city name")),
-        Arguments.of("warsaw", Collections.singletonList("Incorrect city name")),
-        Arguments.of("wARsaw", Collections.singletonList("Incorrect city name")),
+        Arguments.of("sdf34535", Collections.singletonList("Incorrect withCity withName")),
+        Arguments.of("53533242", Collections.singletonList("Incorrect withCity withName")),
+        Arguments.of("-53533242", Collections.singletonList("Incorrect withCity withName")),
+        Arguments.of("warsaw", Collections.singletonList("Incorrect withCity withName")),
+        Arguments.of("wARsaw", Collections.singletonList("Incorrect withCity withName")),
         Arguments.of("Warsaw", new ArrayList<String>()),
         Arguments.of("Wfef Ffefr", new ArrayList<String>())
     );
@@ -69,11 +69,11 @@ class AddressValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Country cannot be null")),
         Arguments.of("", Collections.singletonList("Country cannot be empty")),
-        Arguments.of("sdf34535", Collections.singletonList("Incorrect country name")),
-        Arguments.of("53533242", Collections.singletonList("Incorrect country name")),
-        Arguments.of("pOlAND", Collections.singletonList("Incorrect country name")),
-        Arguments.of("poland", Collections.singletonList("Incorrect country name")),
-        Arguments.of("United arab Emirates", Collections.singletonList("Incorrect country name")),
+        Arguments.of("sdf34535", Collections.singletonList("Incorrect withCountry withName")),
+        Arguments.of("53533242", Collections.singletonList("Incorrect withCountry withName")),
+        Arguments.of("pOlAND", Collections.singletonList("Incorrect withCountry withName")),
+        Arguments.of("poland", Collections.singletonList("Incorrect withCountry withName")),
+        Arguments.of("United arab Emirates", Collections.singletonList("Incorrect withCountry withName")),
         Arguments.of("Poland", new ArrayList<String>()),
         Arguments.of("United Arab Emirates", new ArrayList<String>())
     );
@@ -91,10 +91,10 @@ class AddressValidatorTest {
     return Stream.of(
         Arguments.of(null, Collections.singletonList("Number cannot be null")),
         Arguments.of("", Collections.singletonList("Number cannot be empty")),
-        Arguments.of("sdf34535", Collections.singletonList("Incorrect address number")),
+        Arguments.of("sdf34535", Collections.singletonList("Incorrect withAddress withNumber")),
         Arguments.of("5352", new ArrayList<String>()),
         Arguments.of("5", new ArrayList<String>()),
-        Arguments.of("4363/35654", Collections.singletonList("Incorrect address number")),
+        Arguments.of("4363/35654", Collections.singletonList("Incorrect withAddress withNumber")),
         Arguments.of("63/55", new ArrayList<String>())
     );
   }
