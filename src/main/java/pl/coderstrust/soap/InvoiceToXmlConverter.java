@@ -1,4 +1,4 @@
-package pl.coderstrust.service.soap;
+package pl.coderstrust.soap;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

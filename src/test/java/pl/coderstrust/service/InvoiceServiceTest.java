@@ -1,4 +1,4 @@
-package pl.coderstrust.service.rest;
+package pl.coderstrust.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,8 +22,8 @@ import pl.coderstrust.database.DatabaseOperationException;
 import pl.coderstrust.database.InvoiceDatabase;
 import pl.coderstrust.generators.InvoiceGenerator;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.service.rest.InvoiceService;
-import pl.coderstrust.service.rest.ServiceOperationException;
+import pl.coderstrust.service.InvoiceService;
+import pl.coderstrust.service.ServiceOperationException;
 
 @ExtendWith(MockitoExtension.class)
 class InvoiceServiceTest {

@@ -1,7 +1,7 @@
-package pl.coderstrust.service.soap;
+package pl.coderstrust.soap;
 
-import static pl.coderstrust.service.soap.InvoiceFromXmlConverter.convertInvoiceFromXml;
-import static pl.coderstrust.service.soap.InvoiceToXmlConverter.convertInvoiceToXml;
+import static pl.coderstrust.soap.InvoiceFromXmlConverter.convertInvoiceFromXml;
+import static pl.coderstrust.soap.InvoiceToXmlConverter.convertInvoiceToXml;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.validators.InvoiceValidator;
-import pl.coderstrust.service.rest.InvoiceService;
+import pl.coderstrust.service.InvoiceService;
 import pl.coderstrust.soap.domainclasses.AddInvoiceResponse;
 import pl.coderstrust.soap.domainclasses.InvoicesList;
 import pl.coderstrust.soap.domainclasses.Status;

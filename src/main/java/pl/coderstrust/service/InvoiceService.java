@@ -1,4 +1,4 @@
-package pl.coderstrust.service.rest;
+package pl.coderstrust.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

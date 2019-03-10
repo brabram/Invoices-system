@@ -289,6 +289,7 @@
                     <exclude>pl.coderstrust.database.nosql.model.*</exclude>
                     <exclude>pl.coderstrust.database.sql.SqlModelMapperImpl</exclude>
                     <exclude>pl.coderstrust.database.nosql.NoSqlModelMapperImpl</exclude>
+                    <exclude>pl.coderstrust.soap.domainclasses.*</exclude>
                   </excludes>
                 </rule>
               </rules>
@@ -369,12 +370,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <configuration>
-          <mainClass>pl.coderstrust.Application</mainClass>
-        </configuration>
         <groupId>org.jvnet.jaxb2.maven2</groupId>
         <artifactId>maven-jaxb2-plugin</artifactId>
         <version>0.14.0</version>

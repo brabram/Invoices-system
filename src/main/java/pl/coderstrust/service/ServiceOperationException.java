@@ -1,4 +1,4 @@
-package pl.coderstrust.service.rest;
+package pl.coderstrust.service;
 
 public class ServiceOperationException extends Exception {
 
