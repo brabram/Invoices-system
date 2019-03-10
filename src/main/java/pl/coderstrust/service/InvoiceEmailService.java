@@ -25,7 +25,6 @@ public class InvoiceEmailService {
   private final InvoicePdfService invoicePdfService;
   private final MailProperties mailProperties;
 
-
   @Autowired
   public InvoiceEmailService(InvoicePdfService invoicePdfService, JavaMailSender mailSender, MailProperties mailProperties) {
     if (invoicePdfService == null) {
