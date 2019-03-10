@@ -11,47 +11,123 @@
     <script src="invoices.js"></script>
 </head>
 <body>
-<div class="jumbotron text-center">
-<h1>Invoices</h1>
-    <button type="button" class="btn btn-success btn-sm" ng-click="submit">Add Invoice</button></td>
-    <button type="button" class="btn btn-success btn-sm" ng-click="find">FindById</button>
+<div class="jumbotron text-center" style="background-image:url('resources/sky.jpg'); background-size:cover;">
+    <h1>Invoices</h1>
 </div>
 <div class="container-fluid" ng-controller="InvoicesController" ng-model="empty">
-<table align="center" class="table-bordered table-hover text-center" ng-if="empty > 0">
-    <tr>
-        <th>Number</th>
-        <th>Seller</th>
-        <th>Buyer</th>
-        <th>Actions</th>
-    </tr>
-    <tr ng-repeat="invoice in Invoices">
-        <td>{{invoice.number}}</td>
-        <td>{{invoice.seller.name}}</td>
-        <td>{{invoice.buyer.name}}</td>
-        <td>
-            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal">Show details</button>
-            <button type="button" class="btn btn-success btn-sm" ng-click="pdf(invoice.id)">Get PDF</button>
-            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(invoice.id)">Delete</button></td>
-    </tr>
-</table>
+    <table align="center" class="table-bordered text-center" ng-if="empty > 0">
+        <tr>
+            <th>Number</th>
+            <th>Seller</th>
+            <th>Buyer</th>
+            <th>Actions</th>
+        </tr>
+        <tr ng-repeat="invoice in Invoices">
+            <td>{{invoice.number}}</td>
+            <td>{{invoice.seller.name}}</td>
+            <td>{{invoice.buyer.name}}</td>
+            <td>
+                <div class="modal fade" id="invoiceModal{{invoice.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Invoice number: {{invoice.number}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <table  class="table table-borderless">
+                                    <tr>
+                                        <th scope="col">Seller</th>
+                                        <th scope="col">Buyer</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <ul class="list-group">
+                                                <li class="list-group-item active">{{invoice.seller.name}}</li>
+                                                <li class="list-group-item">{{invoice.seller.contactDetails.address.street}} {{invoice.seller.contactDetails.address.number}}
+                                                    </br> {{invoice.seller.contactDetails.address.postalCode}} {{invoice.seller.contactDetails.address.city}}
+                                                    </br> {{invoice.seller.contactDetails.address.country}}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    {{invoice.seller.contactDetails.email}}
+                                                    </br>
+                                                    {{invoice.seller.contactDetails.phoneNumber}}
+                                                    </br>
+                                                    {{invoice.seller.contactDetails.website}}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    Tax identifier: {{invoice.seller.taxIdentificationNumber}}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    Local : {{invoice.seller.accountNumber.localNumber}}
+                                                    </br>
+                                                    Local : {{invoice.seller.accountNumber.ibanNumber}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul class="list-group">
+                                                <li class="list-group-item active">{{invoice.buyer.name}}</li>
+                                                <li class="list-group-item">{{invoice.buyer.contactDetails.address.street}} {{invoice.buyer.contactDetails.address.number}}
+                                                    </br> {{invoice.buyer.contactDetails.address.postalCode}} {{invoice.buyer.contactDetails.address.city}}
+                                                    </br> {{invoice.buyer.contactDetails.address.country}}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    {{invoice.buyer.contactDetails.email}}
+                                                    </br>
+                                                    {{invoice.buyer.contactDetails.phoneNumber}}
+                                                    </br>
+                                                    {{invoice.buyer.contactDetails.website}}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    Tax identifier: {{invoice.buyer.taxIdentificationNumber}}
+                                                </li>
+                                                <li class="list-group-item">
+                                                    Local : {{invoice.buyer.accountNumber.localNumber}}
+                                                    </br>
+                                                    Local : {{invoice.buyer.accountNumber.ibanNumber}}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th scope="col">Item</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Vat rate</th>
+                                        <th scope="col">Vat Value</th>
+                                        <th scope="col">Gross value</th>
+                                    </tr>
+                                    <tr ng-repeat="entry in invoice.entries">
+                                        <td>{{entry.item}}</td>
+                                        <td>{{entry.quantity}}</td>
+                                        <td>{{entry.price}}</td>
+                                        <td>{{entry.vatRate}}</td>
+                                        <td>{{entry.vatValue}}</td>
+                                        <td>{{entry.grossValue}}</td>
+                                    </tr>
+                                </table>
+                                <b>Net value: {{invoice.totalNetValue}}</b></br>
+                                <b>Gross value: {{invoice.totalGrossValue}}</b></br>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#invoiceModal{{invoice.id}}">Show details</button>
+                <button type="button" class="btn btn-success btn-sm" ng-click="pdf(invoice.id)">Get PDF</button>
+                <button type="button" class="btn btn-danger btn-sm" ng-click="remove(invoice.id)">Delete</button>
+            </td>
+        </tr>
+    </table>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Invoice details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <b>{{invoice.seller}}</b>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 </body>
 </html>
