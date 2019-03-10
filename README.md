@@ -6,17 +6,7 @@ You can use REST service to tests all funcionality, or SOAP service or simple fr
 
 ## Tech/frameworks used ##
 
-
-![](https://whirly.pl/wp-content/uploads/2017/05/spring.png)
-![](http://yaqzi.pl/wp-content/uploads/2016/12/apache_maven.png)
-![](https://upload.wikimedia.org/wikipedia/commons/2/2c/Mockito_Logo.png)
-![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkximiwITI1smJcOkn_bx2Zk_RnNKnmDq23Ua26wTVd_YNJcWgw)
-![](https://shiftkeylabs.ca/wp-content/uploads/2017/02/JUnit_logo.png)
-![](https://jules-grospeiller.fr/media/logo_competences/lang/json.png)
-![](http://www.postgresqltutorial.com/wp-content/uploads/2012/08/What-is-PostgreSQL.png)
-![](https://cdn.bulldogjob.com/system/readables/covers/000/001/571/thumb/27-02-2019.png)
-![](https://i2.wp.com/bykowski.pl/wp-content/uploads/2018/07/hibernate-2.png?w=300)
-![](https://zdnet3.cbsistatic.com/hub/i/r/2018/02/16/8abdb3e1-47bc-446e-9871-c4e11a46f680/resize/370xauto/8a68280fd20eebfa7789cdaa6fb5eff1/mongo-db-logo.png)
+<img src="https://whirly.pl/wp-content/uploads/2017/05/spring.png" width="200"><img src="http://yaqzi.pl/wp-content/uploads/2016/12/apache_maven.png" width="200"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Mockito_Logo.png" width="200"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNkximiwITI1smJcOkn_bx2Zk_RnNKnmDq23Ua26wTVd_YNJcWgw" width="200"><img src="https://shiftkeylabs.ca/wp-content/uploads/2017/02/JUnit_logo.png" width="200"><img src="https://jules-grospeiller.fr/media/logo_competences/lang/json.png" width="200"><img src="http://www.postgresqltutorial.com/wp-content/uploads/2012/08/What-is-PostgreSQL.png" width="200"><img src="https://cdn.bulldogjob.com/system/readables/covers/000/001/571/thumb/27-02-2019.png" width="200"><img src="https://i2.wp.com/bykowski.pl/wp-content/uploads/2018/07/hibernate-2.png?w=300" width="200"><img src="https://zdnet3.cbsistatic.com/hub/i/r/2018/02/16/8abdb3e1-47bc-446e-9871-c4e11a46f680/resize/370xauto/8a68280fd20eebfa7789cdaa6fb5eff1/mongo-db-logo.png" width="200">
 
 ## Instalation ##
 
