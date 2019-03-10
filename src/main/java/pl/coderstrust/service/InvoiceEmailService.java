@@ -1,25 +1,17 @@
 package pl.coderstrust.service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.concurrent.CompletableFuture;
-import javax.mail.Message;
+
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.model.Invoice;
@@ -30,114 +22,48 @@ import pl.coderstrust.model.Invoice;
 public class InvoiceEmailService {
 
   private static Logger log = LoggerFactory.getLogger(InvoiceEmailService.class);
-  private String host;
-  private int port;
-  private String username;
-  private String password;
-  private String sendTo;
-  private InvoicePdfService invoicePdfService = new InvoicePdfService();
-  private String filePath = "src/main/resources/mail.pdf";
-  private FileOutputStream writer = new FileOutputStream(new File(filePath));
-  private File file = new File(filePath);
+  private final JavaMailSender mailSender;
+  private final InvoicePdfService invoicePdfService;
+  private final MailProperties mailProperties;
 
-  public InvoiceEmailService() throws FileNotFoundException {
+
+  @Autowired
+  public InvoiceEmailService(InvoicePdfService invoicePdfService, JavaMailSender mailSender, MailProperties mailProperties) {
+    if (invoicePdfService == null) {
+      throw new IllegalArgumentException("Invoice Pdf service cannot be null.");
+    }
+    if (mailSender == null) {
+      throw new IllegalArgumentException("Mail sender cannot be null.");
+    }
+    if (mailProperties == null) {
+      throw new IllegalArgumentException("Mail properties cannot be null.");
+    }
+
+    this.mailSender = mailSender;
+    this.invoicePdfService = invoicePdfService;
+    this.mailProperties = mailProperties;
   }
 
   @Async
-  public CompletableFuture<Transport> sendMail(Invoice invoice) throws NoSuchProviderException {
+  public void sendMailWithNewInvoice(Invoice invoice) {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null.");
     }
-    Session session = getSession();
+
     try {
-      Transport transport = getTransport(invoice, session);
-      log.debug("Sending email with PDF for invoice. Invoice id: {}", invoice.getId());
-      return CompletableFuture.completedFuture(transport);
-    } catch (Exception e) {
-      String message = String.format("An error occurred during sending email with PDF for invoice. Invoice id: %d", invoice.getId());
-      log.error(message, e);
-      throw new NoSuchProviderException(String.format(message, invoice.getId()), e);
+      log.debug("Sending e-mail with invoice: {}", invoice);
+
+      MimeMessage message = mailSender.createMimeMessage();
+      MimeMessageHelper helper = new MimeMessageHelper(message, true);
+      helper.setTo(mailProperties.getProperties().get("receiver"));
+      helper.setSubject("New invoice has been added.");
+      helper.setText(String.format("New Invoice with number: %s has been added to database.", invoice.getNumber()));
+
+      helper.addAttachment(String.format("%s.pdf", invoice.getNumber()), new ByteArrayResource(invoicePdfService.createPdf(invoice)));
+
+      mailSender.send(message);
+    } catch (MessagingException | ServiceOperationException e) {
+      log.error("Ann error occurred during sending e-mail with new invoice.", e);
     }
-  }
-
-  private Transport getTransport(Invoice invoice, Session session) throws MessagingException, IOException, ServiceOperationException, InterruptedException {
-    Message message = getMessage(invoice, session);
-    Transport transport = session.getTransport("smtp");
-    transport.connect(username, password);
-    Thread.sleep(1000L);
-    transport.sendMessage(message, message.getAllRecipients());
-    transport.close();
-    file.delete();
-    writer.close();
-    return transport;
-  }
-
-  private Message getMessage(Invoice invoice, Session session) throws MessagingException, IOException, ServiceOperationException {
-    Message message = new MimeMessage(session);
-    message.setFrom(new InternetAddress(username));
-    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(sendTo));
-    message.setSubject("Mail from Invoice Database.");
-    String msg = String.format("New Invoice with number: %s has been added to database.", invoice.getNumber());
-    MimeBodyPart mimeBodyPart = new MimeBodyPart();
-    mimeBodyPart.setContent(msg, "text/html");
-    MimeBodyPart attachmentBodyPart = new MimeBodyPart();
-    file.createNewFile();
-    writer.write(invoicePdfService.createPdf(invoice));
-    attachmentBodyPart.attachFile(file);
-    Multipart multipart = new MimeMultipart();
-    multipart.addBodyPart(mimeBodyPart);
-    multipart.addBodyPart(attachmentBodyPart);
-    message.setContent(multipart);
-    return message;
-  }
-
-  private Session getSession() {
-    Properties prop = new Properties();
-    prop.put("mail.smtp.host", host);
-    prop.put("mail.smtp.port", port);
-    prop.put("mail.smtp.auth", true);
-    prop.put("mail.smtp.starttls.enable", "true");
-    prop.put("mail.smtp.user", username);
-    return Session.getDefaultInstance(prop);
-  }
-
-  public String getHost() {
-    return host;
-  }
-
-  public void setHost(String host) {
-    this.host = host;
-  }
-
-  public int getPort() {
-    return port;
-  }
-
-  public void setPort(int port) {
-    this.port = port;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getSendTo() {
-    return sendTo;
-  }
-
-  public void setSendTo(String sentTo) {
-    this.sendTo = sentTo;
   }
 }
