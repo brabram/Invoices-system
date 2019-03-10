@@ -56,7 +56,6 @@ class InMemoryInvoiceDatabaseTest {
         savedInvoice.get().getEntries(),
         BigDecimal.valueOf(5555),
         savedInvoice.get().getTotalGrossValue());
-    Optional<Invoice> invoice = invoiceDatabase.save(invoiceToUpdate);
 
     //when
     Optional<Invoice> updatedInvoice = invoiceDatabase.save(invoiceToUpdate);
@@ -65,7 +64,7 @@ class InMemoryInvoiceDatabaseTest {
 
     //then
     assertNotNull(invoiceFromDatabase);
-    assertEquals(invoice, updatedInvoice);
+    assertEquals(invoiceToUpdate, updatedInvoice.get());
   }
 
   @Test

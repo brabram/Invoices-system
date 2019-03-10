@@ -29,32 +29,6 @@ public class InvoiceGenerator {
         list, totalNetValue, totalGrossValue);
   }
 
-  public static Invoice getRandomInvoiceWithSpecificIssueDate(LocalDate issueDate) {
-    Invoice invoice = getRandomInvoice();
-    return new Invoice(invoice.getId(),
-        invoice.getNumber(),
-        issueDate,
-        invoice.getDueDate(),
-        invoice.getSeller(),
-        invoice.getBuyer(),
-        invoice.getEntries(),
-        invoice.getTotalNetValue(),
-        invoice.getTotalGrossValue());
-  }
-
-  public static Invoice getRandomInvoiceWithSpecificDueDate(LocalDate dueDate) {
-    Invoice invoice = getRandomInvoice();
-    return new Invoice(invoice.getId(),
-        invoice.getNumber(),
-        invoice.getIssueDate(),
-        dueDate,
-        invoice.getSeller(),
-        invoice.getBuyer(),
-        invoice.getEntries(),
-        invoice.getTotalNetValue(),
-        invoice.getTotalGrossValue());
-  }
-
   public static Invoice getRandomInvoicesIssuedInSpecificDateRange(LocalDate startDate, LocalDate endDate) {
     Invoice invoice = getRandomInvoice();
     return new Invoice(invoice.getId(),

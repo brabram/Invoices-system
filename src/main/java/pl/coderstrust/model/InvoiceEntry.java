@@ -36,6 +36,16 @@ public final class InvoiceEntry {
   @ApiModelProperty(value = "Tax amount", example = "VAT_23")
   private final Vat vatRate;
 
+  private InvoiceEntry() {
+    this.id = null;
+    this.item = null;
+    this.quantity = null;
+    this.price = null;
+    this.vatValue = null;
+    this.grossValue = null;
+    this.vatRate = null;
+  }
+
   @JsonCreator
   public InvoiceEntry(@JsonProperty("id") Long id,
                       @JsonProperty("item") String item,

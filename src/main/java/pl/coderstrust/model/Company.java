@@ -31,6 +31,14 @@ public final class Company {
   @OneToOne(cascade = CascadeType.ALL)
   private final ContactDetails contactDetails;
 
+  private Company() {
+    this.id = null;
+    this.name = null;
+    this.taxIdentificationNumber = null;
+    this.accountNumber = null;
+    this.contactDetails = null;
+  }
+
   @JsonCreator
   public Company(@JsonProperty("id") Long id,
                  @JsonProperty("name") String name,

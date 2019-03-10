@@ -244,6 +244,12 @@
                     <exclude>pl.coderstrust.configuration.InFileInvoiceDatabaseProperties</exclude>
                     <exclude>pl.coderstrust.configuration.HibernateConfiguration</exclude>
                     <exclude>pl.coderstrust.controller.ErrorMessage</exclude>
+                    <exclude>pl.coderstrust.model.Address</exclude>
+                    <exclude>pl.coderstrust.model.Invoice</exclude>
+                    <exclude>pl.coderstrust.model.InvoiceEntry</exclude>
+                    <exclude>pl.coderstrust.model.ContactDetails</exclude>
+                    <exclude>pl.coderstrust.model.Company</exclude>
+                    <exclude>pl.coderstrust.model.AccountNumber</exclude>
                   </excludes>
                 </rule>
               </rules>

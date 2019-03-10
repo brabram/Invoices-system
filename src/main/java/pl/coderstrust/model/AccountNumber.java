@@ -23,6 +23,12 @@ public final class AccountNumber {
   @ApiModelProperty(value = "26 digit account number", example = "'19200000000120067894552302'")
   private final String localNumber;
 
+  private AccountNumber() {
+    this.id = null;
+    this.ibanNumber = null;
+    this.localNumber = null;
+  }
+
   @JsonCreator
   public AccountNumber(@JsonProperty("id") Long id,
                        @JsonProperty("ibanNumber") String ibanNumber,

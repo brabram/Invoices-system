@@ -31,6 +31,14 @@ public final class ContactDetails {
   @OneToOne(cascade = CascadeType.ALL)
   private final Address address;
 
+  private ContactDetails() {
+    this.id = null;
+    this.email = null;
+    this.phoneNumber = null;
+    this.website = null;
+    this.address = null;
+  }
+
   @JsonCreator
   public ContactDetails(@JsonProperty("id") Long id,
                         @JsonProperty("email") String email,

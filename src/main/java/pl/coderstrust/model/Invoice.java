@@ -48,6 +48,18 @@ public final class Invoice {
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private final List<InvoiceEntry> entries;
 
+  private Invoice() {
+    this.id = null;
+    this.number = null;
+    this.issueDate = null;
+    this.dueDate = null;
+    this.seller = null;
+    this.buyer = null;
+    this.entries = null;
+    this.totalNetValue = null;
+    this.totalGrossValue = null;
+  }
+
   @JsonCreator
   public Invoice(@JsonProperty("id") Long id,
                  @JsonProperty("number") String number,

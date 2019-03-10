@@ -117,11 +117,11 @@ class InFileInvoiceDatabaseTest {
   void shouldDeleteInvoice() throws DatabaseOperationException, IOException {
     //given
     Invoice invoiceToDelete = InvoiceGenerator.getRandomInvoice();
-    List<String> invoicesOfDatabase = new ArrayList<>();
-    invoicesOfDatabase.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
-    invoicesOfDatabase.add(mapper.writeValueAsString(invoiceToDelete));
-    invoicesOfDatabase.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
-    when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesOfDatabase);
+    List<String> invoicesInDatabase = new ArrayList<>();
+    invoicesInDatabase.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
+    invoicesInDatabase.add(mapper.writeValueAsString(invoiceToDelete));
+    invoicesInDatabase.add(mapper.writeValueAsString(InvoiceGenerator.getRandomInvoice()));
+    when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(invoicesInDatabase);
     doNothing().when(fileHelper).removeLine(DATABASE_FILEPATH, 2);
 
     //when

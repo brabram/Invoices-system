@@ -32,6 +32,15 @@ public final class Address {
   @ApiModelProperty(value = "Country name", example = "Poland")
   private final String country;
 
+  private Address() {
+    this.id = null;
+    this.street = null;
+    this.number = null;
+    this.postalCode = null;
+    this.city = null;
+    this.country = null;
+  }
+
   @JsonCreator
   public Address(@JsonProperty("id") Long id,
                  @JsonProperty("street")String street,
