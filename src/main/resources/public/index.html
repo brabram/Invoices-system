@@ -37,7 +37,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <table  class="table table-borderless">
+                                <table class="table table-borderless">
                                     <tr>
                                         <th scope="col">Seller</th>
                                         <th scope="col">Buyer</th>
@@ -46,7 +46,8 @@
                                         <td>
                                             <ul class="list-group">
                                                 <li class="list-group-item active">{{invoice.seller.name}}</li>
-                                                <li class="list-group-item">{{invoice.seller.contactDetails.address.street}} {{invoice.seller.contactDetails.address.number}}
+                                                <li class="list-group-item">{{invoice.seller.contactDetails.address.street}}
+                                                    {{invoice.seller.contactDetails.address.number}}
                                                     </br> {{invoice.seller.contactDetails.address.postalCode}} {{invoice.seller.contactDetails.address.city}}
                                                     </br> {{invoice.seller.contactDetails.address.country}}
                                                 </li>
@@ -70,7 +71,8 @@
                                         <td>
                                             <ul class="list-group">
                                                 <li class="list-group-item active">{{invoice.buyer.name}}</li>
-                                                <li class="list-group-item">{{invoice.buyer.contactDetails.address.street}} {{invoice.buyer.contactDetails.address.number}}
+                                                <li class="list-group-item">{{invoice.buyer.contactDetails.address.street}}
+                                                    {{invoice.buyer.contactDetails.address.number}}
                                                     </br> {{invoice.buyer.contactDetails.address.postalCode}} {{invoice.buyer.contactDetails.address.city}}
                                                     </br> {{invoice.buyer.contactDetails.address.country}}
                                                 </li>
