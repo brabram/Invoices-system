@@ -17,7 +17,14 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("streetArguments")
   void shouldValidateStreet(String street, List<String> expected) {
-    Address address = new Address(1L, street, "15a/1", "00810", "Warsaw", "Poland");
+    Address address = Address.builder()
+            .withId(1L)
+            .withStreet(street)
+            .withNumber("15a/1")
+            .withPostalCode("00810")
+            .withCity("Warsaw")
+            .withCountry("Poland")
+            .build();
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -38,7 +45,14 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("cityArguments")
   void shouldValidateCity(String city, List<String> expected) {
-    Address address = new Address(1L, "Warszawska", "15a/1", "00810", city, "Poland");
+    Address address = Address.builder()
+            .withId(1L)
+            .withStreet("Warszawska")
+            .withNumber("15a/1")
+            .withPostalCode("00810")
+            .withCity(city)
+            .withCountry("Poland")
+            .build();
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -60,7 +74,14 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("countryArguments")
   void shouldValidateCountry(String country, List<String> expected) {
-    Address address = new Address(1L, "Warszawska", "15a/1", "00810", "Warsaw", country);
+    Address address = Address.builder()
+            .withId(1L)
+            .withStreet("Warszawska")
+            .withNumber("15a/1")
+            .withPostalCode("00810")
+            .withCity("Warsaw")
+            .withCountry(country)
+            .build();
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -82,7 +103,14 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("addressNumberArguments")
   void shouldValidateAddressNumber(String addressNumber, List<String> expected) {
-    Address address = new Address(1L, "Warszawska", addressNumber, "00810", "Warsaw", "Poland");
+    Address address = Address.builder()
+            .withId(1L)
+            .withStreet("Warszawska")
+            .withNumber(addressNumber)
+            .withPostalCode("00810")
+            .withCity("Warsaw")
+            .withCountry("Poland")
+            .build();
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }
@@ -102,7 +130,14 @@ class AddressValidatorTest {
   @ParameterizedTest
   @MethodSource("postalCodeArguments")
   void shouldValidatePostalCode(String postalCode, List<String> expected) {
-    Address address = new Address(1L, "Warszawska", "15a/1", postalCode, "Warsaw", "Poland");
+    Address address = Address.builder()
+            .withId(1L)
+            .withStreet("Warszawska")
+            .withNumber("15a/1")
+            .withPostalCode(postalCode)
+            .withCity("Warsaw")
+            .withCountry("Poland")
+            .build();
     List<String> resultOfValidation = AddressValidator.validate(address);
     assertEquals(expected, resultOfValidation);
   }

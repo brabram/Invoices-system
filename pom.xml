@@ -260,22 +260,13 @@
                   </limits>
                   <excludes>
                     <exclude>pl.coderstrust.database.DatabaseOperationException</exclude>
-                    <exclude>pl.coderstrust.service.ServiceOperationException</exclude>
                     <exclude>pl.coderstrust.database.IdentifierGeneratorException</exclude>
-                    <exclude>pl.coderstrust.Application</exclude>
-                    <exclude>pl.coderstrust.configuration.SwaggerConfiguration</exclude>
-                    <exclude>pl.coderstrust.configuration.SecurityConfiguration</exclude>
-                    <exclude>pl.coderstrust.configuration.InFileInvoiceDatabaseProperties</exclude>
-                    <exclude>pl.coderstrust.configuration.InFileInvoiceDatabaseProperties</exclude>
-                    <exclude>pl.coderstrust.configuration.HibernateConfiguration</exclude>
-                    <exclude>pl.coderstrust.controller.ErrorMessage</exclude>
-                    <exclude>pl.coderstrust.model.Address</exclude>
-                    <exclude>pl.coderstrust.model.Invoice</exclude>
-                    <exclude>pl.coderstrust.model.InvoiceEntry</exclude>
-                    <exclude>pl.coderstrust.model.ContactDetails</exclude>
-                    <exclude>pl.coderstrust.model.Company</exclude>
-                    <exclude>pl.coderstrust.model.AccountNumber</exclude>
+                    <exclude>pl.coderstrust.service.ServiceOperationException</exclude>
                     <exclude>pl.coderstrust.service.InvoiceEmailService</exclude>
+                    <exclude>pl.coderstrust.Application</exclude>
+                    <exclude>pl.coderstrust.configuration*</exclude>
+                    <exclude>pl.coderstrust.controller.ErrorMessage</exclude>
+                    <exclude>pl.coderstrust.model.*</exclude>
                     <exclude>pl.coderstrust.configuration.*</exclude>
                     <exclude>pl.coderstrust.database.sql.model.*</exclude>
                     <exclude>pl.coderstrust.database.nosql.model.*</exclude>
@@ -347,6 +338,26 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
         <version>${projectInfoReportsPlugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>pl.coderstrust.Application</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <configuration>
+          <mainClass>pl.coderstrust.Application</mainClass>
+        </configuration>
       </plugin>
     </plugins>
   </build>

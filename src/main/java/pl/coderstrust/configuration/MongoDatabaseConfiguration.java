@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 @Configuration
 @ConditionalOnProperty(name = "pl.coderstrust.database", havingValue = "mongo")
 @Import({MongoDataAutoConfiguration.class})
-public class MongoConfiguration {
+public class MongoDatabaseConfiguration {
 
   @Autowired
   private MongoDatabaseProperties mongoDatabaseProperties;

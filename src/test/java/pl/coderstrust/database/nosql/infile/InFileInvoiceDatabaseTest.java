@@ -330,14 +330,18 @@ class InFileInvoiceDatabaseTest {
   @Test
   void shouldAddInvoice() throws IOException, DatabaseOperationException {
     Invoice invoiceToAdd = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
-    Invoice expectedInvoice = new Invoice(1L, invoiceToAdd.getNumber(),
-            invoiceToAdd.getIssueDate(),
-            invoiceToAdd.getDueDate(),
-            invoiceToAdd.getSeller(),
-            invoiceToAdd.getBuyer(),
-            invoiceToAdd.getEntries(),
-            invoiceToAdd.getTotalNetValue(),
-            invoiceToAdd.getTotalGrossValue());
+    Invoice expectedInvoice = Invoice.builder()
+            .withId(1L)
+            .withNumber(invoiceToAdd.getNumber())
+            .withIssueDate(invoiceToAdd.getIssueDate())
+            .withDueDate(invoiceToAdd.getDueDate())
+            .withSeller(invoiceToAdd.getSeller())
+            .withBuyer(invoiceToAdd.getBuyer())
+            .withEntries(invoiceToAdd.getEntries())
+            .withTotalNetValue(invoiceToAdd.getTotalNetValue())
+            .withTotalGrossValue(invoiceToAdd.getTotalGrossValue())
+            .build();
+
     Invoice invoiceInDatabase1 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     Invoice invoiceInDatabase2 = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     List<String> invoicesInDatabase = new ArrayList<>();
@@ -362,16 +366,17 @@ class InFileInvoiceDatabaseTest {
     //given
     Invoice invoiceInDatabase = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     String invoiceInDatabaseAsJson = mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoiceInDatabase));
-    Invoice invoiceToUpdate = new Invoice(
-        invoiceInDatabase.getId(),
-        "3",
-        invoiceInDatabase.getIssueDate(),
-        invoiceInDatabase.getDueDate(),
-        invoiceInDatabase.getSeller(),
-        invoiceInDatabase.getBuyer(),
-        invoiceInDatabase.getEntries(),
-        invoiceInDatabase.getTotalNetValue(),
-        invoiceInDatabase.getTotalGrossValue());
+    Invoice invoiceToUpdate = Invoice.builder()
+            .withId(invoiceInDatabase.getId())
+            .withNumber("3")
+            .withIssueDate(invoiceInDatabase.getIssueDate())
+            .withDueDate(invoiceInDatabase.getDueDate())
+            .withSeller(invoiceInDatabase.getSeller())
+            .withBuyer(invoiceInDatabase.getBuyer())
+            .withEntries(invoiceInDatabase.getEntries())
+            .withTotalNetValue(invoiceInDatabase.getTotalNetValue())
+            .withTotalGrossValue(invoiceInDatabase.getTotalGrossValue())
+            .build();
     String invoiceToUpdateAsJson = mapper.writeValueAsString(noSqlModelMapper.mapInvoice(invoiceToUpdate));
     when(fileHelper.readLines(DATABASE_FILEPATH)).thenReturn(Collections.singletonList(invoiceInDatabaseAsJson));
     doNothing().when(fileHelper).removeLine(DATABASE_FILEPATH, 1);

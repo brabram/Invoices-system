@@ -34,21 +34,21 @@ public class CompanyValidator extends Validator {
     }
     Matcher matcher = RegExpPatterns.companyNamePattern.matcher(name);
     if (!matcher.matches()) {
-      return "Incorrect withName";
+      return "Incorrect name";
     }
     return null;
   }
 
   private static String validateTaxIdentificationNumber(String taxIdentificationNumber) {
     if (taxIdentificationNumber == null) {
-      return "Tax identification withNumber cannot be null";
+      return "Tax identification number cannot be null";
     }
     if (taxIdentificationNumber.trim().isEmpty()) {
-      return "Tax identification withNumber cannot be empty";
+      return "Tax identification number cannot be empty";
     }
     Matcher matcher = RegExpPatterns.taxIdentificationNumberPattern.matcher(taxIdentificationNumber);
     if (!matcher.matches()) {
-      return "Incorrect tax identification withNumber";
+      return "Incorrect tax identification number";
     }
     return null;
   }

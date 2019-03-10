@@ -19,7 +19,13 @@ class CompanyValidatorTest {
   @ParameterizedTest
   @MethodSource("companyNameArguments")
   void shouldValidateCompanyName(String name, List<String> expected) {
-    Company company = new Company(1L, name, "2541278654", AccountNumberGenerator.getRandomAccount(), ContactDetailsGenerator.getRandomContactDetails());
+    Company company = Company.builder()
+        .withId(1L)
+        .withName(name)
+        .withTaxIdentificationNumber("2541278654")
+        .withAccountNumber(AccountNumberGenerator.getRandomAccount())
+        .withContactDetails(ContactDetailsGenerator.getRandomContactDetails())
+        .build();
     List<String> resultOfValidation = CompanyValidator.validate(company);
     assertEquals(expected, resultOfValidation);
   }
@@ -37,7 +43,13 @@ class CompanyValidatorTest {
   @ParameterizedTest
   @MethodSource("taxIdentificationNumberArguments")
   void shouldValidateTaxIdentificationNumber(String taxIdentificationNumber, List<String> expected) {
-    Company company = new Company(1L, "name", taxIdentificationNumber, AccountNumberGenerator.getRandomAccount(), ContactDetailsGenerator.getRandomContactDetails());
+    Company company = Company.builder()
+        .withId(1L)
+        .withName("name")
+        .withTaxIdentificationNumber(taxIdentificationNumber)
+        .withAccountNumber(AccountNumberGenerator.getRandomAccount())
+        .withContactDetails(ContactDetailsGenerator.getRandomContactDetails())
+        .build();
     List<String> resultOfValidation = CompanyValidator.validate(company);
     assertEquals(expected, resultOfValidation);
   }
@@ -63,7 +75,13 @@ class CompanyValidatorTest {
 
   @Test
   void shouldValidateAccountNumber() {
-    Company company = new Company(1L, "name", "2541278654", null, ContactDetailsGenerator.getRandomContactDetails());
+    Company company = Company.builder()
+        .withId(1L)
+        .withName("name")
+        .withTaxIdentificationNumber("2541278654")
+        .withAccountNumber(null)
+        .withContactDetails(ContactDetailsGenerator.getRandomContactDetails())
+        .build();
     List<String> expected = Collections.singletonList("Account number cannot be null");
     List<String> resultOfValidation = CompanyValidator.validate(company);
     assertEquals(expected, resultOfValidation);
@@ -71,7 +89,13 @@ class CompanyValidatorTest {
 
   @Test
   void shouldValidateContactDetails() {
-    Company company = new Company(1L, "name", "2541278654", AccountNumberGenerator.getRandomAccount(), null);
+    Company company = Company.builder()
+        .withId(1L)
+        .withName("name")
+        .withTaxIdentificationNumber("2541278654")
+        .withAccountNumber(AccountNumberGenerator.getRandomAccount())
+        .withContactDetails(null)
+        .build();
     List<String> expected = Collections.singletonList("Contact details cannot be null");
     List<String> resultOfValidation = CompanyValidator.validate(company);
     assertEquals(expected, resultOfValidation);

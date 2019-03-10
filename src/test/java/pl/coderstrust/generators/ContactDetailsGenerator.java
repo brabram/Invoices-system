@@ -16,7 +16,13 @@ public class ContactDetailsGenerator {
     String phoneNumber = String.format("+48%09d", random.nextInt(999999999));
     String webSite = String.format("www.%s.com", getRandomWord());
     Address address = AddressGenerator.getRandomAddress();
-    return new ContactDetails(id, email, phoneNumber, webSite, address);
+    return ContactDetails.builder()
+            .withId(id)
+            .withEmail(email)
+            .withPhoneNumber(phoneNumber)
+            .withWebsite(webSite)
+            .withAddress(address)
+            .build();
   }
 
   public static ContactDetails getRandomContactDetailsWithoutId() {
@@ -25,6 +31,12 @@ public class ContactDetailsGenerator {
     String phoneNumber = String.format("+48%09d", random.nextInt(999999999));
     String webSite = String.format("www.%s.com", getRandomWord());
     Address address = AddressGenerator.getRandomAddressWithoutId();
-    return new ContactDetails(id, email, phoneNumber, webSite, address);
+    return ContactDetails.builder()
+            .withId(id)
+            .withEmail(email)
+            .withPhoneNumber(phoneNumber)
+            .withWebsite(webSite)
+            .withAddress(address)
+            .build();
   }
 }

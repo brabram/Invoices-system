@@ -1,26 +1,17 @@
 package pl.coderstrust.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
-@Entity
+@JsonDeserialize(builder = Invoice.Builder.class)
 public final class Invoice {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of invoice.", example = "1234", dataType = "Long", position = -1)
   private final Long id;
 
@@ -39,50 +30,89 @@ public final class Invoice {
   @ApiModelProperty(value = "Total gross value with dot ('.') as a separator", example = "1023.00")
   private final BigDecimal totalGrossValue;
 
-  @ManyToOne(cascade = CascadeType.ALL)
   private final Company seller;
 
-  @ManyToOne(cascade = CascadeType.ALL)
   private final Company buyer;
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private final List<InvoiceEntry> entries;
 
-  private Invoice() {
-    this.id = null;
-    this.number = null;
-    this.issueDate = null;
-    this.dueDate = null;
-    this.seller = null;
-    this.buyer = null;
-    this.entries = null;
-    this.totalNetValue = null;
-    this.totalGrossValue = null;
+  protected Invoice(Invoice.Builder builder) {
+    this.id = builder.id;
+    this.number = builder.number;
+    this.issueDate = builder.issueDate;
+    this.dueDate = builder.dueDate;
+    this.totalNetValue = builder.totalNetValue;
+    this.totalGrossValue = builder.totalGrossValue;
+    this.seller = builder.seller;
+    this.buyer = builder.buyer;
+    this.entries = builder.entries;
   }
 
-  @JsonCreator
-  public Invoice(@JsonProperty("id") Long id,
-                 @JsonProperty("number") String number,
-                 @JsonProperty("issueDate") LocalDate issueDate,
-                 @JsonProperty("dueDate") LocalDate dueDate,
-                 @JsonProperty("seller") Company seller,
-                 @JsonProperty("buyer") Company buyer,
-                 @JsonProperty("entries") List<InvoiceEntry> entries,
-                 @JsonProperty("totalNetValue") BigDecimal totalNetValue,
-                 @JsonProperty("totalGrossValue") BigDecimal totalGrossValue) {
-    this.id = id;
-    this.number = number;
-    this.issueDate = issueDate;
-    this.dueDate = dueDate;
-    this.seller = seller;
-    this.buyer = buyer;
-    this.entries = entries;
-    this.totalNetValue = totalNetValue;
-    this.totalGrossValue = totalGrossValue;
+  public static Invoice.Builder builder() {
+    return new Invoice.Builder();
   }
 
-  public Invoice(Invoice that) {
-    this(that.getId(), that.getNumber(), that.getIssueDate(), that.getDueDate(), that.getSeller(), that.getBuyer(), that.getEntries(), that.getTotalNetValue(), that.getTotalGrossValue());
+  @JsonPOJOBuilder
+  public static class Builder {
+
+    private Long id;
+    private String number;
+    private LocalDate issueDate;
+    private LocalDate dueDate;
+    private BigDecimal totalNetValue;
+    private BigDecimal totalGrossValue;
+    private Company seller;
+    private Company buyer;
+    private List<InvoiceEntry> entries;
+
+    public Invoice.Builder withId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public Invoice.Builder withNumber(String number) {
+      this.number = number;
+      return this;
+    }
+
+    public Invoice.Builder withIssueDate(LocalDate issueDate) {
+      this.issueDate = issueDate;
+      return this;
+    }
+
+    public Invoice.Builder withDueDate(LocalDate dueDate) {
+      this.dueDate = dueDate;
+      return this;
+    }
+
+    public Invoice.Builder withTotalNetValue(BigDecimal totalNetValue) {
+      this.totalNetValue = totalNetValue;
+      return this;
+    }
+
+    public Invoice.Builder withTotalGrossValue(BigDecimal totalGrossValue) {
+      this.totalGrossValue = totalGrossValue;
+      return this;
+    }
+
+    public Invoice.Builder withSeller(Company seller) {
+      this.seller = seller;
+      return this;
+    }
+
+    public Invoice.Builder withBuyer(Company buyer) {
+      this.buyer = buyer;
+      return this;
+    }
+
+    public Invoice.Builder withEntries(List<InvoiceEntry> entries) {
+      this.entries = entries;
+      return this;
+    }
+
+    public Invoice build() {
+      return new Invoice(this);
+    }
   }
 
   public Long getId() {

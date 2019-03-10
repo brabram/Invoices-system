@@ -1,21 +1,14 @@
 package pl.coderstrust.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
-@Entity
+import java.util.Objects;
+
+@JsonDeserialize(builder = ContactDetails.Builder.class)
 public final class ContactDetails {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of contact details.", dataType = "Long", position = -1)
   private final Long id;
 
@@ -28,28 +21,57 @@ public final class ContactDetails {
   @ApiModelProperty(value = "Web site address", example = "www.company.net.eu")
   private final String website;
 
-  @OneToOne(cascade = CascadeType.ALL)
   private final Address address;
 
-  private ContactDetails() {
-    this.id = null;
-    this.email = null;
-    this.phoneNumber = null;
-    this.website = null;
-    this.address = null;
+  protected ContactDetails(ContactDetails.Builder builder) {
+    this.id = builder.id;
+    this.email = builder.email;
+    this.phoneNumber = builder.phoneNumber;
+    this.website = builder.website;
+    this.address = builder.address;
   }
 
-  @JsonCreator
-  public ContactDetails(@JsonProperty("id") Long id,
-                        @JsonProperty("email") String email,
-                        @JsonProperty("phoneNumber") String phoneNumber,
-                        @JsonProperty("website") String website,
-                        @JsonProperty("address") Address address) {
-    this.id = id;
-    this.email = email;
-    this.phoneNumber = phoneNumber;
-    this.website = website;
-    this.address = address;
+  public static ContactDetails.Builder builder() {
+    return new ContactDetails.Builder();
+  }
+
+  @JsonPOJOBuilder
+  public static class Builder {
+
+    private Long id;
+    private String email;
+    private String phoneNumber;
+    private String website;
+    private Address address;
+
+    public ContactDetails.Builder withId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public ContactDetails.Builder withEmail(String email) {
+      this.email = email;
+      return this;
+    }
+
+    public ContactDetails.Builder withPhoneNumber(String phoneNumber) {
+      this.phoneNumber = phoneNumber;
+      return this;
+    }
+
+    public ContactDetails.Builder withWebsite(String website) {
+      this.website = website;
+      return this;
+    }
+
+    public ContactDetails.Builder withAddress(Address address) {
+      this.address = address;
+      return this;
+    }
+
+    public ContactDetails build() {
+      return new ContactDetails(this);
+    }
   }
 
   public Long getId() {

@@ -19,14 +19,23 @@ public class InvoiceGenerator {
     LocalDate dueDate = issueDate.plusDays(7);
     Company seller = CompanyGenerator.getRandomCompany();
     Company buyer = CompanyGenerator.getRandomCompany();
-    List<InvoiceEntry> list = new ArrayList<>();
+    List<InvoiceEntry> entries = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      list.add(InvoiceEntriesGenerator.getRandomInvoiceEntry());
+      entries.add(InvoiceEntriesGenerator.getRandomInvoiceEntry());
     }
-    BigDecimal totalNetValue = list.stream().map(item -> item.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
-    BigDecimal totalGrossValue = list.stream().map(item -> item.getGrossValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
-    return new Invoice(id, number, issueDate, dueDate, seller, buyer,
-        list, totalNetValue, totalGrossValue);
+    BigDecimal totalNetValue = entries.stream().map(item -> item.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    BigDecimal totalGrossValue = entries.stream().map(item -> item.getGrossValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    return Invoice.builder()
+            .withId(id)
+            .withNumber(number)
+            .withIssueDate(issueDate)
+            .withDueDate(dueDate)
+            .withSeller(seller)
+            .withBuyer(buyer)
+            .withEntries(entries)
+            .withTotalNetValue(totalNetValue)
+            .withTotalGrossValue(totalGrossValue)
+            .build();
   }
 
   public static Invoice getRandomInvoiceWithoutIdInOtherEntities() {
@@ -36,39 +45,38 @@ public class InvoiceGenerator {
     LocalDate dueDate = issueDate.plusDays(7);
     Company seller = CompanyGenerator.getRandomCompanyWithoutId();
     Company buyer = CompanyGenerator.getRandomCompanyWithoutId();
-    List<InvoiceEntry> list = new ArrayList<>();
+    List<InvoiceEntry> entries = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      list.add(InvoiceEntriesGenerator.getRandomInvoiceEntryWithoutId());
+      entries.add(InvoiceEntriesGenerator.getRandomInvoiceEntryWithoutId());
     }
-    BigDecimal totalNetValue = list.stream().map(item -> item.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
-    BigDecimal totalGrossValue = list.stream().map(item -> item.getGrossValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
-    return new Invoice(id, number, issueDate, dueDate, seller, buyer,
-        list, totalNetValue, totalGrossValue);
-  }
-
-  public static Invoice getRandomInvoiceWithSpecificIssueDate(LocalDate issueDate) {
-    Invoice invoice = getRandomInvoice();
-    invoice.setIssueDate(issueDate);
-    return invoice;
-  }
-
-  public static Invoice getRandomInvoiceWithSpecificDueDate(LocalDate dueDate) {
-    Invoice invoice = getRandomInvoice();
-    invoice.setDueDate(dueDate);
-    return invoice;
+    BigDecimal totalNetValue = entries.stream().map(item -> item.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    BigDecimal totalGrossValue = entries.stream().map(item -> item.getGrossValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    return Invoice.builder()
+            .withId(id)
+            .withNumber(number)
+            .withIssueDate(issueDate)
+            .withDueDate(dueDate)
+            .withSeller(seller)
+            .withBuyer(buyer)
+            .withEntries(entries)
+            .withTotalNetValue(totalNetValue)
+            .withTotalGrossValue(totalGrossValue)
+            .build();
   }
 
   public static Invoice getRandomInvoicesIssuedInSpecificDateRange(LocalDate startDate, LocalDate endDate) {
     Invoice invoice = getRandomInvoice();
-    return new Invoice(invoice.getId(),
-        invoice.getNumber(),
-        createRandomDateInSpecificDateRange(startDate, endDate),
-        invoice.getDueDate(),
-        invoice.getSeller(),
-        invoice.getBuyer(),
-        invoice.getEntries(),
-        invoice.getTotalNetValue(),
-        invoice.getTotalGrossValue());
+    return Invoice.builder()
+            .withId(invoice.getId())
+            .withNumber(invoice.getNumber())
+            .withIssueDate(startDate)
+            .withDueDate(endDate)
+            .withSeller(invoice.getSeller())
+            .withBuyer(invoice.getBuyer())
+            .withEntries(invoice.getEntries())
+            .withTotalNetValue(invoice.getTotalNetValue())
+            .withTotalGrossValue(invoice.getTotalGrossValue())
+            .build();
   }
 
   private static LocalDate createRandomDate() {

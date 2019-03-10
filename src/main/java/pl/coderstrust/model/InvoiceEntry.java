@@ -1,20 +1,14 @@
 package pl.coderstrust.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-@Entity
+@JsonDeserialize(builder = InvoiceEntry.Builder.class)
 public final class InvoiceEntry {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of invoice entry.", dataType = "Long", position = -1)
   private final Long id;
 
@@ -36,31 +30,69 @@ public final class InvoiceEntry {
   @ApiModelProperty(value = "Tax amount", example = "VAT_23")
   private final Vat vatRate;
 
-  private InvoiceEntry() {
-    this.id = null;
-    this.item = null;
-    this.quantity = null;
-    this.price = null;
-    this.vatValue = null;
-    this.grossValue = null;
-    this.vatRate = null;
+  protected InvoiceEntry(InvoiceEntry.Builder builder) {
+    this.id = builder.id;
+    this.item = builder.item;
+    this.quantity = builder.quantity;
+    this.price = builder.price;
+    this.vatValue = builder.vatValue;
+    this.grossValue = builder.grossValue;
+    this.vatRate = builder.vatRate;
   }
 
-  @JsonCreator
-  public InvoiceEntry(@JsonProperty("id") Long id,
-                      @JsonProperty("item") String item,
-                      @JsonProperty("quantity") Long quantity,
-                      @JsonProperty("price") BigDecimal price,
-                      @JsonProperty("vatValue") BigDecimal vatValue,
-                      @JsonProperty("grossValue") BigDecimal grossValue,
-                      @JsonProperty("vatRate") Vat vatRate) {
-    this.id = id;
-    this.item = item;
-    this.quantity = quantity;
-    this.price = price;
-    this.vatValue = vatValue;
-    this.grossValue = grossValue;
-    this.vatRate = vatRate;
+  public static InvoiceEntry.Builder builder() {
+    return new InvoiceEntry.Builder();
+  }
+
+  @JsonPOJOBuilder
+  public static class Builder {
+
+    private Long id;
+    private String item;
+    private Long quantity;
+    private BigDecimal price;
+    private BigDecimal vatValue;
+    private BigDecimal grossValue;
+    private Vat vatRate;
+
+    public InvoiceEntry.Builder withId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public InvoiceEntry.Builder withItem(String item) {
+      this.item = item;
+      return this;
+    }
+
+    public InvoiceEntry.Builder withQuantity(Long quantity) {
+      this.quantity = quantity;
+      return this;
+    }
+
+    public InvoiceEntry.Builder withPrice(BigDecimal price) {
+      this.price = price;
+      return this;
+    }
+
+    public InvoiceEntry.Builder withVatValue(BigDecimal vatValue) {
+      this.vatValue = vatValue;
+      return this;
+    }
+
+    public InvoiceEntry.Builder withGrossValue(BigDecimal grossValue) {
+      this.grossValue = grossValue;
+      return this;
+    }
+
+    public InvoiceEntry.Builder withVatRate(Vat vatRate) {
+      this.vatRate = vatRate;
+      return this;
+    }
+
+    public InvoiceEntry build() {
+      return new InvoiceEntry(this);
+    }
   }
 
   public Long getId() {

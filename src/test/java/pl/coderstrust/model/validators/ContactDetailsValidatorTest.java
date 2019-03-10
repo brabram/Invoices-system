@@ -18,7 +18,13 @@ class ContactDetailsValidatorTest {
   @ParameterizedTest
   @MethodSource("emailArguments")
   void shouldValidateEmail(String email, List<String> expected) {
-    ContactDetails contactDetails = new ContactDetails(1L, email, "+48786345298", "www.company.net.eu", AddressGenerator.getRandomAddress());
+    ContactDetails contactDetails = ContactDetails.builder()
+            .withId(1L)
+            .withEmail(email)
+            .withPhoneNumber("+48786345298")
+            .withWebsite("www.company.net.eu")
+            .withAddress(AddressGenerator.getRandomAddress())
+            .build();
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);
   }
@@ -37,7 +43,13 @@ class ContactDetailsValidatorTest {
   @ParameterizedTest
   @MethodSource("webSiteArguments")
   void shouldValidateWebSite(String webSite, List<String> expected) {
-    ContactDetails contactDetails = new ContactDetails(1L, "poczta@onet.pl", "+48786345298", webSite, AddressGenerator.getRandomAddress());
+    ContactDetails contactDetails = ContactDetails.builder()
+            .withId(1L)
+            .withEmail("poczta@onet.pl")
+            .withPhoneNumber("+48786345298")
+            .withWebsite(webSite)
+            .withAddress(AddressGenerator.getRandomAddress())
+            .build();
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);
   }
@@ -58,7 +70,13 @@ class ContactDetailsValidatorTest {
   @ParameterizedTest
   @MethodSource("phoneNumberArguments")
   void shouldValidatePhoneNumber(String phoneNumber, List<String> expected) {
-    ContactDetails contactDetails = new ContactDetails(1L, "poczta@onet.pl", phoneNumber, "www.company.net.eu", AddressGenerator.getRandomAddress());
+    ContactDetails contactDetails = ContactDetails.builder()
+            .withId(1L)
+            .withEmail("poczta@onet.pl")
+            .withPhoneNumber(phoneNumber)
+            .withWebsite("www.company.net.eu")
+            .withAddress(AddressGenerator.getRandomAddress())
+            .build();
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);
   }
@@ -83,7 +101,13 @@ class ContactDetailsValidatorTest {
 
   @Test
   void shouldValidateAddress() {
-    ContactDetails contactDetails = new ContactDetails(1L, "poczta@onet.pl", "+48786345298", "www.company.net.eu", null);
+    ContactDetails contactDetails = ContactDetails.builder()
+            .withId(1L)
+            .withEmail("poczta@onet.pl")
+            .withPhoneNumber("48786345298")
+            .withWebsite("www.company.net.eu")
+            .withAddress(null)
+            .build();
     List<String> expected = Collections.singletonList("Address cannot be null");
     List<String> resultOfValidation = ContactDetailsValidator.validate(contactDetails);
     assertEquals(expected, resultOfValidation);

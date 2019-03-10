@@ -76,6 +76,7 @@ public class InFileInvoiceDatabase implements InvoiceDatabase {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice cannot be null");
     }
+    NoSqlInvoice noSqlInvoice = noSqlModelMapper.mapInvoice(invoice);
     try {
       if (invoice.getId() != null && isInvoiceExist(invoice.getId())) {
         return Optional.of(updateInvoice(invoice));

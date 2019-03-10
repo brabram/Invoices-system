@@ -1,19 +1,14 @@
 package pl.coderstrust.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-@Entity
+import java.util.Objects;
+
+@JsonDeserialize(builder = Address.Builder.class)
 public final class Address {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of address.", dataType = "Long", position = -1)
   private final Long id;
 
@@ -32,28 +27,62 @@ public final class Address {
   @ApiModelProperty(value = "Country name", example = "Poland")
   private final String country;
 
-  private Address() {
-    this.id = null;
-    this.street = null;
-    this.number = null;
-    this.postalCode = null;
-    this.city = null;
-    this.country = null;
+  protected Address(Address.Builder builder) {
+    this.id = builder.id;
+    this.street = builder.street;
+    this.number = builder.number;
+    this.postalCode = builder.postalCode;
+    this.city = builder.city;
+    this.country = builder.country;
   }
 
-  @JsonCreator
-  public Address(@JsonProperty("id") Long id,
-                 @JsonProperty("street")String street,
-                 @JsonProperty("number")String number,
-                 @JsonProperty("postalCode") String postalCode,
-                 @JsonProperty("city") String city,
-                 @JsonProperty("country") String country) {
-    this.id = id;
-    this.street = street;
-    this.number = number;
-    this.postalCode = postalCode;
-    this.city = city;
-    this.country = country;
+  public static Address.Builder builder() {
+    return new Address.Builder();
+  }
+
+  @JsonPOJOBuilder
+  public static class Builder {
+
+    private Long id;
+    private String street;
+    private String number;
+    private String postalCode;
+    private String city;
+    private String country;
+
+    public Address.Builder withId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public Address.Builder withStreet(String street) {
+      this.street = street;
+      return this;
+    }
+
+    public Address.Builder withNumber(String number) {
+      this.number = number;
+      return this;
+    }
+
+    public Address.Builder withPostalCode(String postalCode) {
+      this.postalCode = postalCode;
+      return this;
+    }
+
+    public Address.Builder withCity(String city) {
+      this.city = city;
+      return this;
+    }
+
+    public Address.Builder withCountry(String country) {
+      this.country = country;
+      return this;
+    }
+
+    public Address build() {
+      return new Address(this);
+    }
   }
 
   public Long getId() {

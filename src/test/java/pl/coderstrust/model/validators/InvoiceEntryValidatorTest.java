@@ -19,7 +19,15 @@ class InvoiceEntryValidatorTest {
   @ParameterizedTest
   @MethodSource("itemNameArguments")
   void shouldValidateItemName(String item, List<String> expected) {
-    InvoiceEntry invoiceEntry = new InvoiceEntry(1L, item, 10L, BigDecimal.valueOf(100.00), BigDecimal.valueOf(23.00), BigDecimal.valueOf(1230.00), Vat.VAT_23);
+    InvoiceEntry invoiceEntry = InvoiceEntry.builder()
+        .withId(1L)
+        .withItem(item)
+        .withQuantity(10L)
+        .withPrice(BigDecimal.valueOf(100.00))
+        .withVatValue(BigDecimal.valueOf(23.00))
+        .withGrossValue(BigDecimal.valueOf(1230.00))
+        .withVatRate(Vat.VAT_23)
+        .build();
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     assertEquals(expected, resultOfValidation);
   }
@@ -42,7 +50,15 @@ class InvoiceEntryValidatorTest {
   @ParameterizedTest
   @MethodSource("quantityArguments")
   void shouldValidateQuantity(Long quantity, List<String> expected) {
-    InvoiceEntry invoiceEntry = new InvoiceEntry(1L, "10w40 Castrol engine oil", quantity, BigDecimal.valueOf(100.00), BigDecimal.valueOf(23.00), BigDecimal.valueOf(1230.00), Vat.VAT_23);
+    InvoiceEntry invoiceEntry = InvoiceEntry.builder()
+        .withId(1L)
+        .withItem("10w40 Castrol engine oil")
+        .withQuantity(quantity)
+        .withPrice(BigDecimal.valueOf(100.00))
+        .withVatValue(BigDecimal.valueOf(23.00))
+        .withGrossValue(BigDecimal.valueOf(1230.00))
+        .withVatRate(Vat.VAT_23)
+        .build();
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     assertEquals(expected, resultOfValidation);
   }
@@ -60,7 +76,15 @@ class InvoiceEntryValidatorTest {
   @ParameterizedTest
   @MethodSource("priceArguments")
   void shouldValidatePrice(BigDecimal price, List<String> expected) {
-    InvoiceEntry invoiceEntry = new InvoiceEntry(1L, "10w40 Castrol engine oil", 10L, price, BigDecimal.valueOf(23.00), BigDecimal.valueOf(1230.00), Vat.VAT_23);
+    InvoiceEntry invoiceEntry = InvoiceEntry.builder()
+        .withId(1L)
+        .withItem("10w40 Castrol engine oil")
+        .withQuantity(10L)
+        .withPrice(price)
+        .withVatValue(BigDecimal.valueOf(23.00))
+        .withGrossValue(BigDecimal.valueOf(1230.00))
+        .withVatRate(Vat.VAT_23)
+        .build();
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     assertEquals(expected, resultOfValidation);
   }
@@ -77,7 +101,15 @@ class InvoiceEntryValidatorTest {
   @ParameterizedTest
   @MethodSource("grossValueArguments")
   void shouldValidateGrossValue(BigDecimal grossValue, List<String> expected) {
-    InvoiceEntry invoiceEntry = new InvoiceEntry(1L, "10w40 Castrol engine oil", 10L, BigDecimal.valueOf(100.00), BigDecimal.valueOf(23.00), grossValue, Vat.VAT_23);
+    InvoiceEntry invoiceEntry = InvoiceEntry.builder()
+        .withId(1L)
+        .withItem("10w40 Castrol engine oil")
+        .withQuantity(10L)
+        .withPrice(BigDecimal.valueOf(100.00))
+        .withVatValue(BigDecimal.valueOf(23.00))
+        .withGrossValue(grossValue)
+        .withVatRate(Vat.VAT_23)
+        .build();
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     assertEquals(expected, resultOfValidation);
   }
@@ -94,7 +126,15 @@ class InvoiceEntryValidatorTest {
   @ParameterizedTest
   @MethodSource("vatValueArguments")
   void shouldValidateVatValue(BigDecimal vatValue, List<String> expected) {
-    InvoiceEntry invoiceEntry = new InvoiceEntry(1L, "10w40 Castrol engine oil", 10L, BigDecimal.valueOf(100.00), vatValue, BigDecimal.valueOf(1230.00), Vat.VAT_23);
+    InvoiceEntry invoiceEntry = InvoiceEntry.builder()
+        .withId(1L)
+        .withItem("10w40 Castrol engine oil")
+        .withQuantity(10L)
+        .withPrice(BigDecimal.valueOf(100.00))
+        .withVatValue(vatValue)
+        .withGrossValue(BigDecimal.valueOf(1230.00))
+        .withVatRate(Vat.VAT_23)
+        .build();
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     assertEquals(expected, resultOfValidation);
   }
@@ -110,7 +150,15 @@ class InvoiceEntryValidatorTest {
 
   @Test
   void shouldValidateVatRate() {
-    InvoiceEntry invoiceEntry = new InvoiceEntry(1L, "10w40 Castrol engine oil", 10L, BigDecimal.valueOf(100.00), BigDecimal.valueOf(23.00), BigDecimal.valueOf(1230.00), null);
+    InvoiceEntry invoiceEntry = InvoiceEntry.builder()
+        .withId(1L)
+        .withItem("10w40 Castrol engine oil")
+        .withQuantity(10L)
+        .withPrice(BigDecimal.valueOf(100.00))
+        .withVatValue(BigDecimal.valueOf(23.00))
+        .withGrossValue(BigDecimal.valueOf(1230.00))
+        .withVatRate(null)
+        .build();
     List<String> resultOfValidation = InvoiceEntryValidator.validate(invoiceEntry);
     List<String> expected = Collections.singletonList("Vat rate cannot be null");
     assertEquals(expected, resultOfValidation);

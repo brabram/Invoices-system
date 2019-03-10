@@ -25,7 +25,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import pl.coderstrust.configuration.MongoConfiguration;
+import pl.coderstrust.configuration.MongoDatabaseConfiguration;
 import pl.coderstrust.configuration.MongoDatabaseProperties;
 import pl.coderstrust.database.DatabaseOperationException;
 import pl.coderstrust.database.IdentifierGenerator;
@@ -41,7 +41,6 @@ import pl.coderstrust.model.Invoice;
 class MongoInvoiceDatabaseTest {
 
   private InvoiceDatabase invoiceDatabase;
-  private MongoConfiguration mongoConfiguration;
   private NoSqlModelMapper modelMapper;
   private MongoDatabaseProperties mongoDatabaseProperties;
 
@@ -77,7 +76,7 @@ class MongoInvoiceDatabaseTest {
   }
 
   @Test
-  void shouldUpdateInvoice() throws DatabaseOperationException, IdentifierGeneratorException {
+  void shouldUpdateInvoice() throws DatabaseOperationException {
     //given
     Invoice invoiceToUpdate = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
     NoSqlInvoice noSqlInvoice = modelMapper.mapInvoice(invoiceToUpdate);
@@ -118,9 +117,7 @@ class MongoInvoiceDatabaseTest {
   @Test
   void shouldReturnEmptyInvoiceWhenInvoiceDoesNotExistInDatabase() throws DatabaseOperationException {
     //given
-    Invoice invoice = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
-    NoSqlInvoice noSqlInvoice = modelMapper.mapInvoice(invoice);
-    Long id = invoice.getId() + 123L;
+    Long id = 123L;
     Query findQuery = new Query();
     findQuery.addCriteria(Criteria.where("id").is(id));
     when(mongoTemplate.findOne(findQuery, NoSqlInvoice.class, mongoDatabaseProperties.getCollectionName())).thenReturn(null);
@@ -300,7 +297,6 @@ class MongoInvoiceDatabaseTest {
   void findInvoiceByIdMethodShouldThrowExceptionWhenAnErrorOccurDuringExecution() {
     //Given
     Invoice invoice = InvoiceGenerator.getRandomInvoiceWithoutIdInOtherEntities();
-    NoSqlInvoice noSqlInvoice = modelMapper.mapInvoice(invoice);
     Long id = invoice.getId();
     Query findQuery = new Query();
     findQuery.addCriteria(Criteria.where("id").is(id));

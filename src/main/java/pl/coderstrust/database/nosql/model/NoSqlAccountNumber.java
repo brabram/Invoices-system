@@ -12,7 +12,7 @@ public class NoSqlAccountNumber {
   private final String localNumber;
 
   @PersistenceConstructor
-  private NoSqlAccountNumber(String ibanNumber, String localNumber) {
+  public NoSqlAccountNumber(String ibanNumber, String localNumber) {
     this.ibanNumber = ibanNumber;
     this.localNumber = localNumber;
   }

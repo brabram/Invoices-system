@@ -17,7 +17,11 @@ class AccountNumberValidatorTest {
   @ParameterizedTest
   @MethodSource("ibanNumberArguments")
   void shouldValidateIbanNumber(String ibanNumber, List<String> expected) {
-    AccountNumber accountNumber = new AccountNumber(1L, ibanNumber, "53533242");
+    AccountNumber accountNumber = AccountNumber.builder()
+            .withId(1L)
+            .withIbanNumber(ibanNumber)
+            .withLocalNumber("53533242")
+            .build();
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
     assertEquals(expected, resultOfValidation);
   }
@@ -35,7 +39,11 @@ class AccountNumberValidatorTest {
   @ParameterizedTest
   @MethodSource("localNumberArguments")
   void shouldValidateLocalNumber(String localNumber, List<String> expected) {
-    AccountNumber accountNumber = new AccountNumber(1L, "PL4343433", localNumber);
+    AccountNumber accountNumber = AccountNumber.builder()
+            .withId(1L)
+            .withIbanNumber("PL4343433")
+            .withLocalNumber(localNumber)
+            .build();
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
     assertEquals(expected, resultOfValidation);
   }
@@ -54,7 +62,11 @@ class AccountNumberValidatorTest {
   @ParameterizedTest
   @MethodSource("accountNumberArguments")
   void shouldCompareIbanNumberAndLocalNumber(String localNumber, String ibanNumber, List<String> expected) {
-    AccountNumber accountNumber = new AccountNumber(1L, ibanNumber, localNumber);
+    AccountNumber accountNumber = AccountNumber.builder()
+            .withId(1L)
+            .withIbanNumber(ibanNumber)
+            .withLocalNumber(localNumber)
+            .build();
     List<String> resultOfValidation = AccountNumberValidator.validate(accountNumber);
     assertEquals(expected, resultOfValidation);
   }

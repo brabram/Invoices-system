@@ -54,15 +54,17 @@ class InMemoryInvoiceDatabaseTest {
     Optional<Invoice> savedInvoice = invoiceDatabase.save(invoiceToSave);
     assertTrue(savedInvoice.isPresent());
     assertEquals(savedInvoice, invoiceDatabase.findById(savedInvoice.get().getId()));
-    Invoice invoiceToUpdate = new Invoice(savedInvoice.get().getId(),
-        "11",
-        savedInvoice.get().getIssueDate(),
-        savedInvoice.get().getDueDate(),
-        savedInvoice.get().getSeller(),
-        savedInvoice.get().getBuyer(),
-        savedInvoice.get().getEntries(),
-        BigDecimal.valueOf(5555),
-        savedInvoice.get().getTotalGrossValue());
+    Invoice invoiceToUpdate = Invoice.builder()
+            .withId(savedInvoice.get().getId())
+            .withNumber("11")
+            .withIssueDate(savedInvoice.get().getIssueDate())
+            .withDueDate(savedInvoice.get().getDueDate())
+            .withSeller(savedInvoice.get().getSeller())
+            .withBuyer(savedInvoice.get().getBuyer())
+            .withEntries(savedInvoice.get().getEntries())
+            .withTotalNetValue(BigDecimal.valueOf(5555))
+            .withTotalGrossValue(savedInvoice.get().getTotalGrossValue())
+            .build();
 
     //when
     Optional<Invoice> updatedInvoice = invoiceDatabase.save(invoiceToUpdate);

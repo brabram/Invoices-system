@@ -17,13 +17,12 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @Configuration
 @PropertySource("classpath:hibernate.properties")
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class
-        , DataSourceTransactionManagerAutoConfiguration.class
-        , HibernateJpaAutoConfiguration.class
-        , MongoAutoConfiguration.class
-        , MongoDataAutoConfiguration.class})
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class,
+    DataSourceTransactionManagerAutoConfiguration.class,
+    HibernateJpaAutoConfiguration.class,
+    MongoAutoConfiguration.class,
+    MongoDataAutoConfiguration.class})
 @EnableAsync
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class ApplicationConfiguration {
 
   @Bean

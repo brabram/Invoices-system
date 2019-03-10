@@ -15,7 +15,13 @@ public class CompanyGenerator {
     String taxIdentificationNumber = String.format("%05d%05d", random.nextInt(99999), random.nextInt(99999));
     AccountNumber accountNumber = AccountNumberGenerator.getRandomAccount();
     ContactDetails contactDetails = ContactDetailsGenerator.getRandomContactDetails();
-    return new Company(id, name, taxIdentificationNumber, accountNumber, contactDetails);
+    return Company.builder()
+            .withId(id)
+            .withName(name)
+            .withTaxIdentificationNumber(taxIdentificationNumber)
+            .withAccountNumber(accountNumber)
+            .withContactDetails(contactDetails)
+            .build();
   }
 
   public static Company getRandomCompanyWithoutId() {
@@ -24,6 +30,12 @@ public class CompanyGenerator {
     String taxIdentificationNumber = String.format("%05d%05d", random.nextInt(99999), random.nextInt(99999));
     AccountNumber accountNumber = AccountNumberGenerator.getRandomAccountWithoutId();
     ContactDetails contactDetails = ContactDetailsGenerator.getRandomContactDetailsWithoutId();
-    return new Company(id, name, taxIdentificationNumber, accountNumber, contactDetails);
+    return Company.builder()
+            .withId(id)
+            .withName(name)
+            .withTaxIdentificationNumber(taxIdentificationNumber)
+            .withAccountNumber(accountNumber)
+            .withContactDetails(contactDetails)
+            .build();
   }
 }

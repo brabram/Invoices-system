@@ -1,21 +1,14 @@
 package pl.coderstrust.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.Objects;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
-@Entity
+import java.util.Objects;
+
+@JsonDeserialize(builder = Company.Builder.class)
 public final class Company {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @ApiModelProperty(value = "The id of company.", dataType = "Long", position = -1)
   private final Long id;
 
@@ -25,31 +18,59 @@ public final class Company {
   @ApiModelProperty(value = "Tax identification number, 10 digits without spaces", example = "2541278654")
   private final String taxIdentificationNumber;
 
-  @OneToOne(cascade = CascadeType.ALL)
   private final AccountNumber accountNumber;
 
-  @OneToOne(cascade = CascadeType.ALL)
   private final ContactDetails contactDetails;
 
-  private Company() {
-    this.id = null;
-    this.name = null;
-    this.taxIdentificationNumber = null;
-    this.accountNumber = null;
-    this.contactDetails = null;
+  protected Company(Company.Builder builder) {
+    this.id = builder.id;
+    this.name = builder.name;
+    this.taxIdentificationNumber = builder.taxIdentificationNumber;
+    this.accountNumber = builder.accountNumber;
+    this.contactDetails = builder.contactDetails;
   }
 
-  @JsonCreator
-  public Company(@JsonProperty("id") Long id,
-                 @JsonProperty("name") String name,
-                 @JsonProperty("taxIdentificationNumber") String taxIdentificationNumber,
-                 @JsonProperty("accountNumber") AccountNumber accountNumber,
-                 @JsonProperty("contactDetails") ContactDetails contactDetails) {
-    this.id = id;
-    this.name = name;
-    this.taxIdentificationNumber = taxIdentificationNumber;
-    this.accountNumber = accountNumber;
-    this.contactDetails = contactDetails;
+  public static Company.Builder builder() {
+    return new Company.Builder();
+  }
+
+  @JsonPOJOBuilder
+  public static class Builder {
+
+    private Long id;
+    private String name;
+    private String taxIdentificationNumber;
+    private AccountNumber accountNumber;
+    private ContactDetails contactDetails;
+
+    public Company.Builder withId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public Company.Builder withName(String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Company.Builder withTaxIdentificationNumber(String taxIdentificationNumber) {
+      this.taxIdentificationNumber = taxIdentificationNumber;
+      return this;
+    }
+
+    public Company.Builder withAccountNumber(AccountNumber accountNumber) {
+      this.accountNumber = accountNumber;
+      return this;
+    }
+
+    public Company.Builder withContactDetails(ContactDetails contactDetails) {
+      this.contactDetails = contactDetails;
+      return this;
+    }
+
+    public Company build() {
+      return new Company(this);
+    }
   }
 
   public Long getId() {
