@@ -21,15 +21,24 @@ Our application is available on localhost:8080. Use [Swagger](http://localhost:8
 spring.security.admin-name=admin
 spring.security.admin-password=admin
 ```
-To test SOAP, use [Postman](https://www.getpostman.com) or another tool.
+To receive an invoice by email, go to [mail.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/%2333-readme.md/src/main/resources/mail.properties) and set your email.
+
+```
+spring.mail.properties.receiver=your@email.com
+```
+
+To test SOAP, use [Postman](https://www.getpostman.com) or another tool. To create some request use [schema](http://localhost:8080/soap/invoices/invoices.wsdl)
 
 ## Setup Database ##
 
 To change using database go to [application.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/master/src/main/resources/application.properties). You can choose in-file, in-memory, mongo or hibernate database
 ```
    pl.coderstrust.database=in-file
+   pl.coderstrust.database=in-memory
+   pl.coderstrust.database=hibernate
+   pl.coderstrust.database=mongo
 ```
 
 ## For an end User ##
 
-[Site](http://localhost:8080/)
+[Site](http://localhost:8080/) allows you to view invoice data in the database, download pdf and delete the invoice.
