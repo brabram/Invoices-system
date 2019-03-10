@@ -14,9 +14,9 @@ You can use REST service to tests all funcionality, or SOAP service or simple fr
 * [Mockito](https://site.mockito.org)
 * [JUnit 5](https://junit.org/junit5/)
 * [Jackson](https://github.com/FasterXML/jackson)
-* [PostgreSQL](https://www.postgresql.org)
-* [Hibernate](http://hibernate.org)
-* ![MongoDB](mongo.png) [Mongo](https://www.mongodb.com)
+* ![](http://www.postgresqltutorial.com/wp-content/uploads/2012/08/What-is-PostgreSQL.png)
+* ![](https://i2.wp.com/bykowski.pl/wp-content/uploads/2018/07/hibernate-2.png?w=800)
+* ![](http://www.streamscape.com/images/main_content/solutions/mongo-underline.png)
 
 ## Instalation ##
 
