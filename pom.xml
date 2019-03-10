@@ -254,6 +254,7 @@
                     <exclude>pl.coderstrust.model.ContactDetails</exclude>
                     <exclude>pl.coderstrust.model.Company</exclude>
                     <exclude>pl.coderstrust.model.AccountNumber</exclude>
+                    <exclude>pl.coderstrust.service.InvoiceEmailService</exclude>
                   </excludes>
                 </rule>
               </rules>
