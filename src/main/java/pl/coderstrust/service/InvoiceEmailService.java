@@ -1,6 +1,5 @@
 package pl.coderstrust.service;
 
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -51,7 +50,7 @@ public class InvoiceEmailService {
     }
 
     try {
-      log.debug("Sending e-mail with invoice: {}", invoice);
+      log.debug("Sending e-mail with new invoice: {}", invoice);
 
       MimeMessage message = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -63,7 +62,7 @@ public class InvoiceEmailService {
 
       mailSender.send(message);
     } catch (MessagingException | ServiceOperationException e) {
-      log.error("Ann error occurred during sending e-mail with new invoice.", e);
+      log.error("An error occurred during sending e-mail with new invoice.", e);
     }
   }
 }

@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,7 @@ public class InvoiceController {
   private InvoiceEmailService invoiceEmailService;
 
   @Autowired
-  public InvoiceController(InvoiceService invoiceService, InvoicePdfService invoicePdfService, InvoiceEmailService invoiceEmailService) throws FileNotFoundException {
+  public InvoiceController(InvoiceService invoiceService, InvoicePdfService invoicePdfService, InvoiceEmailService invoiceEmailService) {
     this.invoiceService = invoiceService;
     this.invoicePdfService = invoicePdfService;
     this.invoiceEmailService = invoiceEmailService;
@@ -150,7 +149,6 @@ public class InvoiceController {
         HttpHeaders responseHeaders = new HttpHeaders();
         if (addedInvoice.isPresent()) {
           responseHeaders.setLocation(URI.create(String.format("/invoices/%d", addedInvoice.get().getId())));
-          log.debug("Sending email with invoice: {}", invoice);
           invoiceEmailService.sendMailWithNewInvoice(invoice);
           return new ResponseEntity<>(addedInvoice.get(), responseHeaders, HttpStatus.CREATED);
         }
