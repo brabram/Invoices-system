@@ -5,6 +5,9 @@ import static pl.coderstrust.soap.InvoiceToXmlConverter.convertInvoiceToXml;
 
 import java.util.List;
 import java.util.Optional;
+import javax.xml.datatype.DatatypeConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -20,6 +23,7 @@ import pl.coderstrust.soap.domainclasses.Status;
 @Endpoint
 public class InvoiceEndpoint {
 
+  private static Logger log = LoggerFactory.getLogger(InvoiceEndpoint.class);
   private static final String NAMESPACE_URI = "http://soap-invoice-service";
   private InvoiceService invoiceService;
 
@@ -33,6 +37,7 @@ public class InvoiceEndpoint {
   public pl.coderstrust.soap.domainclasses.GetAllInvoicesResponse getAllInvoices(@RequestPayload pl.coderstrust.soap.domainclasses.GetAllInvoicesRequest request) {
     pl.coderstrust.soap.domainclasses.GetAllInvoicesResponse response = new pl.coderstrust.soap.domainclasses.GetAllInvoicesResponse();
     try {
+      log.debug("Getting all invoices");
       Optional<List<Invoice>> invoicesOptionalList = invoiceService.getAllInvoices();
       if (invoicesOptionalList.isPresent()) {
         InvoicesList invoices = new InvoicesList();
@@ -45,8 +50,10 @@ public class InvoiceEndpoint {
         return response;
       }
     } catch (Exception e) {
+      String message = "An error while getting invoices from database.";
       response.setStatus(Status.ERROR);
-      response.setStatusMessage("An error while getting invoices from database.");
+      response.setStatusMessage(message);
+      log.error(message, e);
     }
     return response;
   }
@@ -57,6 +64,7 @@ public class InvoiceEndpoint {
     pl.coderstrust.soap.domainclasses.GetInvoiceByIdResponse response = new pl.coderstrust.soap.domainclasses.GetInvoiceByIdResponse();
     long id = request.getId();
     try {
+      log.debug("Getting invoice by id: {}", id);
       Optional<Invoice> invoiceOptional = invoiceService.getInvoiceById(id);
       if (invoiceOptional.isPresent()) {
         response.setStatus(Status.SUCCESS);
@@ -68,8 +76,10 @@ public class InvoiceEndpoint {
       response.setStatusMessage(String.format("Not found invoice with id %d.", id));
       return response;
     } catch (Exception e) {
+      String message = String.format("An error while getting invoice with id %d from database.", id);
+      log.error(message, e);
       response.setStatus(Status.ERROR);
-      response.setStatusMessage(String.format("An error while getting invoice with id %d from database.", id));
+      response.setStatusMessage(message);
     }
     return response;
   }
@@ -80,6 +90,7 @@ public class InvoiceEndpoint {
     pl.coderstrust.soap.domainclasses.GetInvoiceByNumberResponse response = new pl.coderstrust.soap.domainclasses.GetInvoiceByNumberResponse();
     String number = request.getNumber();
     try {
+      log.debug("Getting invoice by withNumber: {}", number);
       Optional<List<Invoice>> optionalInvoicesList = invoiceService.getAllInvoices();
       if (optionalInvoicesList.isPresent()) {
         Optional<Invoice> optionalInvoice = optionalInvoicesList.get()
@@ -97,18 +108,21 @@ public class InvoiceEndpoint {
         return response;
       }
     } catch (Exception e) {
+      String message = String.format("An error while getting invoice with number %s from database.", number);
+      log.error(message, e);
       response.setStatus(Status.ERROR);
-      response.setStatusMessage(String.format("An error while getting invoice with number %s from database.", number));
+      response.setStatusMessage(message);
     }
     return response;
   }
 
   @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addInvoiceRequest")
   @ResponsePayload
-  public pl.coderstrust.soap.domainclasses.AddInvoiceResponse addInvoice(@RequestPayload pl.coderstrust.soap.domainclasses.AddInvoiceRequest request) {
+  public pl.coderstrust.soap.domainclasses.AddInvoiceResponse addInvoice(@RequestPayload pl.coderstrust.soap.domainclasses.AddInvoiceRequest request) throws DatatypeConfigurationException {
     pl.coderstrust.soap.domainclasses.AddInvoiceResponse response = new AddInvoiceResponse();
+    Invoice invoice = convertInvoiceFromXml(request.getInvoice());
     try {
-      Invoice invoice = convertInvoiceFromXml(request.getInvoice());
+      log.debug("Adding invoice: {}", invoice);
       List<String> resultOfValidation = InvoiceValidator.validate(invoice, false);
       if (resultOfValidation.size() > 0) {
         response.setStatus(Status.ERROR);
@@ -131,19 +145,22 @@ public class InvoiceEndpoint {
       response.setStatusMessage("Invoice already exist.");
       return response;
     } catch (Exception e) {
+      String message = String.format("An error while adding invoice: %s", invoice);
+      log.error(message, e);
       response.setStatus(Status.ERROR);
-      response.setStatusMessage("An error while adding invoice.");
+      response.setStatusMessage(message);
     }
     return response;
   }
 
   @PayloadRoot(namespace = NAMESPACE_URI, localPart = "updateInvoiceRequest")
   @ResponsePayload
-  public pl.coderstrust.soap.domainclasses.UpdateInvoiceResponse updateInvoice(@RequestPayload pl.coderstrust.soap.domainclasses.UpdateInvoiceRequest request) {
+  public pl.coderstrust.soap.domainclasses.UpdateInvoiceResponse updateInvoice(@RequestPayload pl.coderstrust.soap.domainclasses.UpdateInvoiceRequest request) throws DatatypeConfigurationException {
     pl.coderstrust.soap.domainclasses.UpdateInvoiceResponse response = new pl.coderstrust.soap.domainclasses.UpdateInvoiceResponse();
+    Invoice invoice = convertInvoiceFromXml(request.getInvoice());
+    long id = request.getId();
     try {
-      long id = request.getId();
-      Invoice invoice = convertInvoiceFromXml(request.getInvoice());
+      log.debug("Updating invoice. id: {}, invoice: {}", id, invoice);
       List<String> resultOfValidation = InvoiceValidator.validate(invoice, true);
       if (resultOfValidation.size() > 0) {
         response.setStatus(Status.ERROR);
@@ -166,8 +183,10 @@ public class InvoiceEndpoint {
       response.setInvoice(convertInvoiceToXml(invoice));
       return response;
     } catch (Exception e) {
+      String message = String.format("An error while updating invoice with  %d id, %s invoice", id, invoice);
+      log.error(message, e);
       response.setStatus(Status.ERROR);
-      response.setStatusMessage("An error while updating invoice.");
+      response.setStatusMessage(message);
     }
     return response;
   }
@@ -178,6 +197,7 @@ public class InvoiceEndpoint {
     pl.coderstrust.soap.domainclasses.DeleteInvoiceResponse response = new pl.coderstrust.soap.domainclasses.DeleteInvoiceResponse();
     long id = request.getId();
     try {
+      log.debug("Removing invoice. id: {}", id);
       Optional<Invoice> optionalInvoice = invoiceService.getInvoiceById(id);
       if (optionalInvoice.isPresent()) {
         invoiceService.deleteInvoiceById(id);
@@ -189,8 +209,10 @@ public class InvoiceEndpoint {
       response.setStatusMessage(String.format("Invoice with id %d does not exist.", id));
       return response;
     } catch (Exception e) {
+      String message = String.format("An error while deleting invoice. id: %d", id);
+      log.error(message, e);
       response.setStatus(Status.ERROR);
-      response.setStatusMessage("An error while deleting invoice.");
+      response.setStatusMessage(message);
     }
     return response;
   }
