@@ -1,6 +1,6 @@
 # Invoices System #
 
-Invoices Sysem is a simple accounting application with possiblity to manage invoices. 
+Invoices System is a simple accounting application with possiblity to manage invoices. 
 There are multiple implementations of databases. 
 You can use REST,  SOAP or simple front-end to communicate with application. Application is licensed by [MIT](https://opensource.org/licenses/mit-license.php)
 
