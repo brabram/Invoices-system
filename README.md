@@ -15,17 +15,17 @@ You can use REST service to tests all funcionality, or SOAP service or simple fr
 
 ## API ##
 
-Our application is available on localhost:8080. Use ```http://localhost:[PORT]/swagger-ui.html#/invoice-controller```
-To test all possibilities of Invoice API. You have to log in:
+Application is available on localhost:[PORT]. Use ```http://localhost:[PORT]/swagger-ui.html#/invoice-controller```
+To test all possibilities of Invoice API. You have to log in, configure login and password in [security.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/master/src/main/resources/security.properties):
 
 ```
-spring.security.admin-name=admin
-spring.security.admin-password=admin
+spring.security.admin-name=yourLogin
+spring.security.admin-password=yourPassword
 ```
 To receive an invoice by email, go to [mail.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/%2333-readme.md/src/main/resources/mail.properties) and set your email.
 
 ```
-spring.mail.properties.receiver=your@email.com
+spring.mail.properties.receiver=yourEmail@mail.com
 ```
 
 To test SOAP, use [Postman](https://www.getpostman.com) or another tool. To create some request use
@@ -39,6 +39,22 @@ To change using database go to [application.properties](https://github.com/Coder
    pl.coderstrust.database=in-memory
    pl.coderstrust.database=hibernate
    pl.coderstrust.database=mongo
+```
+Application works correctly without hibernate and mongo database.
+
+To use **hibernate** , firt  configure it on your computer, use PgAdmin and [hibernate.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/%2333-readme.md/src/main/resources/hibernate.properties)
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/Invoices
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+```
+
+To use **mongo** , firt  configure it on your computer,[mongo.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/master/src/main/resources/mongo-database.properties)
+```
+pl.coderstrust.database.mongo.database-name=invoices
+pl.coderstrust.database.mongo.collection-name=invoices
+pl.coderstrust.database.mongo.host=localhost
+pl.coderstrust.database.mongo.port=27017
 ```
 
 ## For an end User ##
