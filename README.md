@@ -47,14 +47,14 @@ To change using database go to [application.properties](https://github.com/Coder
 ```
 Application works correctly without hibernate and mongo database.
 
-To use **hibernate** , firt  configure it on your computer, use PgAdmin ( or anotehr tool) and [hibernate.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/%2333-readme.md/src/main/resources/hibernate.properties)
+To use **hibernate** , firt  configure it on your computer, use PgAdmin ( or another tool) and [hibernate.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/%2333-readme.md/src/main/resources/hibernate.properties)
 ```
 spring.datasource.url=yourDatabase
 spring.datasource.username=yourUserName
 spring.datasource.password=yourPassword
 ```
 
-To use **mongo** , firt  configure it on your computer,[mongo.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/master/src/main/resources/mongo-database.properties)
+To use **mongo** , first  configure it on your computer,[mongo.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/master/src/main/resources/mongo-database.properties)
 ```
 pl.coderstrust.database.mongo.database-name=invoices
 pl.coderstrust.database.mongo.collection-name=invoices
