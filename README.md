@@ -2,7 +2,7 @@
 
 Invoices Sysem is a simple accounting application with possiblity to manage invoices. 
 There are multiple implementations of databases. 
-You can use REST service to tests all funcionality, or SOAP service or simple front-end.
+You can use REST,  SOAP or simple front-end to communicate with application. Application is licensed by [MIT](https://opensource.org/licenses/mit-license.php)
 
 ## Tech/frameworks used ##
 
@@ -13,6 +13,11 @@ You can use REST service to tests all funcionality, or SOAP service or simple fr
 * JDK 1.8
 * Apache Maven 3.x
 
+## Build and Run ##
+```
+mvn clean package:
+mvn exec:java
+```
 ## API ##
 
 Application is available on localhost:[PORT]. Use ```http://localhost:[PORT]/swagger-ui.html#/invoice-controller```
@@ -42,11 +47,11 @@ To change using database go to [application.properties](https://github.com/Coder
 ```
 Application works correctly without hibernate and mongo database.
 
-To use **hibernate** , firt  configure it on your computer, use PgAdmin and [hibernate.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/%2333-readme.md/src/main/resources/hibernate.properties)
+To use **hibernate** , firt  configure it on your computer, use PgAdmin ( or anotehr tool) and [hibernate.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/%2333-readme.md/src/main/resources/hibernate.properties)
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/Invoices
-spring.datasource.username=postgres
-spring.datasource.password=postgres
+spring.datasource.url=yourDatabase
+spring.datasource.username=yourUserName
+spring.datasource.password=yourPassword
 ```
 
 To use **mongo** , firt  configure it on your computer,[mongo.properties](https://github.com/CodersTrustPL/project-8-basia-daniel-maksym/blob/master/src/main/resources/mongo-database.properties)
