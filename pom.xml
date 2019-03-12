@@ -26,7 +26,7 @@
     <checkstyle.suppressions.location>checkstyle-config/checkstyle-suppressions.xml</checkstyle.suppressions.location>
     <linkXRef>false</linkXRef>
     <springframework.version>5.1.4.RELEASE</springframework.version>
-    <jackson.version>2.9.7</jackson.version>
+    <jackson.version>2.9.8</jackson.version>
     <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
   </properties>
 
